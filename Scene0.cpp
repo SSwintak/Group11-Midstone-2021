@@ -29,16 +29,17 @@ Scene0::~Scene0(){
 
 bool Scene0::OnCreate() {
 	int w, h;
-	float xAxis = 30.0f;
-	float yAxis = 15.0f;
+	float xAxis = 15.0f;
+	float yAxis = 7.5f;
 	SDL_GetWindowSize(window,&w,&h);
 	
 	Matrix4 ndc = MMath::viewportNDC(w, h);
-	Matrix4 ortho = MMath::orthographic(0.0f, xAxis, 0.0f, yAxis, 0.0f, 1.0f);
+	Matrix4 ortho = MMath::orthographic(-xAxis, xAxis, -yAxis, yAxis, 0.0f, 1.0f);
 	projectionMatrix = ndc * ortho;
+	invProjectionMatrix = MMath::inverse(projectionMatrix);
 
 	IMG_Init(IMG_INIT_PNG);
-	SDL_Surface* playerImage = IMG_Load("");//loading the image file
+	SDL_Surface* playerImage = IMG_Load("HorrorSchoolLockers_2.png");//loading the image file
 	SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(renderer, playerImage);//loading and rendering the images' texture
 
 	if (playerTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
@@ -49,13 +50,13 @@ bool Scene0::OnCreate() {
 	}
 	else
 	{
-		Vec3 worldCoordsFromScreenCoords;
-
-		worldCoordsFromScreenCoords.x = xAxis / static_cast<float>(w) * static_cast<float>(playerImage->w);
-
-		worldCoordsFromScreenCoords.y = yAxis / static_cast<float>(h) * static_cast<float>(playerImage->h);
-
-		worldCoordsFromScreenCoords.print();
+		
+		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
+		Vec3 lowerRight(static_cast<float>(playerImage->w), static_cast<float>(playerImage->h), 0.0f);
+		Vec3 ulWorld = invProjectionMatrix * upperLeft;
+		Vec3 lrWorld = invProjectionMatrix * lowerRight;
+		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
+		float r = worldCoordsFromScreenCoords.x / 2.0f;
 
 		player->setTexture(playerTexture);
 		player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
@@ -85,9 +86,9 @@ void Scene0::Render() {
 	screenCoords = projectionMatrix * player->getPos();
 	SDL_Rect square;
 
-	square.x = static_cast<int>(screenCoords.x);
+	square.x = (screenCoords.x) - w / 2.0f;
 
-	square.y = static_cast<int>(screenCoords.y);
+	square.y = (screenCoords.y) - h / 2.0f;
 
 	square.w = w;
 

@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include "Body.h"
 #include "Player.h"
+#include <vector>
 
 using namespace MATH;
 class Scene0 : public Scene {
@@ -14,7 +15,7 @@ private:
 	Matrix4 projectionMatrix;
 	SDL_Renderer* renderer;
 	Player* player;
-	Body* balloon;
+	Matrix4 invProjectionMatrix;
 
 	
 public:
