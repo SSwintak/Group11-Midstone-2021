@@ -9,12 +9,13 @@
 
 
 
+
 Scene0::Scene0(SDL_Window* sdlWindow_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	player = new Player(Vec3(0.0f, 0.0f, 0.0f),
-						Vec3(0.0f, 0.0f, 0.0f), 1.0f);
+					    Vec3(0.0f, 0.0f, 0.0f), 1.0f);
 						 
 
 }
@@ -39,8 +40,9 @@ bool Scene0::OnCreate() {
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
 
 	IMG_Init(IMG_INIT_PNG);
-	SDL_Surface* playerImage = IMG_Load("HorrorSchoolLockers_2.png");//loading the image file
+	SDL_Surface* playerImage = IMG_Load("TestPlayer.png");//loading the image file
 	SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(renderer, playerImage);//loading and rendering the images' texture
+	
 
 	if (playerTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
 	if (playerImage == nullptr)
@@ -72,6 +74,8 @@ void Scene0::OnDestroy() {}
 
 void Scene0::Update(const float deltaTime) {
 	player->Update(deltaTime);
+	
+	
 }
 
 void Scene0::Render() {
@@ -102,6 +106,6 @@ void Scene0::Render() {
 void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 {
 
-	player->HandleEvents(sdlEvent);
+	player->PlayerController(sdlEvent);
 
 }
