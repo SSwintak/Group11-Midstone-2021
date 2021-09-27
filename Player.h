@@ -4,6 +4,7 @@
 #include "Body.h"
 
 
+
 class Player : public Body
 {
 public:
@@ -13,11 +14,13 @@ public:
 	void setTexture(SDL_Texture* texture_) { texture = texture_; }
 	SDL_Texture* getTexture() { return texture; }
 	void HandleEvents(const SDL_Event& sdlEvent);
+	void PlayerController(const SDL_Event& sdlEvent);
 
 
 private:
 	
 	SDL_Texture* texture;
+	
 
 };
 

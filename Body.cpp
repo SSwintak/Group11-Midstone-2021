@@ -35,3 +35,10 @@ void Body::Update(float deltaTime){
 	vel += accel * deltaTime;
 
 }
+
+void Body::HandleEvents(const SDL_Event& sdlEvent)
+{
+	
+	
+	
+}

@@ -7,7 +7,10 @@
 
 using namespace MATH;
 
+
 class Body {
+	friend class Player;
+	
 private:
 	Vec3 pos;
 	Vec3 vel;
@@ -15,6 +18,12 @@ private:
 	float mass;
 	SDL_Surface* image;
 	Vec3 imageSizeWorldCoords;
+
+	    //movement speed//    
+	const float walksp = 5.5f;
+	const float runsp = 8.0f;
+	/*const float sneaksp = 3.0f;*/ //not needed but could be added so it's optional//
+
 public:
 	Body();
 	Body(Vec3 pos_, Vec3 vel_, float mass_);
