@@ -1,21 +1,27 @@
 #ifndef SCENE0_H
 #define SCENE0_H
 
-#include "MMath.h"
+
 #include "Scene.h"
-#include <SDL.h>
-#include "Body.h"
-#include "Player.h"
-#include <vector>
+#include "MMath.h"
 
 using namespace MATH;
+
+//Forward Declaration
+union SDL_Event;
+class Player;
+class GameObject;
+class FileLoader;
+
 class Scene0 : public Scene {
 private:
 	SDL_Window *window;
 	Matrix4 projectionMatrix;
 	SDL_Renderer* renderer;
-	Player* player;
+	Player *player;
+	GameObject *flappybird;
 	Matrix4 invProjectionMatrix;
+	FileLoader *fileLoader;
 
 	
 public:

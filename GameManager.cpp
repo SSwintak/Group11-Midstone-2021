@@ -3,12 +3,14 @@
 #include "Timer.h"
 #include "Scene0.h"
 #include <iostream>
+#include "ItemPool.h"
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
 	isRunning = true;
 	currentScene = nullptr;
+	ItemPool::loadItems();
 }
 
 
@@ -95,4 +97,5 @@ void GameManager::OnDestroy(){
 	if (windowPtr) delete windowPtr;
 	if (timer) delete timer;
 	if (currentScene) delete currentScene;
+	if (itemPool) delete itemPool;
 }
