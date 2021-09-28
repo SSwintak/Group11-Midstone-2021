@@ -37,7 +37,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene0(windowPtr->GetSDL_Window(), Map::searchRoom("Room1"));
+	currentScene = new Scene0(windowPtr->GetSDL_Window(), Map::searchRoom("Room2"));
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;

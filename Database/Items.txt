@@ -10,3 +10,9 @@ flappybird1.png
 0.0,0.0,0.0
 Description
 |
+flappy3
+flappybird1.png
+-5.0,1.0,0.0
+0.0,0.0,0.0
+Description
+|
