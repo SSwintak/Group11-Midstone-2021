@@ -144,10 +144,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Body.cpp" />
+    <ClCompile Include="FileLoader.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ItemPool.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MMath.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Room.cpp" />
     <ClCompile Include="Scene0.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VMath.cpp" />
@@ -155,10 +160,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
+    <ClInclude Include="FileLoader.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="ItemPool.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MMath.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Room.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene0.h" />
     <ClInclude Include="Timer.h" />

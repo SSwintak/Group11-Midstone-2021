@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player(Vec3 pos_, Vec3 vel_, float mass_):
-Body( pos_, vel_, mass_)
+Body("Player", pos_, vel_, mass_)
 {
 
 
