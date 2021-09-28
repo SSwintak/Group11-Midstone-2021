@@ -3,12 +3,16 @@
 #include "Timer.h"
 #include "Scene0.h"
 #include <iostream>
+#include "ItemPool.h"
+#include "Map.h"
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
 	isRunning = true;
 	currentScene = nullptr;
+	ItemPool::loadItems();
+	Map::loadRooms();
 }
 
 
@@ -33,7 +37,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene0(windowPtr->GetSDL_Window());
+	currentScene = new Scene0(windowPtr->GetSDL_Window(), Map::searchRoom("Room2"));
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -95,4 +99,6 @@ void GameManager::OnDestroy(){
 	if (windowPtr) delete windowPtr;
 	if (timer) delete timer;
 	if (currentScene) delete currentScene;
+	ItemPool::On_Destroy();
+	Map::On_Destroy();
 }

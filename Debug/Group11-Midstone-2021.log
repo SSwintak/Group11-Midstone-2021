@@ -1,6 +1,0 @@
-﻿  Player.cpp
-  Scene0.cpp
-C:\Users\samsw\source\repos\Group11-Midstone-2021\Scene0.cpp(93,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\samsw\source\repos\Group11-Midstone-2021\Scene0.cpp(95,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
-  Group11-Midstone-2021.vcxproj -> C:\Users\samsw\source\repos\Group11-Midstone-2021\Debug\Group11-Midstone-2021.exe

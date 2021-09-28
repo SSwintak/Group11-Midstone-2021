@@ -3,20 +3,29 @@
 
 
 #include "Vector.h"
+#include "VMath.h"
 #include "SDL_image.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+#define MAX_CHAR 20
 
 using namespace MATH;
 
-
 class Body {
-	friend class Player;
+	//friend class Player;
+	friend class Physics;
 	
-private:
+protected:
+	std::string name;
 	Vec3 pos;
 	Vec3 vel;
 	Vec3 accel;
 	float mass;
 	SDL_Surface* image;
+	SDL_Texture* texture;
 	Vec3 imageSizeWorldCoords;
 
 	    //movement speed//    
@@ -26,9 +35,11 @@ private:
 
 public:
 	Body();
-	Body(Vec3 pos_, Vec3 vel_, float mass_);
+	Body(std::string name_, Vec3 pos_, Vec3 vel_, float mass_);
 	~Body();
 	void Update(float deltaTime);
+	std::string getName() { return name; }
+	void setName(std::string name_) { name = name_; }
 	Vec3 getPos() { return pos; }
 	void setPos(Vec3 pos_) { pos = pos_; }
 	Vec3 getVel() { return vel; }
@@ -36,6 +47,8 @@ public:
 	void HandleEvents(const SDL_Event& sdlEvent);
 	void setImage(SDL_Surface* image_) { image = image_; }
 	SDL_Surface* getImage() { return image; }
+	void setTexture(SDL_Texture* texture_) { texture = texture_; }
+	SDL_Texture* getTexture() { return texture; }
 
 	void setImageSizeWorldCoords(Vec3 imageSizeWorldCoords_) {
 		imageSizeWorldCoords.x = imageSizeWorldCoords_.x;

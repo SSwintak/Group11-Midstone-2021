@@ -19,8 +19,8 @@ Body::Body(){
 
 }
 
-Body::Body(Vec3 pos_, Vec3 vel_, float mass_):
-	pos(pos_), vel(vel_), mass(mass_), image(nullptr)
+Body::Body(std::string name_, Vec3 pos_, Vec3 vel_, float mass_):
+	name(name_), pos(pos_), vel(vel_), mass(mass_), image(nullptr)
 {
 
 }
