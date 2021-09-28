@@ -4,6 +4,5 @@ GameObject::GameObject(std::string name_) {
 	name = name_;
 }
 
-GameObject::~GameObject()
-{
+GameObject::~GameObject(){
 }

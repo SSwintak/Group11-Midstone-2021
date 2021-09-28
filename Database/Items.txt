@@ -4,6 +4,9 @@ TestPlayer.png
 0.0,0.0,0.0
 Description
 |
-item2
+flappy2
+flappybird1.png
+-2.0,1.0,0.0
+0.0,0.0,0.0
+Description
 |
-item3

@@ -5,36 +5,26 @@
 #include "Player.h"
 #include "GameObject.h"
 #include "Physics.h"
-#include <vector>
 #include "FileLoader.h"
-#include "ItemPool.h"
-#include <string.h>
-
-using namespace std;
+#include "Room.h"
 
 
 
-
-Scene0::Scene0(SDL_Window* sdlWindow_){
+Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	player = new Player(Vec3(0.0f, 0.0f, 0.0f),
 					    Vec3(0.0f, 0.0f, 0.0f), 1.0f);
-	//flappybird = new GameObject("flappy");
-						 
-	//fileLoader = new FileLoader();
-	//fileLoader->loadRoom("test");
-	//flappybird = fileLoader->loadGameObject("flappy");
 
-	flappybird = ItemPool::searchItem("flappy");
+	cout << room->getName();
+
 }
 
 Scene0::~Scene0(){
 
 	delete player;
-	delete flappybird;
-	delete fileLoader;
+	delete room;
 	SDL_DestroyRenderer(renderer);
 
 }
@@ -73,38 +63,39 @@ bool Scene0::OnCreate() {
 
 		player->setTexture(playerTexture);
 		player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
-		//printf("player width: %f\n", worldCoordsFromScreenCoords.x);
-		//printf("player height: %f\n", worldCoordsFromScreenCoords.y);
 
 		SDL_FreeSurface(playerImage);
 	}
-	string image = "image/";
-	image.append(flappybird->getimageName());
-	SDL_Surface* flappyImage = IMG_Load(image.c_str());//loading the image file
-	SDL_Texture* flappyTexture = SDL_CreateTextureFromSurface(renderer, flappyImage);//loading and rendering the images' texture
+
+	//Set images for all the item
+	for (GameObject *item : room->getItemList()) {
+
+		string image = "image/";
+		image.append(item->getimageName());
+		SDL_Surface* itemImage = IMG_Load(image.c_str());//loading the image file
+		SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);//loading and rendering the images' texture
 
 
-	if (flappyTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
-	if (flappyImage == nullptr)
-	{
-		std::cerr << "Can't open the image" << std::endl;
-		return false;
-	}
-	else
-	{
+		if (itemTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
+		if (itemImage == nullptr)
+		{
+			std::cerr << "Can't open the image" << std::endl;
+			return false;
+		}
+		else
+		{
 
-		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
-		Vec3 lowerRight(static_cast<float>(flappyImage->w), static_cast<float>(flappyImage->h), 0.0f);
-		Vec3 ulWorld = invProjectionMatrix * upperLeft;
-		Vec3 lrWorld = invProjectionMatrix * lowerRight;
-		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
+			Vec3 upperLeft(0.0f, 0.0f, 0.0f);
+			Vec3 lowerRight(static_cast<float>(itemImage->w), static_cast<float>(itemImage->h), 0.0f);
+			Vec3 ulWorld = invProjectionMatrix * upperLeft;
+			Vec3 lrWorld = invProjectionMatrix * lowerRight;
+			Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
 
-		flappybird->setTexture(flappyTexture);
-		flappybird->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
-		//printf("flappy width: %f\n", worldCoordsFromScreenCoords.x);
-		//printf("flappy height: %f\n", worldCoordsFromScreenCoords.y);
+			item->setTexture(itemTexture);
+			item->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
 
-		SDL_FreeSurface(flappyImage);
+			SDL_FreeSurface(itemImage);
+		}
 	}
 
 
@@ -116,10 +107,20 @@ void Scene0::OnDestroy() {}
 void Scene0::Update(const float deltaTime) {
 	player->Update(deltaTime);
 	
-	//if (Physics::CollisionDetect(*player, *flappybird))
-	//	printf("collide\n");
-	//else
-	//	printf("not collide\n");
+	for (GameObject* item : room->getItemList()) {
+		if (Physics::CollisionDetect(*player, *item)) {
+			cout << "collide with " << item->getName() << endl;
+			cout << item->getName();
+			printf ("%f, %f\n", item->getPos().x, item->getPos().y);
+			cout << player->getName();
+			printf("%f, %f\n", player->getPos().x, player->getPos().y);
+		}
+
+		//else
+		//	printf("not collide\n");
+	}
+	
+
 }
 
 void Scene0::Render() {
@@ -134,23 +135,27 @@ void Scene0::Render() {
 	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
 	screenCoords = projectionMatrix * player->getPos();
 
-	square.x = static_cast<int> (screenCoords.x);
-	square.y = static_cast<int> (screenCoords.y);
+	square.x = static_cast<int> (screenCoords.x - w / 2);
+	square.y = static_cast<int> (screenCoords.y - h / 2);
 	square.w = w;
 	square.h = h;
 
 	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
-	//render flappybird
-	SDL_QueryTexture(flappybird->getTexture(), nullptr, nullptr, &w, &h);
-	screenCoords = projectionMatrix * flappybird->getPos();
+	// 
+	for (GameObject *item : room->getItemList()) {
 
-	square.x = static_cast<int> (screenCoords.x);
-	square.y = static_cast<int> (screenCoords.y);
-	square.w = w;
-	square.h = h;
+		SDL_QueryTexture(item->getTexture(), nullptr, nullptr, &w, &h);
+		screenCoords = projectionMatrix * item->getPos();
 
-	SDL_RenderCopyEx(renderer, flappybird->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+		square.x = static_cast<int> (screenCoords.x - w / 2);
+		square.y = static_cast<int> (screenCoords.y - h / 2);
+		square.w = w;
+		square.h = h;
+
+		SDL_RenderCopyEx(renderer, item->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+	}
+
 
 	SDL_RenderPresent(renderer);
 }

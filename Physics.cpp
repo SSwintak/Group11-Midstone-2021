@@ -14,7 +14,9 @@ bool Physics::CollisionDetect(Body &object1, Body &object2){
 	float distance = VMath::distance(object1.getPos(), object2.getPos());
 	
 	//For x-axis
-	float expectedDistanceWidth = abs((object1.getImageSizeWorldCoords().x / 2.0f)) + abs((object2.getImageSizeWorldCoords().x / 2.0f));
+	float object1Width = abs((object1.getImageSizeWorldCoords().x / 2.0f)); 
+	float object2Width = abs((object2.getImageSizeWorldCoords().x / 2.0f));
+	float expectedDistanceWidth = object1Width + object2Width;
 	//For y-axis
 	float expectedDistanceHeight = abs((object1.getImageSizeWorldCoords().y / 2.0f)) + abs((object2.getImageSizeWorldCoords().y / 2.0f));
 	//For diagonal movement
@@ -25,8 +27,13 @@ bool Physics::CollisionDetect(Body &object1, Body &object2){
 	//float expectedDistanceDiagonal = object1DistanceDiagonal + object2DistanceDiagonal;
 
 	//If collide in x-axis or y-axis
-	if ((distance <= expectedDistanceWidth) || (distance <= expectedDistanceHeight))
+	if ((distance <= expectedDistanceWidth) || (distance <= expectedDistanceHeight)) {
+		cout << distance;
+		cout << expectedDistanceWidth;
 		return true;
+	}
+
+
 	//If collide in the corner
 	//else if ((distance <= expectedDistanceDiagonal))
 	//	return true;
