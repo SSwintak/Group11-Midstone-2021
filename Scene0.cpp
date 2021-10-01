@@ -75,7 +75,6 @@ bool Scene0::OnCreate() {
 		SDL_Surface* itemImage = IMG_Load(image.c_str());//loading the image file
 		SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);//loading and rendering the images' texture
 
-
 		if (itemTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
 		if (itemImage == nullptr)
 		{
