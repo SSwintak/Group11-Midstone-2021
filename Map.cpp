@@ -51,6 +51,7 @@ void Map::loadRooms() {
 			if (!itemName.empty())
 				room->addItem(ItemPool::searchItem(itemName));
 		}
+		roomStr.erase(0, 1);
 		//Find connected room
 		while (roomStr.at(0) != '\n') {
 			string connectedRoomName = roomStr.substr(0, roomStr.find(","));

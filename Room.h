@@ -28,7 +28,8 @@ public:
 	void addItem(GameObject* item_);
 	vector<GameObject*> getItemList() { return itemList; }
 	GameObject* searchItem(string itemName_);
-	void addConnectedRooms(GameObject connectedRooms_);
+	void addConnectedRooms(string connectedRooms_);
+	vector<string> getConnectedRooms() { return connectedRooms; }
 
 	//string searchConnectedRooms();
 

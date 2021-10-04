@@ -25,7 +25,8 @@ GameObject* Room::searchItem(string itemName_){
 	return nullptr;
 }
 
-void Room::addConnectedRooms(GameObject connectedRooms_){
+void Room::addConnectedRooms(string connectedRooms_){
+	connectedRooms.push_back(connectedRooms_);
 }
 
 

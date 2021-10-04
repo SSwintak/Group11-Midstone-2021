@@ -5,6 +5,7 @@
 #include <iostream>
 #include "ItemPool.h"
 #include "Map.h"
+#include "Monster.h"
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -13,6 +14,7 @@ GameManager::GameManager() {
 	currentScene = nullptr;
 	ItemPool::loadItems();
 	Map::loadRooms();
+	Monster::createMonster("Room1");
 }
 
 
@@ -37,7 +39,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene0(windowPtr->GetSDL_Window(), Map::searchRoom("Room2"));
+	currentScene = new Scene0(windowPtr->GetSDL_Window(), Map::searchRoom("Room1"));
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -72,7 +74,14 @@ void GameManager::Run() {
 					isRunning = false;
 					break;
 
-
+				//Test for room switching
+				case SDL_SCANCODE_F2:
+					currentScene->OnDestroy();
+					delete currentScene;
+					currentScene = new Scene0(windowPtr->GetSDL_Window(), Map::searchRoom("Room2"));
+					currentScene->OnCreate();
+					Monster::Update();
+					break;
 
 				default:
 					break;

@@ -7,6 +7,7 @@
 #include "Physics.h"
 #include "FileLoader.h"
 #include "Room.h"
+#include "Monster.h"
 
 
 
@@ -17,16 +18,14 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	player = new Player(Vec3(0.0f, 0.0f, 0.0f),
 					    Vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
-	cout << room->getName();
+	cout << room->getName() << endl;
+	cout << "Monster location: " << Monster::getCurrRoom() << endl;
 
 }
 
 Scene0::~Scene0(){
-
 	delete player;
 	delete room;
-	SDL_DestroyRenderer(renderer);
-
 }
 
 bool Scene0::OnCreate() {
@@ -101,23 +100,27 @@ bool Scene0::OnCreate() {
 	return true;
 }
 
-void Scene0::OnDestroy() {}
+void Scene0::OnDestroy() {
+	SDL_DestroyRenderer(renderer);
+}
 
 void Scene0::Update(const float deltaTime) {
 	player->Update(deltaTime);
 	
-	for (GameObject* item : room->getItemList()) {
-		if (Physics::CollisionDetect(*player, *item)) {
-			cout << "collide with " << item->getName() << endl;
-			cout << item->getName();
-			printf ("%f, %f\n", item->getPos().x, item->getPos().y);
-			cout << player->getName();
-			printf("%f, %f\n", player->getPos().x, player->getPos().y);
-		}
+	//for (GameObject* item : room->getItemList()) {
+	//	if (Physics::CollisionDetect(*player, *item)) {
+	//		cout << "collide with " << item->getName() << endl;
+	//		cout << item->getName();
+	//		printf ("%f, %f\n", item->getPos().x, item->getPos().y);
+	//		cout << player->getName();
+	//		printf("%f, %f\n", player->getPos().x, player->getPos().y);
+	//	}
 
-		//else
-		//	printf("not collide\n");
-	}
+	//	//else
+	//	//	printf("not collide\n");
+	//}
+
+
 	
 
 }
