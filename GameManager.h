@@ -17,6 +17,9 @@ private:
 	class Window *windowPtr;
 	class Timer *timer;
 	class ItemPool *itemPool;
+	class InputSystem* mInputSystem;
+
+
 	bool isRunning;
 	Scene *currentScene;
 
@@ -25,7 +28,6 @@ public:
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
-
 	void Run();
 };
 #endif

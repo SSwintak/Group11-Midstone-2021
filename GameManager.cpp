@@ -5,6 +5,7 @@
 #include <iostream>
 #include "ItemPool.h"
 #include "Map.h"
+#include "InputSystem.h"
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -13,6 +14,7 @@ GameManager::GameManager() {
 	currentScene = nullptr;
 	ItemPool::loadItems();
 	Map::loadRooms();
+	mInputSystem->Initialize();
 }
 
 
@@ -53,6 +55,7 @@ bool GameManager::OnCreate() {
 
 /// Here's the whole game
 void GameManager::Run() {
+	mInputSystem->PrepUpdate();
 	SDL_Event sdlEvent;
 	timer->Start();
 	while (isRunning) {
@@ -85,8 +88,15 @@ void GameManager::Run() {
 
 
 		timer->UpdateFrameTicks();
+
+		mInputSystem->Update();
+		const InputState& state = mInputSystem->GetState();
+
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
+
+		//Then process keys here
+		//Finally, Send InputState to Object/Players ProcessInput.
 
 		/// Keeep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
@@ -101,4 +111,8 @@ void GameManager::OnDestroy(){
 	if (currentScene) delete currentScene;
 	ItemPool::On_Destroy();
 	Map::On_Destroy();
+
+	mInputSystem->Shutdown();
+	if (mInputSystem) delete mInputSystem;
 }
+
