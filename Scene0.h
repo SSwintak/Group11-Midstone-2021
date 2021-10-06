@@ -22,6 +22,9 @@ private:
 	class Player *player;
 	Matrix4 invProjectionMatrix;
 	class Room *room;
+	SDL_Rect camera;
+	float xAxis;
+	float yAxis;
 
 	
 public:

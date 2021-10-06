@@ -21,6 +21,7 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	cout << room->getName() << endl;
 	cout << "Monster location: " << Monster::getCurrRoom() << endl;
 
+
 }
 
 Scene0::~Scene0(){
@@ -30,13 +31,14 @@ Scene0::~Scene0(){
 
 bool Scene0::OnCreate() {
 	int w, h;
-	float xAxis = 15.0f;
-	float yAxis = 7.5f;
+	xAxis = 30.0f;
+	yAxis = 15.0f;
 	SDL_GetWindowSize(window,&w,&h);
-	
+	camera = { 0, 0, w, h };
+
 	Matrix4 ndc = MMath::viewportNDC(w, h);
 	Matrix4 ortho = MMath::orthographic(-xAxis, xAxis, -yAxis, yAxis, 0.0f, 1.0f);
-	projectionMatrix = ndc * ortho;
+	projectionMatrix = (ndc * ortho);
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
 
 	//Set images
@@ -120,8 +122,23 @@ void Scene0::Update(const float deltaTime) {
 	//	//	printf("not collide\n");
 	//}
 
+	camera.x = (player->getPos().x + player->getImageSizeWorldCoords().x/2) ;
+	camera.y = (player->getPos().y + player->getImageSizeWorldCoords().y/2);
+
+	if (camera.x < -xAxis / 2) {
+		camera.x = -xAxis / 2;
+	}
+	if (camera.y < -yAxis / 2) {
+		camera.y = -yAxis / 2;
+	}
+	if (camera.x > xAxis / 2)
+		camera.x = xAxis / 2;
+	if (camera.y > yAxis / 2)
+		camera.y = yAxis / 2;
 
 	
+	printf("camerax: %i\n", camera.x);
+	cout << player->getPos().x;
 
 }
 
@@ -133,10 +150,13 @@ void Scene0::Render() {
 	Vec3 screenCoords;
 	int w, h;
 	static double rot = 0.0f;
-	
-	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
-	screenCoords = projectionMatrix * player->getPos();
 
+
+
+	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
+
+
+	screenCoords = projectionMatrix * (player->getPos());
 	square.x = static_cast<int> (screenCoords.x - w / 2);
 	square.y = static_cast<int> (screenCoords.y - h / 2);
 	square.w = w;
@@ -148,7 +168,7 @@ void Scene0::Render() {
 	for (GameObject *item : room->getItemList()) {
 
 		SDL_QueryTexture(item->getTexture(), nullptr, nullptr, &w, &h);
-		screenCoords = projectionMatrix * item->getPos();
+		screenCoords = projectionMatrix * (item->getPos() - Vec3(camera.x, camera.y, 0.0f));
 
 		square.x = static_cast<int> (screenCoords.x - w / 2);
 		square.y = static_cast<int> (screenCoords.y - h / 2);

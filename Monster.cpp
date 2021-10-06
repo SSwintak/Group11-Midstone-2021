@@ -6,8 +6,7 @@ bool Monster::normalState;
 bool Monster::huntState;
 string Monster::currRoom;
 
-Monster::Monster(string currRoom_):
-	Body("Monster", Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), 0.0f){
+Monster::Monster(string currRoom_){
 	//currRoom = currRoom_;
 	//huntState = false;
 	//normalState = true;
@@ -17,7 +16,7 @@ Monster::~Monster() {
 }
 
 void Monster::createMonster(string currRoom_){
-	Monster::Monster(currRoom_);
+
 	currRoom = currRoom_;
 	huntState = false;
 	normalState = true;

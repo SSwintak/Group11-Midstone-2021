@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-class Monster: public Body{
+class Monster{
 
 public:
 	static string currRoom;
