@@ -2,8 +2,13 @@
 #define GAMEMANAGER_H
 #include <SDL.h>
 #include "Scene.h"
+#include "Player.h"
+
 
 class GameManager {
+	friend class Scene0;
+	
+
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
 	/// really just an unsigned int, so to create a pointer to it you really only
@@ -17,6 +22,7 @@ private:
 	class Window *windowPtr;
 	class Timer *timer;
 	class ItemPool *itemPool;
+	class Player *player;
 	bool isRunning;
 	Scene *currentScene;
 
@@ -25,6 +31,7 @@ public:
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
+	
 
 	void Run();
 };

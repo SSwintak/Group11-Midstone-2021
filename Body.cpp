@@ -1,6 +1,18 @@
 #include "Body.h"
 
+
+const char* Body::Typenames[NUM_ACTOR_TYPES] = {
+	"GameObject",
+	"Player",
+	"ArtificialIntelligence",
+	"FollowPlayer",
+
+};
+
 Body::Body(){
+
+	State = SActive;
+
 	pos.x = 0.0f;
 	pos.y = 0.0f;
 	pos.z = 0.0f;

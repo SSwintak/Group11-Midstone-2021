@@ -4,6 +4,8 @@
 
 #include "Scene.h"
 #include "MMath.h"
+#include "TextureManager.h"
+#include "GameManager.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,14 +16,17 @@ using namespace std;
 //Forward Declaration
 union SDL_Event;
 
-class Scene0 : public Scene {
+class Scene0 : public Scene, public GameManager {
+	friend class TextureManager;
+
 private:
 	SDL_Window *window;
 	Matrix4 projectionMatrix;
-	SDL_Renderer* renderer;
-	class Player *player;
+	SDL_Renderer *renderer;
 	Matrix4 invProjectionMatrix;
 	class Room *room;
+	SDL_Texture* texture;
+	
 
 	
 public:
@@ -32,6 +37,9 @@ public:
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
+	
+
+	
 };
 
 #endif

@@ -2,6 +2,9 @@
 #define PLAYER_H
 
 #include "Body.h"
+#include "GameManager.h"
+
+
 
 
 
@@ -14,6 +17,8 @@ public:
 
 	void HandleEvents(const SDL_Event& sdlEvent);
 	void PlayerController(const SDL_Event& sdlEvent);
+	
+	
 
 };
 

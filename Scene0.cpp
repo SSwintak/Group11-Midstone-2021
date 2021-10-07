@@ -13,9 +13,8 @@
 Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	player = new Player(Vec3(0.0f, 0.0f, 0.0f),
-					    Vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	
+	
 
 	cout << room->getName();
 
@@ -23,7 +22,7 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 
 Scene0::~Scene0(){
 
-	delete player;
+	
 	delete room;
 	SDL_DestroyRenderer(renderer);
 
@@ -105,6 +104,7 @@ void Scene0::OnDestroy() {}
 
 void Scene0::Update(const float deltaTime) {
 	player->Update(deltaTime);
+
 	
 	for (GameObject* item : room->getItemList()) {
 		if (Physics::CollisionDetect(*player, *item)) {
@@ -112,12 +112,13 @@ void Scene0::Update(const float deltaTime) {
 			cout << item->getName();
 			printf ("%f, %f\n", item->getPos().x, item->getPos().y);
 			cout << player->getName();
-			printf("%f, %f\n", player->getPos().x, player->getPos().y);
+			printf("%f, %f\n", player->getPos().x, GameManager::player->getPos().y);
 		}
 
 		//else
 		//	printf("not collide\n");
 	}
+	
 	
 
 }
@@ -165,3 +166,5 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 	player->PlayerController(sdlEvent);
 
 }
+
+

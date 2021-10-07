@@ -11,8 +11,11 @@ GameManager::GameManager() {
 	timer = nullptr;
 	isRunning = true;
 	currentScene = nullptr;
+	player = new Player(Vec3(0.0f, 0.0f, 0.0f),
+						Vec3(0.0f, 0.0f, 0.0f), 1.0f);
 	ItemPool::loadItems();
 	Map::loadRooms();
+	
 }
 
 
@@ -44,6 +47,11 @@ bool GameManager::OnCreate() {
 	}
 
 	if (currentScene->OnCreate() == false) {
+		OnDestroy();
+		return false;
+	}
+	
+	if (player == nullptr) {
 		OnDestroy();
 		return false;
 	}
@@ -87,6 +95,7 @@ void GameManager::Run() {
 		timer->UpdateFrameTicks();
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
+		
 
 		/// Keeep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
@@ -99,6 +108,7 @@ void GameManager::OnDestroy(){
 	if (windowPtr) delete windowPtr;
 	if (timer) delete timer;
 	if (currentScene) delete currentScene;
+	if (player) delete player;
 	ItemPool::On_Destroy();
 	Map::On_Destroy();
 }
