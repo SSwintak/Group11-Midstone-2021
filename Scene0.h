@@ -25,7 +25,10 @@ private:
 	SDL_Rect camera;
 	float xAxis;
 	float yAxis;
-
+	SDL_Surface* roomImage;
+	SDL_Texture* roomTexture;
+	Vec3 worldSize;
+	Vec3 worldSizeScreenCoords;
 	
 public:
 	Scene0(SDL_Window* sdlWindow, Room* roomName_);

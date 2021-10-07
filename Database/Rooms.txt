@@ -1,5 +1,5 @@
 Room1
-RoomImage.png
+HorrorSchoolLockers_1.png
 flappy,flappy2,
 Room2,
 |

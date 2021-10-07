@@ -20,7 +20,6 @@ private:
 public:
 	Room(string name);
 	~Room();
-	void On_Create();
 	void setName(string name_) { name = name_; }
 	string getName() { return name; }
 	string getimageName() { return imageName; }

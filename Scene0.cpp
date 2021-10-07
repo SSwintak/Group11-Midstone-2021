@@ -9,7 +9,8 @@
 #include "Room.h"
 #include "Monster.h"
 
-
+#define WORLD_W 1500
+#define WORLD_H 800
 
 Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	window = sdlWindow_;
@@ -34,15 +35,47 @@ bool Scene0::OnCreate() {
 	xAxis = 30.0f;
 	yAxis = 15.0f;
 	SDL_GetWindowSize(window,&w,&h);
-	camera = { 0, 0, w, h };
+	camera = { 0, 0, static_cast<int>(xAxis), static_cast<int>(yAxis) };
 
 	Matrix4 ndc = MMath::viewportNDC(w, h);
 	Matrix4 ortho = MMath::orthographic(-xAxis, xAxis, -yAxis, yAxis, 0.0f, 1.0f);
 	projectionMatrix = (ndc * ortho);
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
+	worldSize = invProjectionMatrix * Vec3(WORLD_W, WORLD_H, 0.0f);
+	worldSize = Vec3(abs(worldSize.x), abs(worldSize.y), 0.0f);
 
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
+	string image = "image/";
+	image.append(room->getimageName());
+	roomImage = IMG_Load(image.c_str());//loading the image file
+	roomTexture = SDL_CreateTextureFromSurface(renderer, roomImage);//loading and rendering the images' texture
+
+
+	if (roomTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
+	if (roomImage == nullptr)
+	{
+		std::cerr << "Can't open the image" << std::endl;
+		return false;
+	}
+	else
+	{
+
+		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
+		Vec3 lowerRight(static_cast<float>(roomImage->w), static_cast<float>(roomImage->h), 0.0f);
+		Vec3 ulWorld = invProjectionMatrix * upperLeft;
+		Vec3 lrWorld = invProjectionMatrix * lowerRight;
+		worldSizeScreenCoords = lrWorld - ulWorld;
+
+		//player->setTexture(roomTexture);
+		//player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
+
+		SDL_FreeSurface(roomImage);
+	}
+
+
+
+
 	SDL_Surface* playerImage = IMG_Load("image/TestPlayer.png");//loading the image file
 	SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(renderer, playerImage);//loading and rendering the images' texture
 	
@@ -125,21 +158,33 @@ void Scene0::Update(const float deltaTime) {
 	camera.x = (player->getPos().x + player->getImageSizeWorldCoords().x/2) ;
 	camera.y = (player->getPos().y + player->getImageSizeWorldCoords().y/2);
 
-	if (camera.x < -xAxis / 2) {
-		camera.x = -xAxis / 2;
-	}
-	if (camera.y < -yAxis / 2) {
-		camera.y = -yAxis / 2;
-	}
-	if (camera.x > xAxis / 2)
-		camera.x = xAxis / 2;
-	if (camera.y > yAxis / 2)
-		camera.y = yAxis / 2;
 
 	
-	printf("camerax: %i\n", camera.x);
-	cout << player->getPos().x;
+	/*
+	* WorldSize / 2 = Half of the image size
+	* Since the camera starts from the centre of the screen, divide half again
+	* therefore, worldsize / 4
+	*/
+	if (camera.x < -worldSize.x / 4) {
+		camera.x = -worldSize.x / 4;
+		cout << "Reach bounds on left" << endl;
+	}
+	if (camera.y < -worldSize.y / 4) {
+		camera.y = -worldSize.y / 4;
+		cout << "Reach bounds on bot" << endl;
+	}
+	if (camera.x > worldSize.x / 4) {
+		camera.x = worldSize.x / 4;
+		cout << "Reach bounds on right" << endl;
+	}
+	if (camera.y > worldSize.y / 4) {
+		camera.y = worldSize.y / 4;
+		cout << "Reach bounds on bot" << endl;
+	}
 
+
+
+	cout << camera.x << endl;
 }
 
 void Scene0::Render() {
@@ -151,11 +196,20 @@ void Scene0::Render() {
 	int w, h;
 	static double rot = 0.0f;
 
+	//Room render
+	SDL_QueryTexture(roomTexture, nullptr, nullptr, &w, &h);
+	screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f) - Vec3(camera.x, camera.y, 0.0f));
 
+//	screenCoords = projectionMatrix * (Vec3(-worldSize.x/2, -worldSize.y/2, 0.0f) - Vec3(camera.x, camera.y, 0.0f));
+	square.x = static_cast<int> (screenCoords.x - WORLD_W /2);
+	square.y = static_cast<int> (screenCoords.y - WORLD_H /2);
+	square.w = WORLD_W;
+	square.h = WORLD_H;
 
+	SDL_RenderCopyEx(renderer, roomTexture, nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+
+	//Player render
 	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
-
-
 	screenCoords = projectionMatrix * (player->getPos());
 	square.x = static_cast<int> (screenCoords.x - w / 2);
 	square.y = static_cast<int> (screenCoords.y - h / 2);

@@ -9,8 +9,6 @@ Room::Room(string name_): name(name_){
 Room::~Room(){
 }
 
-void Room::On_Create(){
-}
 
 void Room::addItem(GameObject* item_){
 	itemList.push_back(item_);
