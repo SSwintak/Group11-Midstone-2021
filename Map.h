@@ -22,12 +22,16 @@
 
 
 class Map {
-public:
-	static vector<Room*> roomList;
+private:
+	vector<Room*> roomList;
 
-	static Room* searchRoom(string roomName_);
-	static void loadRooms();
-	static void On_Destroy();
+public:
+
+	Map();
+	~Map();
+	Room* searchRoom(string roomName_);
+	void loadRooms();
+	void On_Destroy();
 
 };
 

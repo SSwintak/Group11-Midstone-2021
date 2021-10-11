@@ -25,12 +25,14 @@
 #include <vector>
 
 class ItemPool {
+private:
+	vector<GameObject*> objectlist;
 public:
-    static vector<GameObject*> objectlist;
-
-	static GameObject* searchItem(string itemName);
-	static void loadItems();
-	static void On_Destroy();
+	ItemPool();
+	~ItemPool();
+	GameObject* searchItem(string itemName);
+	void loadItems();
+	void On_Destroy();
 	
 };
 

@@ -1,9 +1,18 @@
 #include "Map.h"
 #include <fstream>
 #include "ItemPool.h"
+#include "Data.h"
 
 
-vector<Room*> Map::roomList;
+//vector<Room*> Map::roomList;
+
+Map::Map()
+{
+}
+
+Map::~Map()
+{
+}
 
 Room* Map::searchRoom(string roomName_) {
 	for (Room* obj : roomList) {
@@ -49,7 +58,7 @@ void Map::loadRooms() {
 			roomStr.erase(0, itemName.length() + 1);
 			//Search the item from item pool and add it to the room
 			if (!itemName.empty())
-				room->addItem(ItemPool::searchItem(itemName));
+				room->addItem(itemPool.searchItem(itemName));
 		}
 		roomStr.erase(0, 1);
 		//Find connected room

@@ -1,23 +1,20 @@
 #include "Monster.h"
 #include "Map.h"
 #include "Room.h"
+#include "Data.h"
 
-bool Monster::normalState;
-bool Monster::huntState;
-string Monster::currRoom;
+//bool Monster::normalState;
+//bool Monster::huntState;
+//string Monster::currRoom;
 
 Monster::Monster(string currRoom_){
-	//currRoom = currRoom_;
-	//huntState = false;
-	//normalState = true;
+	currRoom = currRoom_;
+	huntState = false;
+	normalState = true;
 }
 
 Monster::~Monster() {
-}
-
-void Monster::createMonster(string currRoom_){
-
-	currRoom = currRoom_;
+	currRoom = "Room1";
 	huntState = false;
 	normalState = true;
 }
@@ -33,7 +30,7 @@ void Monster::Update(){
 
 	if (normalState) {
 		//Get currRoom's connnected room list
-		Room *curr_Room = Map::searchRoom(currRoom);
+		Room *curr_Room = map.searchRoom(currRoom);
 		vector<string> connectedRooms = curr_Room->getConnectedRooms();
 
 		//Use random generator to decide on which room to go to

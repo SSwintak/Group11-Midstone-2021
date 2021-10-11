@@ -8,16 +8,15 @@
 class Monster{
 
 public:
-	static string currRoom;
-	static bool huntState;
-	static bool normalState; // or wandering state
+	string currRoom;
+	bool huntState;
+	bool normalState; // or wandering state
 
 	Monster(string currRoom_);
 	~Monster();
-	static void createMonster(string currRoom_);
-	static void Update();
-	static void On_Destroy();
-	static string getCurrRoom() { return currRoom; }
+	void Update();
+	void On_Destroy();
+	string getCurrRoom() { return currRoom; }
 
 
 };

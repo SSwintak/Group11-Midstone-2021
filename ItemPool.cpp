@@ -1,7 +1,7 @@
 #include "ItemPool.h"
 #include <fstream>
 
-vector<GameObject*> ItemPool::objectlist;
+//vector<GameObject*> ItemPool::objectlist;
 
 GameObject* ItemPool::searchItem(string itemName) {
 	for (GameObject *obj:objectlist) {
@@ -75,5 +75,13 @@ void ItemPool::On_Destroy() {
 			delete obj;
 	}
 
+}
+
+ItemPool::ItemPool()
+{
+}
+
+ItemPool::~ItemPool()
+{
 }
 

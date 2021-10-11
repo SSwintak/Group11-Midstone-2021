@@ -8,6 +8,7 @@
 #include "FileLoader.h"
 #include "Room.h"
 #include "Monster.h"
+#include "Data.h"
 
 #define WORLD_W 1500
 #define WORLD_H 800
@@ -20,7 +21,7 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 					    Vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
 	cout << room->getName() << endl;
-	cout << "Monster location: " << Monster::getCurrRoom() << endl;
+	cout << "Monster location: " << monster->getCurrRoom() << endl;
 
 
 }

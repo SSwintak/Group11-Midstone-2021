@@ -6,15 +6,16 @@
 #include "ItemPool.h"
 #include "Map.h"
 #include "Monster.h"
+#include "Data.h"
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
 	isRunning = true;
 	currentScene = nullptr;
-	ItemPool::loadItems();
-	Map::loadRooms();
-	Monster::createMonster("Room1");
+	itemPool.loadItems();
+	map.loadRooms();
+	monster = new Monster("Room1");
 }
 
 
@@ -39,7 +40,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene0(windowPtr->GetSDL_Window(), Map::searchRoom("Room1"));
+	currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Room1"));
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -78,9 +79,9 @@ void GameManager::Run() {
 				case SDL_SCANCODE_F2:
 					currentScene->OnDestroy();
 					delete currentScene;
-					currentScene = new Scene0(windowPtr->GetSDL_Window(), Map::searchRoom("Room2"));
+					currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Room2"));
 					currentScene->OnCreate();
-					Monster::Update();
+					monster->Update();
 					break;
 
 				default:
@@ -108,6 +109,7 @@ void GameManager::OnDestroy(){
 	if (windowPtr) delete windowPtr;
 	if (timer) delete timer;
 	if (currentScene) delete currentScene;
-	ItemPool::On_Destroy();
-	Map::On_Destroy();
+	itemPool.On_Destroy();
+	map.On_Destroy();
+	delete monster;
 }
