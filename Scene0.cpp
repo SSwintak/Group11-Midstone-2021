@@ -136,33 +136,26 @@ void Scene0::OnDestroy() {
 }
 
 void Scene0::Update(const float deltaTime) {
-	player->Update(deltaTime);
 
-	//for (GameObject* item : room->getItemList()) {
-	//	if (Physics::CollisionDetect(*player, *item)) {
-	//		cout << "collide with " << item->getName() << endl;
-	//		cout << item->getName();
-	//		printf ("%f, %f\n", item->getPos().x, item->getPos().y);
-	//		cout << player->getName();
-	//		printf("%f, %f\n", player->getPos().x, player->getPos().y);
-	//	}
-
-	//	//else
-	//	//	printf("not collide\n");
-	//}
 
 	camera.x = (player->getPos().x + player->getImageSizeWorldCoords().x/2) ;
 	camera.y = (player->getPos().y + player->getImageSizeWorldCoords().y/2);
 
+
+	//Physics::SimpleNewtonMotion(*player, deltaTime);
+
 	for (GameObject* item : room->getItemList()) {
-		if (Physics::CollisionDetect(*player, *item)) {
+		if (Physics::CollisionDetect(*player, *item, deltaTime)) {
 			cout << "collide with " << item->getName() << endl;
 			cout << item->getName();
 			printf("%f, %f\n", item->getPos().x, item->getPos().y);
 			cout << player->getName();
 			printf("%f, %f\n", player->getPos().x, player->getPos().y);
+			player->setCollide(true);
 		}
 	}
+
+	player->Update(deltaTime);
 
 
 
@@ -203,9 +196,9 @@ void Scene0::Render() {
 
 	//Room render
 	SDL_QueryTexture(roomTexture, nullptr, nullptr, &w, &h);
-	screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f) - Vec3(camera.x, camera.y, 0.0f));
+	//screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f) - Vec3(camera.x, camera.y, 0.0f));
 
-//	screenCoords = projectionMatrix * (Vec3(-worldSize.x/2, -worldSize.y/2, 0.0f) - Vec3(camera.x, camera.y, 0.0f));
+	//screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f));
 	square.x = static_cast<int> (screenCoords.x - WORLD_W /2);
 	square.y = static_cast<int> (screenCoords.y - WORLD_H /2);
 	square.w = WORLD_W;
@@ -227,8 +220,8 @@ void Scene0::Render() {
 	for (GameObject *item : room->getItemList()) {
 
 		SDL_QueryTexture(item->getTexture(), nullptr, nullptr, &w, &h);
-		screenCoords = projectionMatrix * (item->getPos() - Vec3(camera.x, camera.y, 0.0f));
-
+		//screenCoords = projectionMatrix * (item->getPos() - Vec3(camera.x, camera.y, 0.0f));
+		screenCoords = projectionMatrix * (item->getPos());
 		square.x = static_cast<int> (screenCoords.x - w / 2);
 		square.y = static_cast<int> (screenCoords.y - h / 2);
 		square.w = w;

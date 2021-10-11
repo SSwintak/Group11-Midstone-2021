@@ -21,7 +21,6 @@ void Player::HandleEvents(const SDL_Event& sdlEvent)
 
 void Player::PlayerController(const SDL_Event& sdlEvent)
 {
-								
 	//---Right Movement---//
 	if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.keysym.scancode == SDL_SCANCODE_D)
 	{
@@ -31,7 +30,7 @@ void Player::PlayerController(const SDL_Event& sdlEvent)
 	{
 		vel.x = 0.0f;
 	}
-	
+
 	//---Left Movement---//
 	if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.keysym.scancode == SDL_SCANCODE_A)
 	{
@@ -61,6 +60,8 @@ void Player::PlayerController(const SDL_Event& sdlEvent)
 	{
 		vel.y = 0.0f;
 	}
+
+
 
 }
 

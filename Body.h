@@ -27,7 +27,8 @@ protected:
 	SDL_Surface* image;
 	SDL_Texture* texture;
 	Vec3 imageSizeWorldCoords;
-	
+	bool collide;
+	string currRoom;
 
 	    //movement speed//    
 	const float walksp = 5.5f;
@@ -45,6 +46,11 @@ public:
 	void setPos(Vec3 pos_) { pos = pos_; }
 	Vec3 getVel() { return vel; }
 	void setVel(Vec3 vel_) { vel = vel_; }
+	bool checkCollide() { return collide; }
+	void setCollide(bool collide_) { collide = collide_; }
+	string getRoom() { return currRoom; }
+	void setRoom(bool currRoom_) { currRoom = currRoom_; }
+
 	void HandleEvents(const SDL_Event& sdlEvent);
 	void setImage(SDL_Surface* image_) { image = image_; }
 	SDL_Surface* getImage() { return image; }

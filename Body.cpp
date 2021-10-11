@@ -1,4 +1,6 @@
 #include "Body.h"
+#include "Data.h"
+#include "Room.h"
 
 
 const char* Body::Typenames[NUM_ACTOR_TYPES] = {
@@ -28,13 +30,16 @@ Body::Body(){
 	mass = 0.0f;
 
 	image = nullptr;
+	collide = false;
+	currRoom = "Room1";
 
 }
 
 Body::Body(std::string name_, Vec3 pos_, Vec3 vel_, float mass_):
 	name(name_), pos(pos_), vel(vel_), mass(mass_), image(nullptr)
 {
-
+	collide = false;
+	currRoom = "Room1";
 }
 
 Body::~Body(){
@@ -43,8 +48,19 @@ Body::~Body(){
 
 void Body::Update(float deltaTime){
 
-	pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
-	vel += accel * deltaTime;
+
+	//pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
+	//vel += accel * deltaTime;
+
+	if (!collide) {
+		pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
+		vel += accel * deltaTime;
+	}
+	else {
+		vel *= -1.0f;
+		pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
+		collide = false;
+	}
 
 }
 
