@@ -15,7 +15,7 @@ using namespace std;
 using namespace MATH;
 
 class Body {
-	//friend class Player;
+	
 	friend class Physics;
 	
 protected:
@@ -27,6 +27,7 @@ protected:
 	SDL_Surface* image;
 	SDL_Texture* texture;
 	Vec3 imageSizeWorldCoords;
+	
 
 	    //movement speed//    
 	const float walksp = 5.5f;
@@ -57,6 +58,31 @@ public:
 		imageSizeWorldCoords = imageSizeWorldCoords_;
 	}
 	Vec3 getImageSizeWorldCoords() { return imageSizeWorldCoords; }
+
+	enum TypeID
+	{
+		TGameObject = 0,
+		TPlayer,
+		TArtificialIntelligence,
+		TFollowPlayer,
+
+		NUM_ACTOR_TYPES
+	};
+	static const char* Typenames[NUM_ACTOR_TYPES];
+
+	enum State //character states both for player or whatever else is a movable "game object"
+	{
+		SActive,
+		SPaused,
+		SDead
+	};
+
+	State getState() const { return State; }
+	void setState(State state) { State = state; }
+
+private:
+
+	State State;
 
 };
 

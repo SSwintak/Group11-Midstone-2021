@@ -69,10 +69,14 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Monster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data.cpp">
+=======
+    <ClCompile Include="TextureManager.cpp">
+>>>>>>> Testing
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,10 +129,14 @@
     <ClInclude Include="Map.h">
       <Filter>Header Files\Database</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Monster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data.h">
+=======
+    <ClInclude Include="TextureManager.h">
+>>>>>>> Testing
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

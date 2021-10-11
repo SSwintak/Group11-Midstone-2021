@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "GameObject.h"
 #include "Physics.h"
-#include "FileLoader.h"
 #include "Room.h"
 #include "Monster.h"
 #include "Data.h"
@@ -16,9 +15,8 @@
 Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	player = new Player(Vec3(0.0f, 0.0f, 0.0f),
-					    Vec3(0.0f, 0.0f, 0.0f), 1.0f);
+	
+	
 
 	cout << room->getName() << endl;
 	cout << "Monster location: " << monster->getCurrRoom() << endl;
@@ -27,7 +25,6 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 }
 
 Scene0::~Scene0(){
-	delete player;
 	delete room;
 }
 
@@ -142,7 +139,7 @@ void Scene0::OnDestroy() {
 
 void Scene0::Update(const float deltaTime) {
 	player->Update(deltaTime);
-	
+
 	//for (GameObject* item : room->getItemList()) {
 	//	if (Physics::CollisionDetect(*player, *item)) {
 	//		cout << "collide with " << item->getName() << endl;
@@ -159,8 +156,18 @@ void Scene0::Update(const float deltaTime) {
 	camera.x = (player->getPos().x + player->getImageSizeWorldCoords().x/2) ;
 	camera.y = (player->getPos().y + player->getImageSizeWorldCoords().y/2);
 
+	for (GameObject* item : room->getItemList()) {
+		if (Physics::CollisionDetect(*player, *item)) {
+			cout << "collide with " << item->getName() << endl;
+			cout << item->getName();
+			printf("%f, %f\n", item->getPos().x, item->getPos().y);
+			cout << player->getName();
+			printf("%f, %f\n", player->getPos().x, player->getPos().y);
+		}
+	}
 
-	
+
+
 	/*
 	* WorldSize / 2 = Half of the image size
 	* Since the camera starts from the centre of the screen, divide half again
@@ -243,3 +250,5 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 	player->PlayerController(sdlEvent);
 
 }
+
+

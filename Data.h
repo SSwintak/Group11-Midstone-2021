@@ -4,5 +4,6 @@
 extern class Map map;
 extern class ItemPool itemPool;
 extern class Monster *monster;
+extern class Player *player;
 
 #endif DATA_H
