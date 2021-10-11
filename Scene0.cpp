@@ -15,8 +15,6 @@
 Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	
-	
 
 	cout << room->getName() << endl;
 	cout << "Monster location: " << monster->getCurrRoom() << endl;
@@ -173,6 +171,7 @@ void Scene0::Update(const float deltaTime) {
 	* Since the camera starts from the centre of the screen, divide half again
 	* therefore, worldsize / 4
 	*/
+	//cout << camera.x << endl;
 	if (camera.x < -worldSize.x / 4) {
 		camera.x = -worldSize.x / 4;
 		cout << "Reach bounds on left" << endl;
@@ -191,8 +190,6 @@ void Scene0::Update(const float deltaTime) {
 	}
 
 
-
-	cout << camera.x << endl;
 }
 
 void Scene0::Render() {
