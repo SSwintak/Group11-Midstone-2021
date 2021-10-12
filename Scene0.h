@@ -25,12 +25,8 @@ private:
 	SDL_Renderer *renderer;
 	Matrix4 invProjectionMatrix;
 	class Room *room;
-	SDL_Rect camera;
-	float xAxis;
-	float yAxis;
 	SDL_Surface* roomImage;
 	SDL_Texture* roomTexture;
-	Vec3 worldSize;
 	Vec3 worldSizeScreenCoords;
 	SDL_Texture* texture;
 	

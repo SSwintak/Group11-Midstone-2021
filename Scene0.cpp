@@ -19,7 +19,6 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	cout << room->getName() << endl;
 	cout << "Monster location: " << monster->getCurrRoom() << endl;
 
-
 }
 
 Scene0::~Scene0(){
@@ -28,17 +27,14 @@ Scene0::~Scene0(){
 
 bool Scene0::OnCreate() {
 	int w, h;
-	xAxis = 30.0f;
-	yAxis = 15.0f;
+	float xAxis = 30.0f;
+	float yAxis = 15.0f;
 	SDL_GetWindowSize(window,&w,&h);
-	camera = { 0, 0, static_cast<int>(xAxis), static_cast<int>(yAxis) };
 
 	Matrix4 ndc = MMath::viewportNDC(w, h);
 	Matrix4 ortho = MMath::orthographic(-xAxis, xAxis, -yAxis, yAxis, 0.0f, 1.0f);
 	projectionMatrix = (ndc * ortho);
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
-	worldSize = invProjectionMatrix * Vec3(WORLD_W, WORLD_H, 0.0f);
-	worldSize = Vec3(abs(worldSize.x), abs(worldSize.y), 0.0f);
 
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
@@ -138,10 +134,6 @@ void Scene0::OnDestroy() {
 void Scene0::Update(const float deltaTime) {
 
 
-	camera.x = (player->getPos().x + player->getImageSizeWorldCoords().x/2) ;
-	camera.y = (player->getPos().y + player->getImageSizeWorldCoords().y/2);
-
-
 	//Physics::SimpleNewtonMotion(*player, deltaTime);
 
 	for (GameObject* item : room->getItemList()) {
@@ -156,29 +148,51 @@ void Scene0::Update(const float deltaTime) {
 	}
 
 	player->Update(deltaTime);
+//	printf("%f, %f\n", player->getPos().x, player->getPos().y);
 
 
+	projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
 
-	/*
-	* WorldSize / 2 = Half of the image size
-	* Since the camera starts from the centre of the screen, divide half again
-	* therefore, worldsize / 4
-	*/
-	//cout << camera.x << endl;
-	if (camera.x < -worldSize.x / 4) {
-		camera.x = -worldSize.x / 4;
+	//Get camera location
+	Vec3 projectionLoc = projectionMatrix.getColumn(3);
+
+	//Set camera bounds
+	if (projectionLoc.x > WORLD_W / 2) {
+
+		projectionLoc.x = WORLD_W / 2;
+		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
+			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+			projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
+
 		cout << "Reach bounds on left" << endl;
+
+	} 	if (projectionLoc.y > WORLD_H / 2) {
+		
+		projectionLoc.y = WORLD_H / 2;
+		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
+			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+			projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
+				
+		cout << "Reach bounds on Top" << endl;
 	}
-	if (camera.y < -worldSize.y / 4) {
-		camera.y = -worldSize.y / 4;
-		cout << "Reach bounds on bot" << endl;
-	}
-	if (camera.x > worldSize.x / 4) {
-		camera.x = worldSize.x / 4;
+	if (projectionLoc.x < WORLD_W / 4) {
+		projectionLoc.x = WORLD_W / 4;
+		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
+			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+			projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
 		cout << "Reach bounds on right" << endl;
 	}
-	if (camera.y > worldSize.y / 4) {
-		camera.y = worldSize.y / 4;
+	if (projectionLoc.y < WORLD_H / 4) {
+
+		projectionLoc.y = WORLD_H / 4;
+		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
+			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+			projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
+
 		cout << "Reach bounds on bot" << endl;
 	}
 
@@ -193,12 +207,13 @@ void Scene0::Render() {
 	Vec3 screenCoords;
 	int w, h;
 	static double rot = 0.0f;
+	//projectionMatrix = MMath::translate(player->getPos() - Vec3(camera.x, camera.y, 0.0f)) * projectionMatrix;
 
 	//Room render
 	SDL_QueryTexture(roomTexture, nullptr, nullptr, &w, &h);
 	//screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f) - Vec3(camera.x, camera.y, 0.0f));
 
-	//screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f));
+	screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f));
 	square.x = static_cast<int> (screenCoords.x - WORLD_W /2);
 	square.y = static_cast<int> (screenCoords.y - WORLD_H /2);
 	square.w = WORLD_W;
@@ -208,7 +223,7 @@ void Scene0::Render() {
 
 	//Player render
 	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
-	screenCoords = projectionMatrix * (player->getPos());
+	screenCoords = projectionMatrix * player->getPos();
 	square.x = static_cast<int> (screenCoords.x - w / 2);
 	square.y = static_cast<int> (screenCoords.y - h / 2);
 	square.w = w;
@@ -224,6 +239,8 @@ void Scene0::Render() {
 		screenCoords = projectionMatrix * (item->getPos());
 		square.x = static_cast<int> (screenCoords.x - w / 2);
 		square.y = static_cast<int> (screenCoords.y - h / 2);
+		//square.x = static_cast<int> (item->getPos().x);
+		//square.y = static_cast<int> (item->getPos().y);
 		square.w = w;
 		square.h = h;
 
