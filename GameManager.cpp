@@ -17,7 +17,7 @@ GameManager::GameManager() {
 	itemPool.loadItems();
 	map.loadRooms();
 	monster = new Monster("Room1");
-	player = new Player(Vec3(0.0f, 0.0f, 0.0f),
+	player = new Player(Vec3(-7.0f, 0.0f, 0.0f),
 						Vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
 

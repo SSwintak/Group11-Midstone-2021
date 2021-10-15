@@ -10,7 +10,7 @@
 #include "Data.h"
 
 #define WORLD_W 1500
-#define WORLD_H 800
+#define WORLD_H 900
 
 Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	window = sdlWindow_;
@@ -42,8 +42,6 @@ bool Scene0::OnCreate() {
 	image.append(room->getimageName());
 	roomImage = IMG_Load(image.c_str());//loading the image file
 	roomTexture = SDL_CreateTextureFromSurface(renderer, roomImage);//loading and rendering the images' texture
-
-
 	if (roomTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
 	if (roomImage == nullptr)
 	{
@@ -65,13 +63,8 @@ bool Scene0::OnCreate() {
 		SDL_FreeSurface(roomImage);
 	}
 
-
-
-
 	SDL_Surface* playerImage = IMG_Load("image/TestPlayer.png");//loading the image file
 	SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(renderer, playerImage);//loading and rendering the images' texture
-	
-
 	if (playerTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
 	if (playerImage == nullptr)
 	{
@@ -123,6 +116,53 @@ bool Scene0::OnCreate() {
 		}
 	}
 
+	lightImage = IMG_Load("image/FakeLight.png");//loading the image file
+	lightTexture = SDL_CreateTextureFromSurface(renderer, lightImage);//loading and rendering the images' texture
+	if (lightTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
+	if (lightImage == nullptr)
+	{
+		std::cerr << "Can't open the image" << std::endl;
+		return false;
+	}
+	else
+	{
+
+		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
+		Vec3 lowerRight(static_cast<float>(lightImage->w), static_cast<float>(lightImage->h), 0.0f);
+		Vec3 ulWorld = invProjectionMatrix * upperLeft;
+		Vec3 lrWorld = invProjectionMatrix * lowerRight;
+		worldSizeScreenCoords = lrWorld - ulWorld;
+
+		//player->setTexture(roomTexture);
+		//player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
+
+		SDL_FreeSurface(lightImage);
+	}
+
+	darkImage = IMG_Load("image/DarkLayer.png");//loading the image file
+	darkTexture = SDL_CreateTextureFromSurface(renderer, darkImage);//loading and rendering the images' texture
+	if (darkTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
+	if (darkImage == nullptr)
+	{
+		std::cerr << "Can't open the image" << std::endl;
+		return false;
+	}
+	else
+	{
+
+		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
+		Vec3 lowerRight(static_cast<float>(darkImage->w), static_cast<float>(darkImage->h), 0.0f);
+		Vec3 ulWorld = invProjectionMatrix * upperLeft;
+		Vec3 lrWorld = invProjectionMatrix * lowerRight;
+		worldSizeScreenCoords = lrWorld - ulWorld;
+
+		//player->setTexture(roomTexture);
+		//player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
+
+		SDL_FreeSurface(darkImage);
+	}
+
+
 
 	return true;
 }
@@ -138,11 +178,11 @@ void Scene0::Update(const float deltaTime) {
 
 	for (GameObject* item : room->getItemList()) {
 		if (Physics::CollisionDetect(*player, *item, deltaTime)) {
-			cout << "collide with " << item->getName() << endl;
-			cout << item->getName();
-			printf("%f, %f\n", item->getPos().x, item->getPos().y);
-			cout << player->getName();
-			printf("%f, %f\n", player->getPos().x, player->getPos().y);
+			//cout << "collide with " << item->getName() << endl;
+			//cout << item->getName();
+			//printf("%f, %f\n", item->getPos().x, item->getPos().y);
+			//cout << player->getName();
+			//printf("%f, %f\n", player->getPos().x, player->getPos().y);
 			player->setCollide(true);
 		}
 	}
@@ -211,7 +251,6 @@ void Scene0::Render() {
 
 	//Room render
 	SDL_QueryTexture(roomTexture, nullptr, nullptr, &w, &h);
-	//screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f) - Vec3(camera.x, camera.y, 0.0f));
 
 	screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f));
 	square.x = static_cast<int> (screenCoords.x - WORLD_W /2);
@@ -235,17 +274,48 @@ void Scene0::Render() {
 	for (GameObject *item : room->getItemList()) {
 
 		SDL_QueryTexture(item->getTexture(), nullptr, nullptr, &w, &h);
-		//screenCoords = projectionMatrix * (item->getPos() - Vec3(camera.x, camera.y, 0.0f));
 		screenCoords = projectionMatrix * (item->getPos());
 		square.x = static_cast<int> (screenCoords.x - w / 2);
 		square.y = static_cast<int> (screenCoords.y - h / 2);
-		//square.x = static_cast<int> (item->getPos().x);
-		//square.y = static_cast<int> (item->getPos().y);
 		square.w = w;
 		square.h = h;
 
+
+		SDL_SetTextureBlendMode(item->getTexture(), SDL_BLENDMODE_BLEND);
+		SDL_SetTextureAlphaMod(item->getTexture(), 100);
+
 		SDL_RenderCopyEx(renderer, item->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
+	
+	
+	//Dark Layer render
+	SDL_QueryTexture(darkTexture, nullptr, nullptr, &w, &h);
+
+	screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f));
+	square.x = static_cast<int> (screenCoords.x - WORLD_W / 2);
+	square.y = static_cast<int> (screenCoords.y - WORLD_H / 2);
+	square.w = WORLD_W;
+	square.h = WORLD_H;
+
+	SDL_SetTextureBlendMode(darkTexture, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureAlphaMod(darkTexture, 240);
+
+	SDL_RenderCopyEx(renderer, darkTexture, nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+
+	//Light Render
+	SDL_QueryTexture(lightTexture, nullptr, nullptr, &w, &h);
+
+	screenCoords = projectionMatrix * player->getPos();
+	square.x = static_cast<int> (screenCoords.x - w / 2 * 3);
+	square.y = static_cast<int> (screenCoords.y - h / 2 * 3);
+	square.w = w * 3;
+	square.h = h * 3;
+
+	SDL_SetTextureBlendMode(lightTexture, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureAlphaMod(lightTexture, 191);
+
+	SDL_RenderCopyEx(renderer, lightTexture, nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+
 
 
 	SDL_RenderPresent(renderer);

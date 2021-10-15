@@ -59,6 +59,7 @@ void Body::Update(float deltaTime){
 	else {
 		vel *= -1.0f;
 		pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
+		vel += accel * deltaTime;
 		collide = false;
 	}
 
