@@ -29,8 +29,6 @@ private:
 	SDL_Texture* roomTexture;
 	SDL_Surface* lightImage;
 	SDL_Texture* lightTexture;
-	SDL_Surface* darkImage;
-	SDL_Texture* darkTexture;
 
 	Vec3 worldSizeScreenCoords;
 	SDL_Texture* texture;

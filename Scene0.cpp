@@ -126,42 +126,18 @@ bool Scene0::OnCreate() {
 	}
 	else
 	{
-
 		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
 		Vec3 lowerRight(static_cast<float>(lightImage->w), static_cast<float>(lightImage->h), 0.0f);
 		Vec3 ulWorld = invProjectionMatrix * upperLeft;
 		Vec3 lrWorld = invProjectionMatrix * lowerRight;
 		worldSizeScreenCoords = lrWorld - ulWorld;
 
-		//player->setTexture(roomTexture);
-		//player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
+
+		SDL_SetTextureBlendMode(lightTexture, SDL_BLENDMODE_MOD);
+		SDL_SetTextureAlphaMod(lightTexture, 251);
 
 		SDL_FreeSurface(lightImage);
 	}
-
-	darkImage = IMG_Load("image/DarkLayer.png");//loading the image file
-	darkTexture = SDL_CreateTextureFromSurface(renderer, darkImage);//loading and rendering the images' texture
-	if (darkTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
-	if (darkImage == nullptr)
-	{
-		std::cerr << "Can't open the image" << std::endl;
-		return false;
-	}
-	else
-	{
-
-		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
-		Vec3 lowerRight(static_cast<float>(darkImage->w), static_cast<float>(darkImage->h), 0.0f);
-		Vec3 ulWorld = invProjectionMatrix * upperLeft;
-		Vec3 lrWorld = invProjectionMatrix * lowerRight;
-		worldSizeScreenCoords = lrWorld - ulWorld;
-
-		//player->setTexture(roomTexture);
-		//player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
-
-		SDL_FreeSurface(darkImage);
-	}
-
 
 
 	return true;
@@ -270,7 +246,7 @@ void Scene0::Render() {
 
 	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
-	// 
+	// Objects render
 	for (GameObject *item : room->getItemList()) {
 
 		SDL_QueryTexture(item->getTexture(), nullptr, nullptr, &w, &h);
@@ -280,43 +256,20 @@ void Scene0::Render() {
 		square.w = w;
 		square.h = h;
 
-
-		SDL_SetTextureBlendMode(item->getTexture(), SDL_BLENDMODE_BLEND);
-		SDL_SetTextureAlphaMod(item->getTexture(), 100);
-
 		SDL_RenderCopyEx(renderer, item->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
-	
-	
-	//Dark Layer render
-	SDL_QueryTexture(darkTexture, nullptr, nullptr, &w, &h);
 
-	screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f));
-	square.x = static_cast<int> (screenCoords.x - WORLD_W / 2);
-	square.y = static_cast<int> (screenCoords.y - WORLD_H / 2);
-	square.w = WORLD_W;
-	square.h = WORLD_H;
-
-	SDL_SetTextureBlendMode(darkTexture, SDL_BLENDMODE_BLEND);
-	SDL_SetTextureAlphaMod(darkTexture, 240);
-
-	SDL_RenderCopyEx(renderer, darkTexture, nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
 	//Light Render
 	SDL_QueryTexture(lightTexture, nullptr, nullptr, &w, &h);
 
 	screenCoords = projectionMatrix * player->getPos();
-	square.x = static_cast<int> (screenCoords.x - w / 2 * 3);
-	square.y = static_cast<int> (screenCoords.y - h / 2 * 3);
-	square.w = w * 3;
+	square.x = static_cast<int> (screenCoords.x - w/2 * 2);
+	square.y = static_cast<int> (screenCoords.y - h/2 * 3);
+	square.w = w * 2;
 	square.h = h * 3;
 
-	SDL_SetTextureBlendMode(lightTexture, SDL_BLENDMODE_BLEND);
-	SDL_SetTextureAlphaMod(lightTexture, 191);
-
 	SDL_RenderCopyEx(renderer, lightTexture, nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-
-
 
 	SDL_RenderPresent(renderer);
 }
