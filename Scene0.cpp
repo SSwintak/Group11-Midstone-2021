@@ -59,7 +59,7 @@ bool Scene0::OnCreate() {
 		Vec3 ulWorld = invProjectionMatrix * upperLeft;
 		Vec3 lrWorld = invProjectionMatrix * lowerRight;
 		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
-
+		
 		player->setTexture(playerTexture);
 		player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
 

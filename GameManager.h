@@ -8,6 +8,7 @@
 class GameManager {
 	friend class Scene0;
 	
+	
 
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
