@@ -9,8 +9,8 @@
 #include "Monster.h"
 #include "Data.h"
 
-#define WORLD_W 1500
-#define WORLD_H 900
+#define WORLD_W 1280
+#define WORLD_H 720
 
 Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	window = sdlWindow_;
@@ -63,7 +63,7 @@ bool Scene0::OnCreate() {
 		SDL_FreeSurface(roomImage);
 	}
 
-	SDL_Surface* playerImage = IMG_Load("image/TestPlayer.png");//loading the image file
+	SDL_Surface* playerImage = IMG_Load("image/HorrorSchool_investigator_1_720p.png");//loading the image file
 	SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(renderer, playerImage);//loading and rendering the images' texture
 	if (playerTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
 	if (playerImage == nullptr)

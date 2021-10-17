@@ -1,5 +1,5 @@
 Room1
-HorrorSchoolLockers_1.png
+HorrorSchoolLockers_2_720p.png
 flappy,flappy2,
 Room2,
 |

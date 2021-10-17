@@ -1,135 +1,135 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<ItemGroup>
-		<Filter Include="Source Files">
-			<UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-			<Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-		</Filter>
-		<Filter Include="Header Files">
-			<UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-			<Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-		</Filter>
-		<Filter Include="Resource Files">
-			<UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-			<Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-		</Filter>
-		<Filter Include="Source Files\Scenes">
-			<UniqueIdentifier>{e8ab3bcf-35b7-4d83-a5d8-05d9313b59ac}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Header Files\Scenes">
-			<UniqueIdentifier>{2610b268-61c1-44a6-b911-cb1da86ab30c}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Header Files\Database">
-			<UniqueIdentifier>{46ae3a52-cd29-4716-b704-580b378e356f}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Source Files\Database">
-			<UniqueIdentifier>{a2116db4-ac49-44d8-a8c2-69218a4f06ba}</UniqueIdentifier>
-		</Filter>
-	</ItemGroup>
-	<ItemGroup>
-		<ClCompile Include="Body.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="GameManager.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="Main.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="MMath.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="Player.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="Timer.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="VMath.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="Window.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="Physics.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="Scene0.cpp">
-			<Filter>Source Files\Scenes</Filter>
-		</ClCompile>
-		<ClCompile Include="FileLoader.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-		<ClCompile Include="GameObject.cpp">
-			<Filter>Source Files\Database</Filter>
-		</ClCompile>
-		<ClCompile Include="ItemPool.cpp">
-			<Filter>Source Files\Database</Filter>
-		</ClCompile>
-		<ClCompile Include="Room.cpp">
-			<Filter>Source Files\Database</Filter>
-		</ClCompile>
-		<ClCompile Include="Map.cpp">
-			<Filter>Source Files\Database</Filter>
-		</ClCompile>
-		<ClCompile Include="TextureManager.cpp">
-			<Filter>Source Files</Filter>
-		</ClCompile>
-	</ItemGroup>
-	<ItemGroup>
-		<ClInclude Include="Body.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="GameManager.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="Matrix.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="MMath.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="Player.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="Timer.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="Vector.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="VMath.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="Window.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="Physics.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="Scene0.h">
-			<Filter>Header Files\Scenes</Filter>
-		</ClInclude>
-		<ClInclude Include="Scene.h">
-			<Filter>Header Files\Scenes</Filter>
-		</ClInclude>
-		<ClInclude Include="FileLoader.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-		<ClInclude Include="Room.h">
-			<Filter>Header Files\Database</Filter>
-		</ClInclude>
-		<ClInclude Include="GameObject.h">
-			<Filter>Header Files\Database</Filter>
-		</ClInclude>
-		<ClInclude Include="ItemPool.h">
-			<Filter>Header Files\Database</Filter>
-		</ClInclude>
-		<ClInclude Include="Map.h">
-			<Filter>Header Files\Database</Filter>
-		</ClInclude>
-		<ClInclude Include="TextureManager.h">
-			<Filter>Header Files</Filter>
-		</ClInclude>
-	</ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{e8ab3bcf-35b7-4d83-a5d8-05d9313b59ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{2610b268-61c1-44a6-b911-cb1da86ab30c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Database">
+      <UniqueIdentifier>{46ae3a52-cd29-4716-b704-580b378e356f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database">
+      <UniqueIdentifier>{a2116db4-ac49-44d8-a8c2-69218a4f06ba}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Body.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene0.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemPool.cpp">
+      <Filter>Source Files\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Source Files\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Body.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene0.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemPool.h">
+      <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

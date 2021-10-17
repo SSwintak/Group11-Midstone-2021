@@ -17,14 +17,14 @@ GameManager::GameManager() {
 	itemPool.loadItems();
 	map.loadRooms();
 	monster = new Monster("Room1");
-	player = new Player(Vec3(-7.0f, 0.0f, 0.0f),
+	player = new Player(Vec3(-10.0f, 0.0f, 0.0f),
 						Vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
 
 }
 
 
-/// In this OnCreate() method, fuction, subroutine, whatever the word, 
+/// In this OnCreate() method, function, subroutine, whatever the word, 
 bool GameManager::OnCreate() {
 	const int SCREEN_WIDTH = 1024;
 	const int SCREEN_HEIGHT = 576;
