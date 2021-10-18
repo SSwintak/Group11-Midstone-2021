@@ -7,14 +7,16 @@
 #include "SDL_image.h"
 #include <iostream>
 #include <string>
+#include "ImageTexture.h"
 
 using namespace std;
+using namespace MATH;
 
 #define MAX_CHAR 20
 
-using namespace MATH;
 
-class Body {
+
+class Body: public ImageTexture {
 	
 	friend class Physics;
 	
@@ -24,11 +26,10 @@ protected:
 	Vec3 vel;
 	Vec3 accel;
 	float mass;
-	SDL_Surface* image;
-	SDL_Texture* texture;
-	Vec3 imageSizeWorldCoords;
+
 	bool collide;
 	string currRoom;
+
 
 	    //movement speed//    
 	const float walksp = 5.5f;
@@ -50,20 +51,7 @@ public:
 	void setCollide(bool collide_) { collide = collide_; }
 	string getRoom() { return currRoom; }
 	void setRoom(bool currRoom_) { currRoom = currRoom_; }
-
 	void HandleEvents(const SDL_Event& sdlEvent);
-	void setImage(SDL_Surface* image_) { image = image_; }
-	SDL_Surface* getImage() { return image; }
-	void setTexture(SDL_Texture* texture_) { texture = texture_; }
-	SDL_Texture* getTexture() { return texture; }
-
-	void setImageSizeWorldCoords(Vec3 imageSizeWorldCoords_) {
-		imageSizeWorldCoords.x = imageSizeWorldCoords_.x;
-		imageSizeWorldCoords.y = imageSizeWorldCoords_.y;
-		imageSizeWorldCoords.z = imageSizeWorldCoords_.z;
-		imageSizeWorldCoords = imageSizeWorldCoords_;
-	}
-	Vec3 getImageSizeWorldCoords() { return imageSizeWorldCoords; }
 
 	enum TypeID
 	{

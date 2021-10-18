@@ -12,6 +12,7 @@
 * Fourth line is the connected room list
 * For example,
 * Room1						<< name of the room
+* 1028 720					<< room size
 * RoomImage.png				<< image name of the room
 * flappy,flappy2,			<< item list
 * Room2,					<< connected room list

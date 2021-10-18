@@ -1,9 +1,11 @@
 Room1
+1280 720
 HorrorSchoolLockers_2_720p.png
 flappy,flappy2,
 Room2,
 |
 Room2
+1280 720
 RoomImage.png
 flappy,flappy2,flappy3,
 Room1,

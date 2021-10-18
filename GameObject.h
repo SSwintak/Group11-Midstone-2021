@@ -15,8 +15,7 @@ public:
 	~GameObject();
 	string getDescription() { return description; }
 	void setDescription(string description_) { description = description_; }
-	string getimageName() { return imageName; }
-	void setimageName(string imageName_) { imageName = imageName_; }
+
 };
 
 #endif

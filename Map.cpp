@@ -48,6 +48,15 @@ void Map::loadRooms() {
 		string roomName = content.substr(0, content.find("\n"));
 		Room* room = new Room(roomName);
 		roomStr.erase(0, roomName.length() + 1);
+		//Find room size
+		string roomSize = roomStr.substr(0, roomStr.find("\n"));
+		string roomW = roomStr.substr(0, roomStr.find(" "));
+		room->setWidth(atoi(roomW.c_str()));
+		roomSize.erase(0, roomW.length() + 1);
+		roomStr.erase(0, roomW.length() + 1);
+		string roomH = roomSize;
+		room->setHeight(atoi(roomH.c_str()));
+		roomStr.erase(0, roomSize.length() + 1);
 		//Find room image name
 		string roomImage = roomStr.substr(0, roomStr.find("\n"));
 		room->setimageName(roomImage);

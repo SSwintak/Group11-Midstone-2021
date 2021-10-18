@@ -5,15 +5,17 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "SDL_image.h"
 
 using namespace std;
 
-class Room{
+class Room: public ImageTexture {
 private:
 	string name;
-	string imageName;
+	int w;
+	int h;
 	vector<GameObject*> itemList;
-	vector<string> connectedRooms; 
+	vector<string> connectedRooms;
 	//need to add rooms available for venting if the function is desired
 
 
@@ -22,15 +24,16 @@ public:
 	~Room();
 	void setName(string name_) { name = name_; }
 	string getName() { return name; }
-	string getimageName() { return imageName; }
-	void setimageName(string imageName_) { imageName = imageName_; }
+	void setWidth(int w_) { w = w_; }
+	int getWidth() { return w; }
+	void setHeight(int h_) { h = h_; }
+	int getHeight() { return h; }
 	void addItem(GameObject* item_);
 	vector<GameObject*> getItemList() { return itemList; }
 	GameObject* searchItem(string itemName_);
 	void addConnectedRooms(string connectedRooms_);
 	vector<string> getConnectedRooms() { return connectedRooms; }
 
-	//string searchConnectedRooms();
 
 };
 

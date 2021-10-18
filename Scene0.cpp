@@ -8,9 +8,11 @@
 #include "Room.h"
 #include "Monster.h"
 #include "Data.h"
+#include "ImageTexture.h"
 
-#define WORLD_W 1280
-#define WORLD_H 720
+
+//#define WORLD_W 1280
+//#define roomHeight 720
 
 Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	window = sdlWindow_;
@@ -18,7 +20,8 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 
 	cout << room->getName() << endl;
 	cout << "Monster location: " << monster->getCurrRoom() << endl;
-
+	roomHeight = room->getHeight();
+	roomWidth = room->getWidth();
 }
 
 Scene0::~Scene0(){
@@ -31,36 +34,17 @@ bool Scene0::OnCreate() {
 	float yAxis = 15.0f;
 	SDL_GetWindowSize(window,&w,&h);
 
-	Matrix4 ndc = MMath::viewportNDC(w, h);
+	Matrix4 ndc = MMath::viewportNDC(roomWidth, roomHeight);
 	Matrix4 ortho = MMath::orthographic(-xAxis, xAxis, -yAxis, yAxis, 0.0f, 1.0f);
 	projectionMatrix = (ndc * ortho);
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
-
+	projMa = projectionMatrix;
+	roomSize = invProjectionMatrix * Vec3(1280.0f, 0.0f, 0.0f);
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
-	string image = "image/";
-	image.append(room->getimageName());
-	roomImage = IMG_Load(image.c_str());//loading the image file
-	roomTexture = SDL_CreateTextureFromSurface(renderer, roomImage);//loading and rendering the images' texture
-	if (roomTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
-	if (roomImage == nullptr)
-	{
-		std::cerr << "Can't open the image" << std::endl;
+	//Set room Images
+	if (!ImageTextureSetup(room)) {
 		return false;
-	}
-	else
-	{
-
-		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
-		Vec3 lowerRight(static_cast<float>(roomImage->w), static_cast<float>(roomImage->h), 0.0f);
-		Vec3 ulWorld = invProjectionMatrix * upperLeft;
-		Vec3 lrWorld = invProjectionMatrix * lowerRight;
-		worldSizeScreenCoords = lrWorld - ulWorld;
-
-		//player->setTexture(roomTexture);
-		//player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
-
-		SDL_FreeSurface(roomImage);
 	}
 
 	SDL_Surface* playerImage = IMG_Load("image/HorrorSchool_investigator_1_720p.png");//loading the image file
@@ -88,57 +72,45 @@ bool Scene0::OnCreate() {
 
 	//Set images for all the item
 	for (GameObject *item : room->getItemList()) {
-
-		string image = "image/";
-		image.append(item->getimageName());
-		SDL_Surface* itemImage = IMG_Load(image.c_str());//loading the image file
-		SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);//loading and rendering the images' texture
-
-		if (itemTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
-		if (itemImage == nullptr)
-		{
-			std::cerr << "Can't open the image" << std::endl;
+		if (!ImageTextureSetup(item)) {
 			return false;
 		}
-		else
-		{
-
-			Vec3 upperLeft(0.0f, 0.0f, 0.0f);
-			Vec3 lowerRight(static_cast<float>(itemImage->w), static_cast<float>(itemImage->h), 0.0f);
-			Vec3 ulWorld = invProjectionMatrix * upperLeft;
-			Vec3 lrWorld = invProjectionMatrix * lowerRight;
-			Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
-
-			item->setTexture(itemTexture);
-			item->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
-
-			SDL_FreeSurface(itemImage);
-		}
+	}
+	//Set Light images
+	light = new ImageTexture("FakeLight.png");
+	if (!ImageTextureSetup(light)) {
+		return false;
 	}
 
-	lightImage = IMG_Load("image/FakeLight.png");//loading the image file
-	lightTexture = SDL_CreateTextureFromSurface(renderer, lightImage);//loading and rendering the images' texture
-	if (lightTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
-	if (lightImage == nullptr)
+	return true;
+}
+
+
+bool Scene0::ImageTextureSetup(ImageTexture*target_) {
+	string image = "image/";
+	image.append(target_->getimageName());
+	SDL_Surface* targetImage = IMG_Load(image.c_str());//loading the image file
+	SDL_Texture* targetTexture = SDL_CreateTextureFromSurface(renderer, targetImage);//loading and rendering the images' texture
+	if (targetTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
+	if (targetImage == nullptr)
 	{
 		std::cerr << "Can't open the image" << std::endl;
 		return false;
 	}
 	else
 	{
+
 		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
-		Vec3 lowerRight(static_cast<float>(lightImage->w), static_cast<float>(lightImage->h), 0.0f);
+		Vec3 lowerRight(static_cast<float>(targetImage->w), static_cast<float>(targetImage->h), 0.0f);
 		Vec3 ulWorld = invProjectionMatrix * upperLeft;
 		Vec3 lrWorld = invProjectionMatrix * lowerRight;
-		worldSizeScreenCoords = lrWorld - ulWorld;
+		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
 
+		target_->setTexture(targetTexture);
+		target_->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
 
-		SDL_SetTextureBlendMode(lightTexture, SDL_BLENDMODE_MOD);
-		SDL_SetTextureAlphaMod(lightTexture, 251);
-
-		SDL_FreeSurface(lightImage);
+		SDL_FreeSurface(targetImage);
 	}
-
 
 	return true;
 }
@@ -149,69 +121,102 @@ void Scene0::OnDestroy() {
 
 void Scene0::Update(const float deltaTime) {
 
-
-	//Physics::SimpleNewtonMotion(*player, deltaTime);
-
+	//Player Object collision
 	for (GameObject* item : room->getItemList()) {
 		if (Physics::CollisionDetect(*player, *item, deltaTime)) {
-			//cout << "collide with " << item->getName() << endl;
-			//cout << item->getName();
-			//printf("%f, %f\n", item->getPos().x, item->getPos().y);
-			//cout << player->getName();
-			//printf("%f, %f\n", player->getPos().x, player->getPos().y);
 			player->setCollide(true);
 		}
 	}
 
 	player->Update(deltaTime);
-//	printf("%f, %f\n", player->getPos().x, player->getPos().y);
 
 
-	projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
+	Vec3 test = projectionMatrix * Vec3(-38.0f, 0.0f, 0.0f);
+
+	//Player boundaries
+
+	Vec3 playerWorld = player->getPos();
+
+	playerWorld.x += abs(player->getImageSizeWorldCoords().x) / 2;
+	playerWorld.y += abs(player->getImageSizeWorldCoords().y) / 2;
+	playerWorld = projMa * playerWorld;
+
+	//Right
+	if (playerWorld.x >= roomWidth) {
+		player->setCollide(true);
+		cout << "player reach right room edge" << endl;
+	}
+	//Top
+	if (playerWorld.y <= 0.0f) {
+		player->setCollide(true);
+		cout << "player reach left room edge" << endl;
+	}
+
+	playerWorld = player->getPos();
+	playerWorld.x -= abs(player->getImageSizeWorldCoords().x) / 2;
+	playerWorld.y -= abs(player->getImageSizeWorldCoords().y) / 2;
+	playerWorld = projMa * playerWorld;
+	//Left
+	if (playerWorld.x <= 0.0f) {
+		player->setCollide(true);
+		cout << "player reach right room edge" << endl;
+	}
+	//Bot
+	if (playerWorld.y >= roomHeight) {
+		player->setCollide(true);
+		cout << "player reach left room edge" << endl;
+	}
+
+
+
+	//Move camera along with the player
+	projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.7f) * projectionMatrix;
+
 
 	//Get camera location
 	Vec3 projectionLoc = projectionMatrix.getColumn(3);
 
 	//Set camera bounds
-	if (projectionLoc.x > WORLD_W / 2) {
+	if (projectionLoc.x > roomWidth / 2) {
 
-		projectionLoc.x = WORLD_W / 2;
+		projectionLoc.x = roomWidth / 2;
 		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
 			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
 			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
 			projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
 
-		cout << "Reach bounds on left" << endl;
+		//cout << "Reach bounds on left" << endl;
 
-	} 	if (projectionLoc.y > WORLD_H / 2) {
+	} 
+	if (projectionLoc.y > roomHeight / 2) {
 		
-		projectionLoc.y = WORLD_H / 2;
+		projectionLoc.y = roomHeight / 2;
 		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
 			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
 			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
 			projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
 				
-		cout << "Reach bounds on Top" << endl;
+		//cout << "Reach bounds on Top" << endl;
 	}
-	if (projectionLoc.x < WORLD_W / 4) {
-		projectionLoc.x = WORLD_W / 4;
+	if (projectionLoc.x < roomWidth / 4) {
+		projectionLoc.x = roomWidth / 4;
 		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
 			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
 			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
 			projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
-		cout << "Reach bounds on right" << endl;
+		//cout << "Reach bounds on right" << endl;
 	}
-	if (projectionLoc.y < WORLD_H / 4) {
-
-		projectionLoc.y = WORLD_H / 4;
+	if (projectionLoc.y < roomHeight / 4) {
+		projectionLoc.y = roomHeight / 4;
 		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
 			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
 			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
 			projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
 
-		cout << "Reach bounds on bot" << endl;
+		//cout << "Reach bounds on bot" << endl;
 	}
 
+	projectionMatrix.print();
 
 }
 
@@ -226,15 +231,15 @@ void Scene0::Render() {
 	//projectionMatrix = MMath::translate(player->getPos() - Vec3(camera.x, camera.y, 0.0f)) * projectionMatrix;
 
 	//Room render
-	SDL_QueryTexture(roomTexture, nullptr, nullptr, &w, &h);
+	SDL_QueryTexture(room->getTexture(), nullptr, nullptr, &w, &h);
 
 	screenCoords = projectionMatrix * (Vec3(0.0f, 0.0f, 0.0f));
-	square.x = static_cast<int> (screenCoords.x - WORLD_W /2);
-	square.y = static_cast<int> (screenCoords.y - WORLD_H /2);
-	square.w = WORLD_W;
-	square.h = WORLD_H;
+	square.x = static_cast<int> (screenCoords.x - roomWidth / 2);
+	square.y = static_cast<int> (screenCoords.y - roomHeight / 2);
+	square.w = roomWidth;
+	square.h = roomHeight;
 
-	SDL_RenderCopyEx(renderer, roomTexture, nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, room->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
 	//Player render
 	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
@@ -261,15 +266,17 @@ void Scene0::Render() {
 
 
 	//Light Render
-	SDL_QueryTexture(lightTexture, nullptr, nullptr, &w, &h);
+	SDL_QueryTexture(light->getTexture(), nullptr, nullptr, &w, &h);
 
 	screenCoords = projectionMatrix * player->getPos();
-	square.x = static_cast<int> (screenCoords.x - w/2 * 2);
+	square.x = static_cast<int> (screenCoords.x - w/2 * 3);
 	square.y = static_cast<int> (screenCoords.y - h/2 * 3);
-	square.w = w * 2;
+	square.w = w * 3;
 	square.h = h * 3;
 
-	SDL_RenderCopyEx(renderer, lightTexture, nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+	SDL_SetTextureBlendMode(light->getTexture(), SDL_BLENDMODE_MOD);
+	SDL_SetTextureAlphaMod(light->getTexture(), 251);
+	//SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
 	SDL_RenderPresent(renderer);
 }
