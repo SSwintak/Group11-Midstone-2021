@@ -42,34 +42,15 @@ bool Scene0::OnCreate() {
 	roomSize = invProjectionMatrix * Vec3(1280.0f, 0.0f, 0.0f);
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
-	//Set room Images
+	//Set room images
 	if (!ImageTextureSetup(room)) {
 		return false;
 	}
-
-	SDL_Surface* playerImage = IMG_Load("image/HorrorSchool_investigator_1_720p.png");//loading the image file
-	SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(renderer, playerImage);//loading and rendering the images' texture
-	if (playerTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
-	if (playerImage == nullptr)
-	{
-		std::cerr << "Can't open the image" << std::endl;
+	//Set player images
+	player->setimageName("HorrorSchool_investigator_1_720p.png");
+	if (!ImageTextureSetup(player)) {
 		return false;
 	}
-	else
-	{
-		
-		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
-		Vec3 lowerRight(static_cast<float>(playerImage->w), static_cast<float>(playerImage->h), 0.0f);
-		Vec3 ulWorld = invProjectionMatrix * upperLeft;
-		Vec3 lrWorld = invProjectionMatrix * lowerRight;
-		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
-
-		player->setTexture(playerTexture);
-		player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
-
-		SDL_FreeSurface(playerImage);
-	}
-
 	//Set images for all the item
 	for (GameObject *item : room->getItemList()) {
 		if (!ImageTextureSetup(item)) {
@@ -123,13 +104,12 @@ void Scene0::Update(const float deltaTime) {
 
 	//Player Object collision
 	for (GameObject* item : room->getItemList()) {
-		if (Physics::CollisionDetect(*player, *item, deltaTime)) {
+		if (Physics::CollisionDetect(*player, *item)) {
 			player->setCollide(true);
 		}
 	}
 
 	player->Update(deltaTime);
-
 
 	Vec3 test = projectionMatrix * Vec3(-38.0f, 0.0f, 0.0f);
 
@@ -168,10 +148,9 @@ void Scene0::Update(const float deltaTime) {
 	}
 
 
-
+	/*Stupid camera that I will come fix later (Right, Bot boundaries)*/
 	//Move camera along with the player
-	projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.7f) * projectionMatrix;
-
+	projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
 
 	//Get camera location
 	Vec3 projectionLoc = projectionMatrix.getColumn(3);
@@ -216,7 +195,7 @@ void Scene0::Update(const float deltaTime) {
 		//cout << "Reach bounds on bot" << endl;
 	}
 
-	projectionMatrix.print();
+	//projectionMatrix.print();
 
 }
 
@@ -264,7 +243,6 @@ void Scene0::Render() {
 		SDL_RenderCopyEx(renderer, item->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
 
-
 	//Light Render
 	SDL_QueryTexture(light->getTexture(), nullptr, nullptr, &w, &h);
 
@@ -285,6 +263,20 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 {
 
 	player->PlayerController(sdlEvent);
+
+
+	for (GameObject* item : room->getItemList()) {
+		if (Physics::InteractionDetect(*player, *item)) {
+			/*Interaction*/
+			if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.keysym.scancode == SDL_SCANCODE_E)
+			{
+				//Interact with object
+				item->displayDescription();
+			}
+		}
+	}
+
+
 
 }
 

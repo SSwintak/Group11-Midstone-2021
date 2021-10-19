@@ -39,6 +39,15 @@ void ItemPool::loadItems() {
 		string objectName = content.substr(0, content.find("\n"));
 		GameObject* object = new GameObject(objectName);
 		objectStr.erase(0, objectName.length() + 1);
+		//Find object type
+		string objectType = objectStr.substr(0, objectStr.find("\n"));
+		if (objectType == "true") {
+			object->setInteractable(true);
+		}
+		else if (objectType == "false") {
+			object->setInteractable(false);
+		}
+		objectStr.erase(0, objectType.length() + 1);
 		//Find object image name
 		string objectImage = objectStr.substr(0, objectStr.find("\n"));
 		object->setimageName(objectImage);

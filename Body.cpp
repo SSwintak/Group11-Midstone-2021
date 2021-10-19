@@ -47,16 +47,16 @@ Body::~Body(){
 
 void Body::Update(float deltaTime){
 
-	if (!collide) {
-		pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
-		vel += accel * deltaTime;
-	}
-	else {
-		vel += accel * deltaTime;
-		vel *= -1.0f;
-		pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
-		collide = false;
-	}
+	//if (!collide) {
+	//	pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
+	//	vel += accel * deltaTime;
+	//}
+	//else {
+	//	vel += accel * deltaTime;
+	//	vel *= -1.0f;
+	//	pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
+	//	collide = false;
+	//}
 }
 
 void Body::HandleEvents(const SDL_Event& sdlEvent)
