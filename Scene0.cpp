@@ -47,7 +47,7 @@ bool Scene0::OnCreate() {
 		return false;
 	}
 	//Set player images
-	player->setimageName("HorrorSchool_investigator_1_720p.png");
+	player->setimageName("PlayerWalk_Sheet.png");
 	if (!ImageTextureSetup(player)) {
 		return false;
 	}
@@ -82,7 +82,8 @@ bool Scene0::ImageTextureSetup(ImageTexture*target_) {
 	{
 
 		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
-		Vec3 lowerRight(static_cast<float>(targetImage->w), static_cast<float>(targetImage->h), 0.0f);
+		//Vec3 lowerRight(static_cast<float>(targetImage->w), static_cast<float>(targetImage->h), 0.0f);
+		Vec3 lowerRight(82.0f, 273.0f, 0.0f);
 		Vec3 ulWorld = invProjectionMatrix * upperLeft;
 		Vec3 lrWorld = invProjectionMatrix * lowerRight;
 		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
@@ -204,6 +205,7 @@ void Scene0::Render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 	SDL_RenderClear(renderer);
 	SDL_Rect square;
+	SDL_Rect dstRect;
 	Vec3 screenCoords;
 	int w, h;
 	static double rot = 0.0f;
@@ -223,12 +225,24 @@ void Scene0::Render() {
 	//Player render
 	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
 	screenCoords = projectionMatrix * player->getPos();
-	square.x = static_cast<int> (screenCoords.x - w / 2);
-	square.y = static_cast<int> (screenCoords.y - h / 2);
-	square.w = w;
-	square.h = h;
+	//square.x = static_cast<int> (screenCoords.x - w / 2);
+	square.y = 0;
+	square.w = 82;
+	square.h = 273;
 
-	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+	dstRect.x = 10;
+	dstRect.y = 50;
+	dstRect.w = 82;
+	dstRect.h = 273;
+
+	int totalFrames = 7;
+	int delayPerFrame = 90;
+
+	int frame = (static_cast<int>(SDL_GetTicks() / delayPerFrame) % 7);
+	square.x = frame * (square.w + 10);
+
+	//SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopy(renderer, player->getTexture(), &square, &dstRect);
 
 	// Objects render
 	for (GameObject *item : room->getItemList()) {
