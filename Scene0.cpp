@@ -39,7 +39,7 @@ bool Scene0::OnCreate() {
 	projectionMatrix = (ndc * ortho);
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
 	projMa = projectionMatrix;
-	roomSize = invProjectionMatrix * Vec3(1280.0f, 0.0f, 0.0f);
+	//roomSize = invProjectionMatrix * Vec3(1280.0f, 0.0f, 0.0f);
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
 	//Set room images
@@ -48,9 +48,35 @@ bool Scene0::OnCreate() {
 	}
 	//Set player images
 	player->setimageName("PlayerWalk_Sheet.png");
-	if (!ImageTextureSetup(player)) {
+	//if (!ImageTextureSetup(player)) {
+	//	return false;
+	//}
+	string image = "image/";
+	image.append(player->getimageName());
+	SDL_Surface* targetImage = IMG_Load(image.c_str());//loading the image file
+	SDL_Texture* targetTexture = SDL_CreateTextureFromSurface(renderer, targetImage);//loading and rendering the images' texture
+	if (targetTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
+	if (targetImage == nullptr)
+	{
+		std::cerr << "Can't open the image" << std::endl;
 		return false;
 	}
+	else
+	{
+
+		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
+		//Vec3 lowerRight(static_cast<float>(targetImage->w), static_cast<float>(targetImage->h), 0.0f);
+		Vec3 lowerRight(82.0f, 273.0f, 0.0f);
+		Vec3 ulWorld = invProjectionMatrix * upperLeft;
+		Vec3 lrWorld = invProjectionMatrix * lowerRight;
+		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
+
+		player->setTexture(targetTexture);
+		player->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
+
+		SDL_FreeSurface(targetImage);
+	}
+
 	//Set images for all the item
 	for (GameObject *item : room->getItemList()) {
 		if (!ImageTextureSetup(item)) {
@@ -82,8 +108,8 @@ bool Scene0::ImageTextureSetup(ImageTexture*target_) {
 	{
 
 		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
-		//Vec3 lowerRight(static_cast<float>(targetImage->w), static_cast<float>(targetImage->h), 0.0f);
-		Vec3 lowerRight(82.0f, 273.0f, 0.0f);
+		Vec3 lowerRight(static_cast<float>(targetImage->w), static_cast<float>(targetImage->h), 0.0f);
+		//Vec3 lowerRight(82.0f, 273.0f, 0.0f);
 		Vec3 ulWorld = invProjectionMatrix * upperLeft;
 		Vec3 lrWorld = invProjectionMatrix * lowerRight;
 		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
@@ -151,52 +177,54 @@ void Scene0::Update(const float deltaTime) {
 
 	/*Stupid camera that I will come fix later (Right, Bot boundaries)*/
 	//Move camera along with the player
-	projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
+	//projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
 
-	//Get camera location
-	Vec3 projectionLoc = projectionMatrix.getColumn(3);
+	////Get camera location
+	//Vec3 projectionLoc = projectionMatrix.getColumn(3);
 
-	//Set camera bounds
-	if (projectionLoc.x > roomWidth / 2) {
+	////Set camera bounds
+	//if (projectionLoc.x > roomWidth / 2) {
 
-		projectionLoc.x = roomWidth / 2;
-		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
-			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-			projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
+	//	projectionLoc.x = roomWidth / 2;
+	//	projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
+	//		projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+	//		projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+	//		projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
 
-		//cout << "Reach bounds on left" << endl;
+	//	//cout << "Reach bounds on left" << endl;
 
-	} 
-	if (projectionLoc.y > roomHeight / 2) {
-		
-		projectionLoc.y = roomHeight / 2;
-		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
-			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-			projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
-				
-		//cout << "Reach bounds on Top" << endl;
-	}
-	if (projectionLoc.x < roomWidth / 4) {
-		projectionLoc.x = roomWidth / 4;
-		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
-			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-			projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
-		//cout << "Reach bounds on right" << endl;
-	}
-	if (projectionLoc.y < roomHeight / 4) {
-		projectionLoc.y = roomHeight / 4;
-		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
-			projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-			projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-			projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
+	//} 
+	//if (projectionLoc.y > roomHeight / 2) {
+	//	
+	//	projectionLoc.y = roomHeight / 2;
+	//	projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
+	//		projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+	//		projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+	//		projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
+	//			
+	//	//cout << "Reach bounds on Top" << endl;
+	//}
+	//if (projectionLoc.x < roomWidth / 4) {
+	//	projectionLoc.x = roomWidth / 4;
+	//	projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
+	//		projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+	//		projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+	//		projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
+	//	//cout << "Reach bounds on right" << endl;
+	//}
+	//if (projectionLoc.y < roomHeight / 4) {
+	//	projectionLoc.y = roomHeight / 4;
+	//	projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
+	//		projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+	//		projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+	//		projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
 
-		//cout << "Reach bounds on bot" << endl;
-	}
+	//	//cout << "Reach bounds on bot" << endl;
+	//}
 
 	//projectionMatrix.print();
+
+	cout << player->getPos().x;
 
 }
 
@@ -223,20 +251,19 @@ void Scene0::Render() {
 	SDL_RenderCopyEx(renderer, room->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
 	//Player render
+	int totalFrames = 7;
+	int delayPerFrame = 90;
 	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
 	screenCoords = projectionMatrix * player->getPos();
-	//square.x = static_cast<int> (screenCoords.x - w / 2);
+	square.x = 0;
 	square.y = 0;
 	square.w = 82;
 	square.h = 273;
 
-	dstRect.x = 10;
-	dstRect.y = 50;
+	dstRect.x = static_cast<int> (screenCoords.x - 82/2);
+	dstRect.y = static_cast<int> (screenCoords.y - 273/2);
 	dstRect.w = 82;
 	dstRect.h = 273;
-
-	int totalFrames = 7;
-	int delayPerFrame = 90;
 
 	int frame = (static_cast<int>(SDL_GetTicks() / delayPerFrame) % 7);
 	square.x = frame * (square.w + 10);

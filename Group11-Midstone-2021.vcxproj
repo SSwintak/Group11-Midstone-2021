@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="Data.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImageTexture.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="Body.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ImageTexture.h" />

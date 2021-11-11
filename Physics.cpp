@@ -22,8 +22,10 @@ bool Physics::CollisionDetect(Body &object1, Body &object2){
 	float xDistance = abs(object1.pos.x - object2.pos.x);
 
 	if (yDistance <= expectedDistanceHeight && xDistance <= expectedDistanceWidth) {
-			cout << "D:" << yDistance << "ED: " << expectedDistanceHeight << endl;
+			//cout << "D:" << yDistance << "ED: " << expectedDistanceHeight << endl;
 			cout << "Collide" << endl;
+			cout << "1 size: " << object1Width << ", 2 size: " << object2Width << endl;
+			cout << "1 x" << object1.getPos().x << ", 2 x: " << object2.getPos().x << endl;
 			return true;
 	}
 

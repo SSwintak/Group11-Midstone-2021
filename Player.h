@@ -11,6 +11,9 @@ class Player : public Body {
 
 private:
 	vector<GameObject*> inventory;
+	bool hint1;
+	bool hint2;
+	bool hint3;
 public:
 
 	Player(Vec3 pos_, Vec3 vel_, float mass_);
@@ -22,7 +25,6 @@ public:
 	void addInventory(GameObject *item_);
 	vector<GameObject*> getInventory() { return inventory; }
 
-	
 
 };
 

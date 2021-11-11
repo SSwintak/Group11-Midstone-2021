@@ -1,19 +1,19 @@
-flappy
 true
+flappy
 TestPlayer.png
 5.0,1.0,0.0
 0.0,0.0,0.0
 im a flappy
 |
-flappy2
 false
+flappy2
 flappybird1.png
 -2.0,1.0,0.0
 0.0,0.0,0.0
 im a flappy2
 |
-flappy3
 true
+flappy3
 flappybird1.png
 -5.0,1.0,0.0
 0.0,0.0,0.0
