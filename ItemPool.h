@@ -20,7 +20,6 @@
 */
 
 #include "GameObject.h"
-#include "InteractableGameObject.h"
 #include <iostream>
 #include <string>
 #include <vector>
