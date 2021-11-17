@@ -10,10 +10,11 @@
 class Player : public Body {
 
 private:
-	vector<GameObject*> inventory;
+	vector<string> inventory;
 	bool hint1;
 	bool hint2;
 	bool hint3;
+
 public:
 
 	Player(Vec3 pos_, Vec3 vel_, float mass_);
@@ -21,11 +22,16 @@ public:
 
 	void HandleEvents(const SDL_Event& sdlEvent);
 	void PlayerController(const SDL_Event& sdlEvent);
+	bool interactObject(const SDL_Event& sdlEvent, GameObject* item_);
 	void Update(float deltaTime);
-	void addInventory(GameObject *item_);
-	vector<GameObject*> getInventory() { return inventory; }
-
-
+	bool searchInventory(string item_);
+	void addInventory(string item_);
+	vector<string> getInventory() { return inventory; }
+	void hint1Get() { hint1 = true; };
+	void hint2Get() { hint2 = true; };
+	void hint3Get() { hint3 = true; };
+	void setRoom(string roomName_) { currRoom = roomName_; }
+	string getRoom() { return currRoom; }
 };
 
 #endif

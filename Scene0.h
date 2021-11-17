@@ -43,7 +43,7 @@ public:
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
-	
+	Room* getRoom() { return room; }
 
 	
 };

@@ -1,19 +1,22 @@
 flappy
-true
+Interactable
+flappy2
 TestPlayer.png
 5.0,1.0,0.0
 0.0,0.0,0.0
 im a flappy
 |
 flappy2
-true
+Pickable
+None
 flappybird1.png
 -2.0,1.0,0.0
 0.0,0.0,0.0
 im a flappy2
 |
 flappy3
-true
+Interactable
+None
 flappybird1.png
 -5.0,1.0,0.0
 0.0,0.0,0.0

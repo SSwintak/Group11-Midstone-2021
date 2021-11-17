@@ -15,7 +15,7 @@
 * 1028 720					<< room size
 * RoomImage.png				<< image name of the room
 * flappy,flappy2,			<< item list
-* Room2,					<< connected room list
+* Room2(-10.0, -2.0, 0.0)/	<< connected room list (the location of the door connected to the room)
 * |							<< separator between room
 *
 * (Remember to add "," at the end of the line so that program works)

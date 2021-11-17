@@ -11,6 +11,8 @@
 * Fifth line is the description of the item
 * For example,
 * flappy					<< name of the item
+* true						<< whether it is a interactable item
+* None						<< name of the required key, if it is "None", there's no key
 * TestPlayer.png			<< image name of the item
 * 5.0,1.0,0.0				<< position
 * 0.0,0.0,0.0				<< velocity

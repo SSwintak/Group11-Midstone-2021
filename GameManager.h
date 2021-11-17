@@ -29,6 +29,7 @@ public:
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
+	void SceneSwitch(string roomName_);
 	
 
 	void Run();

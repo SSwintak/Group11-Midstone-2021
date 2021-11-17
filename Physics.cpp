@@ -23,36 +23,29 @@ bool Physics::CollisionDetect(Body &object1, Body &object2){
 
 	if (yDistance <= expectedDistanceHeight && xDistance <= expectedDistanceWidth) {
 			//cout << "D:" << yDistance << "ED: " << expectedDistanceHeight << endl;
-			cout << "Collide" << endl;
-			cout << "1 size: " << object1Width << ", 2 size: " << object2Width << endl;
-			cout << "1 x" << object1.getPos().x << ", 2 x: " << object2.getPos().x << endl;
 			return true;
 	}
 
 	return false;
 }
 
-bool Physics::InteractionDetect(Player& player, GameObject &object){
+bool Physics::InteractionDetect(Player &player, Body &object){
 
-	if (object.getInteractable()) {
+	//Get values in x-axis and y-axis
+	float playerWidth = abs((player.getImageSizeWorldCoords().x / 2.0f));
+	float objectWidth = abs((object.getImageSizeWorldCoords().x));
+	float playerHeight = abs((player.getImageSizeWorldCoords().y / 2.0f));
+	float objectHeight = abs((object.getImageSizeWorldCoords().y));
+	float expectedDistanceWidth = playerWidth + objectWidth;
+	float expectedDistanceHeight = playerHeight + objectHeight;
+	float yDistance = abs(player.pos.y - object.pos.y);
+	float xDistance = abs(player.pos.x - object.pos.x);
 
-		//Get values in x-axis and y-axis
-		float playerWidth = abs((player.getImageSizeWorldCoords().x / 2.0f));
-		float objectWidth = abs((object.getImageSizeWorldCoords().x));
-		float playerHeight = abs((player.getImageSizeWorldCoords().y / 2.0f));
-		float objectHeight = abs((object.getImageSizeWorldCoords().y));
-		float expectedDistanceWidth = playerWidth + objectWidth;
-		float expectedDistanceHeight = playerHeight + objectHeight;
-		float yDistance = abs(player.pos.y - object.pos.y);
-		float xDistance = abs(player.pos.x - object.pos.x);
+	if (yDistance <= expectedDistanceHeight && xDistance <= expectedDistanceWidth) {
+		//cout << "Can interact with " << object.getName() << endl;
+		return true;
 
-		if (yDistance <= expectedDistanceHeight && xDistance <= expectedDistanceWidth) {
-			cout << "Interacting with " << object.getName() << endl;
-			return true;
-
-		}
 	}
-
 
 	return false;
 

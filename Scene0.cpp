@@ -19,7 +19,6 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	cout << room->getName() << endl;
-	cout << "Monster location: " << monster->getCurrRoom() << endl;
 	roomHeight = room->getHeight();
 	roomWidth = room->getWidth();
 }
@@ -46,6 +45,13 @@ bool Scene0::OnCreate() {
 	if (!ImageTextureSetup(room)) {
 		return false;
 	}
+	//Set door images
+	for (Door* door : room->getConnectedRooms()) {
+		if (!ImageTextureSetup(door)) {
+			return false;
+		}
+	}
+
 	//Set player images
 	player->setimageName("PlayerWalk_Sheet.png");
 	//if (!ImageTextureSetup(player)) {
@@ -135,6 +141,15 @@ void Scene0::Update(const float deltaTime) {
 			player->setCollide(true);
 		}
 	}
+	//Door collision
+	for (Door* door : room->getConnectedRooms()) {
+		if (Physics::CollisionDetect(*player, *door)) {
+			//Switch room
+			player->setRoom(door->getConnectedRoom());
+		}
+	}
+
+
 
 	player->Update(deltaTime);
 
@@ -173,6 +188,8 @@ void Scene0::Update(const float deltaTime) {
 		player->setCollide(true);
 		cout << "player reach left room edge" << endl;
 	}
+
+
 
 
 	/*Stupid camera that I will come fix later (Right, Bot boundaries)*/
@@ -224,7 +241,6 @@ void Scene0::Update(const float deltaTime) {
 
 	//projectionMatrix.print();
 
-	cout << player->getPos().x;
 
 }
 
@@ -250,6 +266,8 @@ void Scene0::Render() {
 
 	SDL_RenderCopyEx(renderer, room->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
+
+
 	//Player render
 	int totalFrames = 7;
 	int delayPerFrame = 90;
@@ -271,6 +289,17 @@ void Scene0::Render() {
 	//SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	SDL_RenderCopy(renderer, player->getTexture(), &square, &dstRect);
 
+	//Door Render
+	for (Door* door : room->getConnectedRooms()) {
+		SDL_QueryTexture(door->getTexture(), nullptr, nullptr, &w, &h);
+		screenCoords = projectionMatrix * (door->getPos());
+		square.x = static_cast<int> (screenCoords.x - w / 2);
+		square.y = static_cast<int> (screenCoords.y - h / 2);
+		square.w = w;
+		square.h = h;
+		SDL_RenderCopyEx(renderer, door->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+
+	}
 	// Objects render
 	for (GameObject *item : room->getItemList()) {
 
@@ -283,6 +312,8 @@ void Scene0::Render() {
 
 		SDL_RenderCopyEx(renderer, item->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
+
+
 
 	//Light Render
 	SDL_QueryTexture(light->getTexture(), nullptr, nullptr, &w, &h);
@@ -305,14 +336,10 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 
 	player->PlayerController(sdlEvent);
 
-
 	for (GameObject* item : room->getItemList()) {
 		if (Physics::InteractionDetect(*player, *item)) {
-			/*Interaction*/
-			if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.keysym.scancode == SDL_SCANCODE_E)
-			{
-				//Interact with object
-				item->displayDescription();
+			if (player->interactObject(sdlEvent, item) && item->getType() == TPickable) {
+				room->removeItem(item->getName());
 			}
 		}
 	}

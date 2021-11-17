@@ -5,6 +5,7 @@ GameObject::GameObject(std::string name_) {
 }
 
 GameObject::~GameObject(){
+
 }
 
 

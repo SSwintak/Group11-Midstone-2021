@@ -78,41 +78,41 @@ void GameManager::Run() {
 			}
 			else if (sdlEvent.type == SDL_KEYDOWN)
 			{
-
 				switch (sdlEvent.key.keysym.scancode)
 				{
 				case SDL_SCANCODE_ESCAPE:
 					isRunning = false;
 					break;
-
-				//Test for room switching
-				case SDL_SCANCODE_F2:
-					currentScene->OnDestroy();
-					delete currentScene;
-					currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Room2"));
-					currentScene->OnCreate();
-					monster->Update();
-					break;
-
 				default:
 					break;
-
 				}
-
 			}
 			currentScene->HandleEvents(sdlEvent);
 		}
 
-
 		timer->UpdateFrameTicks();
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
-		
+
+		if (player->getRoom() != currentScene->getRoom()->getName()) {
+			cout << "Room switching" << endl;
+			SceneSwitch(player->getRoom());
+		}
 
 		/// Keeep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
 	}
 }
+
+void GameManager::SceneSwitch(string roomName_){
+	currentScene->OnDestroy();
+	delete currentScene;
+	currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom(roomName_));
+	currentScene->OnCreate();
+	//monster->Update();
+
+}
+
 
 GameManager::~GameManager() {}
 
@@ -126,3 +126,4 @@ void GameManager::OnDestroy(){
 	if (player) delete player;
 
 }
+
