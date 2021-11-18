@@ -313,8 +313,6 @@ void Scene0::Render() {
 		SDL_RenderCopyEx(renderer, item->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
 
-
-
 	//Light Render
 	SDL_QueryTexture(light->getTexture(), nullptr, nullptr, &w, &h);
 
