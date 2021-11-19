@@ -1,6 +1,6 @@
 Room1
 1280 720
-HorrorSchoolLockers_2_720p.png
+HorrorSchoolClassRoom_1.png
 flappy,flappy2,
 Room2,
 |
