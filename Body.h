@@ -26,6 +26,7 @@ protected:
 	Vec3 vel;
 	Vec3 accel;
 	float mass;
+	float detectionRange;
 
 	bool collide;
 	string currRoom;
@@ -50,7 +51,7 @@ public:
 	bool checkCollide() { return collide; }
 	void setCollide(bool collide_) { collide = collide_; }
 	string getRoom() { return currRoom; }
-	void setRoom(bool currRoom_) { currRoom = currRoom_; }
+	void setRoom(string currRoom_) { currRoom = currRoom_; }
 	void HandleEvents(const SDL_Event& sdlEvent);
 
 	enum TypeID

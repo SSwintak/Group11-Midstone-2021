@@ -33,9 +33,9 @@ bool Physics::InteractionDetect(Player &player, Body &object){
 
 	//Get values in x-axis and y-axis
 	float playerWidth = abs((player.getImageSizeWorldCoords().x / 2.0f));
-	float objectWidth = abs((object.getImageSizeWorldCoords().x));
+	float objectWidth = abs((object.getImageSizeWorldCoords().x) * object.detectionRange);
 	float playerHeight = abs((player.getImageSizeWorldCoords().y / 2.0f));
-	float objectHeight = abs((object.getImageSizeWorldCoords().y));
+	float objectHeight = abs((object.getImageSizeWorldCoords().y) * object.detectionRange);
 	float expectedDistanceWidth = playerWidth + objectWidth;
 	float expectedDistanceHeight = playerHeight + objectHeight;
 	float yDistance = abs(player.pos.y - object.pos.y);

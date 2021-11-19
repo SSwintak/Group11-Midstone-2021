@@ -16,7 +16,7 @@ GameManager::GameManager() {
 
 	itemPool.loadItems();
 	map.loadRooms();
-	monster = new Monster("Room1");
+	monster = new Monster();
 	player = new Player(Vec3(-10.0f, 0.0f, 0.0f),
 						Vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
@@ -83,6 +83,11 @@ void GameManager::Run() {
 				case SDL_SCANCODE_ESCAPE:
 					isRunning = false;
 					break;
+
+				case SDL_SCANCODE_F1:
+					SceneSwitch("Room1");
+					break;
+
 				default:
 					break;
 				}

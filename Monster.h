@@ -4,20 +4,33 @@
 #include "Body.h"
 #include <iostream>
 #include <string>
+#include <vector>
 
-class Monster{
+enum MonsterState {
+	TNormal = 0,
+	TWander,
+	THunt,
+
+};
+
+
+class Monster : public Body{
+
+private:
+	MonsterState monsterState;
+	vector<string> safeRooms;
 
 public:
-	string currRoom;
-	bool huntState;
-	bool normalState; // or wandering state
 
-	Monster(string currRoom_);
+	Monster();
 	~Monster();
-	void Update();
+	void Update(float deltaTime);
 	void On_Destroy();
-	string getCurrRoom() { return currRoom; }
-
+	MonsterState getState() { return monsterState; }
+	void setState(MonsterState state_) { monsterState = state_; }
+	void addSafeRoom(string safeRoom_);
+	bool isSafeRoom(string room_);
+	vector<string> getSafeRooms() { return safeRooms; }
 
 };
 

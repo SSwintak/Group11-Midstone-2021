@@ -1,24 +1,32 @@
-flappy
-Interactable
-flappy2
-TestPlayer.png
-5.0,1.0,0.0
-0.0,0.0,0.0
-im a flappy
-|
-flappy2
+BKey
 Pickable
 None
-flappybird1.png
+BKey_Icon_1.png
+5.0,1.0,0.0
+0.0,0.0,0.0
+Backdoor key
+|
+FlashLight
+Pickable
+None
+FlashLight_Icon_1.png
 -2.0,1.0,0.0
 0.0,0.0,0.0
-im a flappy2
+Flashlight
 |
-flappy3
-Interactable
+Fuse
+Static
 None
-flappybird1.png
--5.0,1.0,0.0
+Fuse_Icon_1.png
+0.0,3.0,0.0
 0.0,0.0,0.0
-im a flappy3
+Fuse
+|
+StickyNote
+Pickable
+None
+StickyNote_Icon_1.png
+5.0,1.0,0.0
+0.0,0.0,0.0
+StickyNote
 |

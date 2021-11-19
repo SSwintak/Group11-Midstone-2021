@@ -5,6 +5,8 @@ Body("Player", pos_, vel_, mass_){
 	hint1 = false;
 	hint2 = false;
 	hint3 = false;
+	alive = true;
+	setimageName("PlayerWalk_Sheet.png");
 }
 
 Player::~Player()

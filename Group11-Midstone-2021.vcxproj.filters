@@ -69,7 +69,6 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
-
     <ClCompile Include="Data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -83,9 +82,8 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Door.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Database</Filter>
     </ClCompile>
-
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h">
@@ -136,7 +134,6 @@
     <ClInclude Include="Map.h">
       <Filter>Header Files\Database</Filter>
     </ClInclude>
-
     <ClInclude Include="Data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -150,8 +147,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Door.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Database</Filter>
     </ClInclude>
-
   </ItemGroup>
 </Project>

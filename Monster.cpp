@@ -2,21 +2,24 @@
 #include "Map.h"
 #include "Room.h"
 #include "Data.h"
+#include "Player.h"
 
 //bool Monster::normalState;
 //bool Monster::huntState;
 //string Monster::currRoom;
 
-Monster::Monster(string currRoom_){
-	currRoom = currRoom_;
-	huntState = false;
-	normalState = true;
+Monster::Monster(){
+	currRoom = "Room2";
+	monsterState = TNormal;
+	setimageName("HorrorSchool_Monster_2.png");
+	detectionRange = 3.0f;
+	setPos(Vec3(10.0f, 0.0f, 0.0f));
+	addSafeRoom("Room1");
 }
 
 Monster::~Monster() {
 	currRoom = "Room1";
-	huntState = false;
-	normalState = true;
+
 }
 
 
@@ -26,31 +29,55 @@ Normal State: the monster wandering around the map
 Hunt State: the monster follow the player to hunt him down
 
 */
-void Monster::Update(){
+void Monster::Update(float deltaTime){
 
-	//if (normalState) {
-	//	//Get currRoom's connnected room list
-	//	Room *curr_Room = map.searchRoom(currRoom);
-	//	vector<string> connectedRooms = curr_Room->getConnectedRooms();
+	pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
+	vel += accel * deltaTime;
 
-	//	//Use random generator to decide on which room to go to
-	//	int destRoomIndex = rand() % connectedRooms.size();
-	//	int count = 0;
-	//	//Find the room
-	//	for (string roomName: connectedRooms) {
-	//		if (count == destRoomIndex) {
-	//			//Let the monster move to the destination room
-	//			currRoom = roomName;
-	//			break;
-	//		}
-	//	}
-	//}
-	//else if (huntState) {
-	//	// do something
-	//}
+	if (monsterState == TWander) {
+		//Get currRoom's connnected room list
+		Room *curr_Room = map.searchRoom(currRoom);
+		vector<Door*> connectedRooms = curr_Room->getConnectedRooms();
 
+		//Use random generator to decide on which room to go to
+		int destRoomIndex = rand() % connectedRooms.size();
+		int count = 0;
+		//Find the room
+		for (Door *room: connectedRooms) {
+			if (count == destRoomIndex) {
+				//Let the monster move to the destination room
+				if (!isSafeRoom(room->getName())) {
+					currRoom = room->getName();
+					break;
+				}
+			}
+			//delete roomName;
+		}
+		//delete curr_Room;
+	}
+	if (monsterState == THunt) {
+		// do something
+		//vel.x = 2.0f;
+		Vec3 playerDirection = VMath::normalize(player->getPos() - getPos());
+		vel = playerDirection * 4.0f;
+	}
 }
 
 void Monster::On_Destroy(){
 
+}
+
+void Monster::addSafeRoom(string safeRoom_){
+	safeRooms.push_back(safeRoom_);
+}
+
+bool Monster::isSafeRoom(string room_){
+
+	for (string room : safeRooms) {
+		if (room_ == room) {
+			return true;
+		}
+	}
+
+	return false;
 }
