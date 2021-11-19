@@ -177,52 +177,52 @@ void Scene0::Update(const float deltaTime) {
 
 	/*Stupid camera that I will come fix later (Right, Bot boundaries)*/
 	//Move camera along with the player
-	//projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
+	projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
 
-	////Get camera location
-	//Vec3 projectionLoc = projectionMatrix.getColumn(3);
+	//Get camera location
+	Vec3 projectionLoc = projectionMatrix.getColumn(3);
 
-	////Set camera bounds
-	//if (projectionLoc.x > roomWidth / 2) {
+	//Set camera bounds
+	if (projectionLoc.x > roomWidth / 2) {
 
-	//	projectionLoc.x = roomWidth / 2;
-	//	projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
-	//		projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-	//		projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-	//		projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
+		projectionLoc.x = roomWidth / 2;
+		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
+								   projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+								   projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+								      projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
 
-	//	//cout << "Reach bounds on left" << endl;
+		//cout << "Reach bounds on left" << endl;
 
-	//} 
-	//if (projectionLoc.y > roomHeight / 2) {
-	//	
-	//	projectionLoc.y = roomHeight / 2;
-	//	projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
-	//		projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-	//		projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-	//		projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
-	//			
-	//	//cout << "Reach bounds on Top" << endl;
-	//}
-	//if (projectionLoc.x < roomWidth / 4) {
-	//	projectionLoc.x = roomWidth / 4;
-	//	projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
-	//		projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-	//		projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-	//		projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
-	//	//cout << "Reach bounds on right" << endl;
-	//}
-	//if (projectionLoc.y < roomHeight / 4) {
-	//	projectionLoc.y = roomHeight / 4;
-	//	projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[2],
-	//		projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-	//		projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-	//		projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
+	} 
+	if (projectionLoc.y > roomHeight / 2) {
+									   
+		projectionLoc.y = roomHeight / 2;
+		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
+								   projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+								   projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+								   projectionMatrix[12],   projectionLoc.y,  projectionMatrix[14], projectionMatrix[15]);
+				
+		//cout << "Reach bounds on Top" << endl;
+	}
+	if (projectionLoc.x < roomWidth / 3.34) {
+		projectionLoc.x = roomWidth / 3.34;
+		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
+								   projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+								   projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+								      projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
+		//cout << "Reach bounds on right" << endl;
+	}
+	if (projectionLoc.y < roomHeight / 3.345) {
+		projectionLoc.y = roomHeight / 3.345;
+		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
+								   projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+								   projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+								   projectionMatrix[12],   projectionLoc.y,  projectionMatrix[14], projectionMatrix[15]);
 
-	//	//cout << "Reach bounds on bot" << endl;
-	//}
+		//cout << "Reach bounds on bot" << endl;
+	}
 
-	//projectionMatrix.print();
+	projectionMatrix.print();
 
 	cout << player->getPos().x;
 
@@ -268,8 +268,8 @@ void Scene0::Render() {
 	int frame = (static_cast<int>(SDL_GetTicks() / delayPerFrame) % 7);
 	square.x = frame * (square.w + 10);
 
-	//SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-	SDL_RenderCopy(renderer, player->getTexture(), &square, &dstRect);
+	SDL_RenderCopyEx(renderer, player->getTexture(), &square, &dstRect, rot, nullptr, SDL_FLIP_NONE);
+	
 
 	// Objects render
 	for (GameObject *item : room->getItemList()) {
