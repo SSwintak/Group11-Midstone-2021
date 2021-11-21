@@ -42,15 +42,20 @@ bool Scene0::OnCreate() {
 	//roomSize = invProjectionMatrix * Vec3(1280.0f, 0.0f, 0.0f);
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
+
 	//Set room images
 	if (!ImageTextureSetup(room)) {
 		return false;
 	}
+
 	//Set player images
 	player->setimageName("PlayerWalk_Sheet.png");
+	//HorrorSchool_Investigator_1_720p
+	// 
 	//if (!ImageTextureSetup(player)) {
 	//	return false;
 	//}
+
 	string image = "image/";
 	image.append(player->getimageName());
 	SDL_Surface* targetImage = IMG_Load(image.c_str());//loading the image file
@@ -137,6 +142,7 @@ void Scene0::Update(const float deltaTime) {
 	}
 
 	player->Update(deltaTime);
+	
 
 	Vec3 test = projectionMatrix * Vec3(-38.0f, 0.0f, 0.0f);
 
@@ -251,25 +257,46 @@ void Scene0::Render() {
 	SDL_RenderCopyEx(renderer, room->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
 	//Player render
-	int totalFrames = 7;
-	int delayPerFrame = 90;
-	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
-	screenCoords = projectionMatrix * player->getPos();
-	square.x = 0;
-	square.y = 0;
-	square.w = 82;
-	square.h = 273;
+	if (player->getIsMoving() == true)
+	{
 
-	dstRect.x = static_cast<int> (screenCoords.x - 82/2);
-	dstRect.y = static_cast<int> (screenCoords.y - 273/2);
-	dstRect.w = 82;
-	dstRect.h = 273;
+		int totalFrames = 7;
+		int delayPerFrame = 90;
+		float spriteOffset = 10;//only use if there is an offset in the sprite sheet
+		SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
+		screenCoords = projectionMatrix * player->getPos();
+		square.x = 0;
+		square.y = 0;
+		square.w = 82;
+		square.h = 273;
 
-	int frame = (static_cast<int>(SDL_GetTicks() / delayPerFrame) % 7);
-	square.x = frame * (square.w + 10);
+		dstRect.x = static_cast<int> (screenCoords.x - 82 / 2);
+		dstRect.y = static_cast<int> (screenCoords.y - 273 / 2);
+		dstRect.w = 82;
+		dstRect.h = 273;
 
-	SDL_RenderCopyEx(renderer, player->getTexture(), &square, &dstRect, rot, nullptr, SDL_FLIP_NONE);
-	
+		int frame = (static_cast<int>(SDL_GetTicks() / delayPerFrame) % totalFrames);
+		square.x = frame * (square.w + spriteOffset);//spriteOffset, added because there is an offset in the player sprite sheet
+
+		SDL_RenderCopyEx(renderer, player->getTexture(), &square, &dstRect, rot, nullptr, player->getFlip());
+	}
+	else
+	{
+		
+		SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
+		screenCoords = projectionMatrix * player->getPos();
+		square.x = 0;
+		square.y = 0;
+		square.w = 82;
+		square.h = 273;
+
+		dstRect.x = static_cast<int> (screenCoords.x - 82 / 2);
+		dstRect.y = static_cast<int> (screenCoords.y - 273 / 2);
+		dstRect.w = 82;
+		dstRect.h = 273;
+
+		SDL_RenderCopyEx(renderer, player->getTexture(), &square, &dstRect, rot, nullptr, player->getFlip());
+	}
 
 	// Objects render
 	for (GameObject *item : room->getItemList()) {
@@ -320,5 +347,8 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 
 
 }
+
+
+
 
 

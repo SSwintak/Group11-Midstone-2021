@@ -33,6 +33,7 @@ private:
 	Vec3 worldSizeScreenCoords;
 	SDL_Texture* texture;
 	
+	
 	bool ImageTextureSetup(ImageTexture *target_);
 
 public:
