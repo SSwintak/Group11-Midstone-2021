@@ -6,3 +6,9 @@ GameObject::GameObject(std::string name_) {
 
 GameObject::~GameObject(){
 }
+
+
+void GameObject::displayDescription() {
+
+	cout << description << endl;
+}

@@ -10,34 +10,51 @@ void Physics::SimpleNewtonMotion(Body &object, const float deltaTime) {
 
 bool Physics::CollisionDetect(Body &object1, Body &object2){
 	
-	//Find the absolute distance between the two objects
-	float distance = VMath::distance(object1.getPos(), object2.getPos());
-	
-	//For x-axis
+	//Object2 is always static
+	//Get values in x-axis and y-axis
 	float object1Width = abs((object1.getImageSizeWorldCoords().x / 2.0f)); 
 	float object2Width = abs((object2.getImageSizeWorldCoords().x / 2.0f));
+	float object1Height = abs((object1.getImageSizeWorldCoords().y / 2.0f));
+	float object2Height = abs((object2.getImageSizeWorldCoords().y / 2.0f));
 	float expectedDistanceWidth = object1Width + object2Width;
-	//For y-axis
-	float expectedDistanceHeight = abs((object1.getImageSizeWorldCoords().y / 2.0f)) + abs((object2.getImageSizeWorldCoords().y / 2.0f));
-	//For diagonal movement
-	//float object1DistanceDiagonal = sqrt((object1.getImageSizeWorldCoords().x / 2.0f) * (object1.getImageSizeWorldCoords().x / 2.0f) +
-	//									(object1.getImageSizeWorldCoords().y / 2.0f) * (object1.getImageSizeWorldCoords().y / 2.0f));
-	//float object2DistanceDiagonal = sqrt((object2.getImageSizeWorldCoords().x / 2.0f) * (object2.getImageSizeWorldCoords().x / 2.0f) +
-	//	(object2.getImageSizeWorldCoords().y / 2.0f) * (object2.getImageSizeWorldCoords().y / 2.0f));
-	//float expectedDistanceDiagonal = object1DistanceDiagonal + object2DistanceDiagonal;
+	float expectedDistanceHeight = object1Height + object2Height;
+	float yDistance = abs(object1.pos.y - object2.pos.y);
+	float xDistance = abs(object1.pos.x - object2.pos.x);
 
-	//If collide in x-axis or y-axis
-	if ((distance <= expectedDistanceWidth) || (distance <= expectedDistanceHeight)) {
-		cout << distance;
-		cout << expectedDistanceWidth;
-		return true;
+	if (yDistance <= expectedDistanceHeight && xDistance <= expectedDistanceWidth) {
+			//cout << "D:" << yDistance << "ED: " << expectedDistanceHeight << endl;
+			cout << "Collide" << endl;
+			cout << "1 size: " << object1Width << ", 2 size: " << object2Width << endl;
+			cout << "1 x" << object1.getPos().x << ", 2 x: " << object2.getPos().x << endl;
+			return true;
+	}
+
+	return false;
+}
+
+bool Physics::InteractionDetect(Player& player, GameObject &object){
+
+	if (object.getInteractable()) {
+
+		//Get values in x-axis and y-axis
+		float playerWidth = abs((player.getImageSizeWorldCoords().x / 2.0f));
+		float objectWidth = abs((object.getImageSizeWorldCoords().x));
+		float playerHeight = abs((player.getImageSizeWorldCoords().y / 2.0f));
+		float objectHeight = abs((object.getImageSizeWorldCoords().y));
+		float expectedDistanceWidth = playerWidth + objectWidth;
+		float expectedDistanceHeight = playerHeight + objectHeight;
+		float yDistance = abs(player.pos.y - object.pos.y);
+		float xDistance = abs(player.pos.x - object.pos.x);
+
+		if (yDistance <= expectedDistanceHeight && xDistance <= expectedDistanceWidth) {
+			cout << "Interacting with " << object.getName() << endl;
+			return true;
+
+		}
 	}
 
 
-	//If collide in the corner
-	//else if ((distance <= expectedDistanceDiagonal))
-	//	return true;
-
 	return false;
+
 }
 

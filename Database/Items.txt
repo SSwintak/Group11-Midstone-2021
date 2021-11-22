@@ -1,18 +1,21 @@
 flappy
+true
 TestPlayer.png
 5.0,1.0,0.0
 0.0,0.0,0.0
-Description
+im a flappy
 |
 flappy2
+true
 flappybird1.png
 -2.0,1.0,0.0
 0.0,0.0,0.0
-Description
+im a flappy2
 |
 flappy3
+true
 flappybird1.png
 -5.0,1.0,0.0
 0.0,0.0,0.0
-Description
+im a flappy3
 |

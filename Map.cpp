@@ -1,9 +1,18 @@
 #include "Map.h"
 #include <fstream>
 #include "ItemPool.h"
+#include "Data.h"
 
 
-vector<Room*> Map::roomList;
+//vector<Room*> Map::roomList;
+
+Map::Map()
+{
+}
+
+Map::~Map()
+{
+}
 
 Room* Map::searchRoom(string roomName_) {
 	for (Room* obj : roomList) {
@@ -39,6 +48,15 @@ void Map::loadRooms() {
 		string roomName = content.substr(0, content.find("\n"));
 		Room* room = new Room(roomName);
 		roomStr.erase(0, roomName.length() + 1);
+		//Find room size
+		string roomSize = roomStr.substr(0, roomStr.find("\n"));
+		string roomW = roomStr.substr(0, roomStr.find(" "));
+		room->setWidth(atoi(roomW.c_str()));
+		roomSize.erase(0, roomW.length() + 1);
+		roomStr.erase(0, roomW.length() + 1);
+		string roomH = roomSize;
+		room->setHeight(atoi(roomH.c_str()));
+		roomStr.erase(0, roomSize.length() + 1);
 		//Find room image name
 		string roomImage = roomStr.substr(0, roomStr.find("\n"));
 		room->setimageName(roomImage);
@@ -49,8 +67,9 @@ void Map::loadRooms() {
 			roomStr.erase(0, itemName.length() + 1);
 			//Search the item from item pool and add it to the room
 			if (!itemName.empty())
-				room->addItem(ItemPool::searchItem(itemName));
+				room->addItem(itemPool.searchItem(itemName));
 		}
+		roomStr.erase(0, 1);
 		//Find connected room
 		while (roomStr.at(0) != '\n') {
 			string connectedRoomName = roomStr.substr(0, roomStr.find(","));

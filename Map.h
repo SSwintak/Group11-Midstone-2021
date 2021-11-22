@@ -12,6 +12,7 @@
 * Fourth line is the connected room list
 * For example,
 * Room1						<< name of the room
+* 1028 720					<< room size
 * RoomImage.png				<< image name of the room
 * flappy,flappy2,			<< item list
 * Room2,					<< connected room list
@@ -22,12 +23,16 @@
 
 
 class Map {
-public:
-	static vector<Room*> roomList;
+private:
+	vector<Room*> roomList;
 
-	static Room* searchRoom(string roomName_);
-	static void loadRooms();
-	static void On_Destroy();
+public:
+
+	Map();
+	~Map();
+	Room* searchRoom(string roomName_);
+	void loadRooms();
+	void On_Destroy();
 
 };
 

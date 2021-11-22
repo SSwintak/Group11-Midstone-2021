@@ -9,8 +9,6 @@ Room::Room(string name_): name(name_){
 Room::~Room(){
 }
 
-void Room::On_Create(){
-}
 
 void Room::addItem(GameObject* item_){
 	itemList.push_back(item_);
@@ -25,7 +23,8 @@ GameObject* Room::searchItem(string itemName_){
 	return nullptr;
 }
 
-void Room::addConnectedRooms(GameObject connectedRooms_){
+void Room::addConnectedRooms(string connectedRooms_){
+	connectedRooms.push_back(connectedRooms_);
 }
 
 

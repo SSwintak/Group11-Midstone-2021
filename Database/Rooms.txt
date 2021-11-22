@@ -1,9 +1,11 @@
 Room1
-RoomImage.png
+1280 720
+HorrorSchoolClassRoom_1.png
 flappy,flappy2,
 Room2,
 |
 Room2
+1280 720
 RoomImage.png
 flappy,flappy2,flappy3,
 Room1,

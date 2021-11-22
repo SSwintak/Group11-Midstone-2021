@@ -22,8 +22,6 @@ private:
 	/// topic anyway
 	class Window *windowPtr;
 	class Timer *timer;
-	class ItemPool *itemPool;
-	class Player *player;
 	bool isRunning;
 	Scene *currentScene;
 

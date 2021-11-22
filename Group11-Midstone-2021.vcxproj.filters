@@ -57,9 +57,6 @@
     <ClCompile Include="Scene0.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="FileLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
@@ -71,6 +68,18 @@
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Source Files\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,9 +119,6 @@
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="FileLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Room.h">
       <Filter>Header Files\Database</Filter>
     </ClInclude>
@@ -124,6 +130,18 @@
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,21 +5,26 @@
 #include <iostream>
 #include "ItemPool.h"
 #include "Map.h"
+#include "Monster.h"
+#include "Data.h"
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
 	isRunning = true;
 	currentScene = nullptr;
-	player = new Player(Vec3(0.0f, 0.0f, 0.0f),
+
+	itemPool.loadItems();
+	map.loadRooms();
+	monster = new Monster("Room1");
+	player = new Player(Vec3(-10.0f, 0.0f, 0.0f),
 						Vec3(0.0f, 0.0f, 0.0f), 1.0f);
-	ItemPool::loadItems();
-	Map::loadRooms();
-	
+
+
 }
 
 
-/// In this OnCreate() method, fuction, subroutine, whatever the word, 
+/// In this OnCreate() method, function, subroutine, whatever the word, 
 bool GameManager::OnCreate() {
 	const int SCREEN_WIDTH = 1024;
 	const int SCREEN_HEIGHT = 576;
@@ -40,7 +45,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene0(windowPtr->GetSDL_Window(), Map::searchRoom("Room2"));
+	currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Room1"));
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -80,7 +85,14 @@ void GameManager::Run() {
 					isRunning = false;
 					break;
 
-
+				//Test for room switching
+				case SDL_SCANCODE_F2:
+					currentScene->OnDestroy();
+					delete currentScene;
+					currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Room2"));
+					currentScene->OnCreate();
+					monster->Update();
+					break;
 
 				default:
 					break;
@@ -108,7 +120,9 @@ void GameManager::OnDestroy(){
 	if (windowPtr) delete windowPtr;
 	if (timer) delete timer;
 	if (currentScene) delete currentScene;
+	itemPool.On_Destroy();
+	map.On_Destroy();
+	delete monster;
 	if (player) delete player;
-	ItemPool::On_Destroy();
-	Map::On_Destroy();
+
 }
