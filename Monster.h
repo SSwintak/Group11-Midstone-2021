@@ -20,6 +20,7 @@ private:
 	MonsterState monsterState;
 	vector<string> safeRooms;
 
+
 public:
 
 	Monster();

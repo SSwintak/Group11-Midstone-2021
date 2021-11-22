@@ -11,7 +11,7 @@
 Monster::Monster(){
 	currRoom = "Room2";
 	monsterState = TNormal;
-	setimageName("HorrorSchool_Monster_2.png");
+	setimageName("HorrorSchool_Monster_2_wandering_2.png");
 	detectionRange = 3.0f;
 	setPos(Vec3(10.0f, 0.0f, 0.0f));
 	addSafeRoom("Room1");
@@ -35,6 +35,7 @@ void Monster::Update(float deltaTime){
 	vel += accel * deltaTime;
 
 	if (monsterState == TWander) {
+		setIsMoving(true);
 		//Get currRoom's connnected room list
 		Room *curr_Room = map.searchRoom(currRoom);
 		vector<Door*> connectedRooms = curr_Room->getConnectedRooms();
@@ -56,6 +57,7 @@ void Monster::Update(float deltaTime){
 		//delete curr_Room;
 	}
 	if (monsterState == THunt) {
+		setIsMoving(true);
 		// do something
 		//vel.x = 2.0f;
 		Vec3 playerDirection = VMath::normalize(player->getPos() - getPos());

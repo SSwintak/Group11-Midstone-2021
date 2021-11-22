@@ -5,8 +5,8 @@ Fuse,FlashLight,
 Room2(-20.0,5.0,0.0)/
 |
 Room2
-1280 720
-HorrorSchoolLockers_2_720p.png
+1920 1080
+HorrorSchoolClassRoom_1_1080p.png
 ,
 Room1(-5.0,10.0,0.0)/Room3(-5.0,-5.0,0.0)/
 |

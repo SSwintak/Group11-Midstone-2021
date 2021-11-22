@@ -18,8 +18,8 @@ private:
 	bool hint3;
 	bool alive;
 
-	bool isMoving;
-	SDL_RendererFlip flip;
+	
+	
 public:
 
 	
@@ -41,10 +41,7 @@ public:
 	string getRoom() { return currRoom; }
 	void setAlive(bool alive_) { alive = alive_; }
 	bool getAlive() { return alive; }
-	bool getIsMoving() { return isMoving; }
-	void setIsMoving(bool isMoving_) { isMoving = isMoving_; }
-	SDL_RendererFlip getFlip() { return flip; }
-	void setFlip(SDL_RendererFlip flip_) { flip = flip_; }
+	
 	
 
 

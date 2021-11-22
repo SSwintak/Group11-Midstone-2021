@@ -31,6 +31,8 @@ protected:
 	bool collide;
 	string currRoom;
 
+	bool isMoving;
+	SDL_RendererFlip flip;
 
 	    //movement speed//    
 	const float walksp = 5.5f;
@@ -53,6 +55,10 @@ public:
 	string getRoom() { return currRoom; }
 	void setRoom(string currRoom_) { currRoom = currRoom_; }
 	void HandleEvents(const SDL_Event& sdlEvent);
+	bool getIsMoving() { return isMoving; }
+	void setIsMoving(bool isMoving_) { isMoving = isMoving_; }
+	SDL_RendererFlip getFlip() { return flip; }
+	void setFlip(SDL_RendererFlip flip_) { flip = flip_; }
 
 	enum TypeID
 	{

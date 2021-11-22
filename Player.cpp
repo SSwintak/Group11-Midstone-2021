@@ -8,8 +8,7 @@ Body("Player", pos_, vel_, mass_){
 	alive = true;
 	setimageName("PlayerWalk_Sheet.png");
 
-	isMoving = false;
-	flip = SDL_FLIP_NONE;
+	
 }
 
 Player::~Player()

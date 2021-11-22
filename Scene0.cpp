@@ -288,58 +288,92 @@ void Scene0::Render() {
 		square.h = roomHeight;
 		SDL_RenderCopyEx(renderer, room->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
-	//Player render
-	if (player->getIsMoving() == true)
-	{
+		//Player render
+		if (player->getIsMoving() == true)
+		{
 
-		int totalFrames = 7;
-		int delayPerFrame = 90;
-		float spriteOffset = 10;//only use if there is an offset in the sprite sheet
-		SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
-		screenCoords = projectionMatrix * player->getPos();
-		square.x = 0;
-		square.y = 0;
-		square.w = 82;
-		square.h = 273;
+			int totalFrames = 7;
+			int delayPerFrame = 100;
+			float spriteOffset = 10;//only use if there is an offset in the sprite sheet
+			SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
+			screenCoords = projectionMatrix * player->getPos();
+			square.x = 0;
+			square.y = 0;
+			square.w = 82;
+			square.h = 273;
 
-		dstRect.x = static_cast<int> (screenCoords.x - 82 / 2);
-		dstRect.y = static_cast<int> (screenCoords.y - 273 / 2);
-		dstRect.w = 82;
-		dstRect.h = 273;
+			dstRect.x = static_cast<int> (screenCoords.x - 82 / 2);
+			dstRect.y = static_cast<int> (screenCoords.y - 273 / 2);
+			dstRect.w = 82;
+			dstRect.h = 273;
 
-		int frame = (static_cast<int>(SDL_GetTicks() / delayPerFrame) % totalFrames);
-		square.x = frame * (square.w + spriteOffset);//spriteOffset, added because there is an offset in the player sprite sheet
+			int frame = (static_cast<int>(SDL_GetTicks() / delayPerFrame) % totalFrames);
+			square.x = frame * (square.w + spriteOffset);//spriteOffset, added because there is an offset in the player sprite sheet
 
-		SDL_RenderCopyEx(renderer, player->getTexture(), &square, &dstRect, rot, nullptr, player->getFlip());
-	}
-	else
-	{
-		
-		SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
-		screenCoords = projectionMatrix * player->getPos();
-		square.x = 0;
-		square.y = 0;
-		square.w = 82;
-		square.h = 273;
+			SDL_RenderCopyEx(renderer, player->getTexture(), &square, &dstRect, rot, nullptr, player->getFlip());
+		}
+		else
+		{
+			
+			SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &w, &h);
+			screenCoords = projectionMatrix * player->getPos();
+			square.x = 0;
+			square.y = 0;
+			square.w = 82;
+			square.h = 273;
 
-		dstRect.x = static_cast<int> (screenCoords.x - 82 / 2);
-		dstRect.y = static_cast<int> (screenCoords.y - 273 / 2);
-		dstRect.w = 82;
-		dstRect.h = 273;
+			dstRect.x = static_cast<int> (screenCoords.x - 82 / 2);
+			dstRect.y = static_cast<int> (screenCoords.y - 273 / 2);
+			dstRect.w = 82;
+			dstRect.h = 273;
 
-		SDL_RenderCopyEx(renderer, player->getTexture(), &square, &dstRect, rot, nullptr, player->getFlip());
-	}
+			SDL_RenderCopyEx(renderer, player->getTexture(), &square, &dstRect, rot, nullptr, player->getFlip());
+		}
 
 		//Monster Render
 		if (monsterExist) {
-			SDL_QueryTexture(monster->getTexture(), nullptr, nullptr, &w, &h);
-			screenCoords = projectionMatrix * monster->getPos();
-			square.x = static_cast<int> (screenCoords.x - w / 2);
-			square.y = static_cast<int> (screenCoords.y - h / 2);
-			square.w = w;
-			square.w = w;
-			square.h = h;
-			SDL_RenderCopyEx(renderer, monster->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+			
+			if (monster->getIsMoving() == true)
+			{
+
+				int totalFrames2 = 8;
+				int delayPerFrame2 = 90;
+				float spriteOffset2 = 10;//only use if there is an offset in the sprite sheet
+				SDL_QueryTexture(monster->getTexture(), nullptr, nullptr, &w, &h);
+				screenCoords = projectionMatrix * monster->getPos();
+				square.x = 0;
+				square.y = 0;
+				square.w = 146;
+				square.h = 294;
+
+				dstRect.x = static_cast<int> (screenCoords.x - 146 / 2);
+				dstRect.y = static_cast<int> (screenCoords.y - 294 / 2);
+				dstRect.w = 146;
+				dstRect.h = 294;
+
+				int frame2 = (static_cast<int>(SDL_GetTicks() / delayPerFrame2) % totalFrames2);
+				square.x = frame2 * (square.w + spriteOffset2);//spriteOffset, added because there is an offset in the player sprite sheet
+
+				SDL_RenderCopyEx(renderer, monster->getTexture(), &square, &dstRect, rot, nullptr, SDL_FLIP_NONE);
+
+			}
+			else
+			{
+				SDL_QueryTexture(monster->getTexture(), nullptr, nullptr, &w, &h);
+				screenCoords = projectionMatrix * monster->getPos();
+				square.x = 0;
+				square.y = 0;
+				square.w = 146;
+				square.h = 294;
+
+				dstRect.x = static_cast<int> (screenCoords.x - 146 / 2);
+				dstRect.y = static_cast<int> (screenCoords.y - 294 / 2);
+				dstRect.w = 146;
+				dstRect.h = 294;
+
+				SDL_RenderCopyEx(renderer, monster->getTexture(), &square, &dstRect, rot, nullptr, SDL_FLIP_NONE);
+			}
+			
 		}
 
 		//Door Render

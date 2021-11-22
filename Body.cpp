@@ -32,6 +32,9 @@ Body::Body(){
 	collide = false;
 	currRoom = "Room1";
 
+	isMoving = false;
+	flip = SDL_FLIP_NONE;
+
 }
 
 Body::Body(std::string name_, Vec3 pos_, Vec3 vel_, float mass_):
