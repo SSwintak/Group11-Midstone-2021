@@ -10,7 +10,7 @@ class Physics{
 public:
 	static void SimpleNewtonMotion(Body& object, const float deltaTime);
 	static bool CollisionDetect(Body &object1, Body &object2);
-	static bool InteractionDetect(Player &player, GameObject&object);
+	static bool InteractionDetect(Player &player, Body &object);
 };
 
 #endif

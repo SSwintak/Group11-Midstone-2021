@@ -1,21 +1,32 @@
-flappy
-true
-TestPlayer.png
+BKey
+Pickable
+None
+BKey_Icon_1.png
 5.0,1.0,0.0
 0.0,0.0,0.0
-im a flappy
+Backdoor key
 |
-flappy2
-true
-flappybird1.png
+FlashLight
+Pickable
+None
+FlashLight_Icon_1.png
 -2.0,1.0,0.0
 0.0,0.0,0.0
-im a flappy2
+Flashlight
 |
-flappy3
-true
-flappybird1.png
--5.0,1.0,0.0
+Fuse
+Static
+None
+Fuse_Icon_1.png
+0.0,3.0,0.0
 0.0,0.0,0.0
-im a flappy3
+Fuse
+|
+StickyNote
+Pickable
+None
+StickyNote_Icon_1.png
+5.0,1.0,0.0
+0.0,0.0,0.0
+StickyNote
 |

@@ -41,13 +41,32 @@ void ItemPool::loadItems() {
 		objectStr.erase(0, objectName.length() + 1);
 		//Find object type
 		string objectType = objectStr.substr(0, objectStr.find("\n"));
-		if (objectType == "true") {
-			object->setInteractable(true);
+		if (objectType == "Static") {
+			object->setType(TStaticObject);
 		}
-		else if (objectType == "false") {
-			object->setInteractable(false);
+		else if (objectType == "Interactable") {
+			object->setType(TInteractable);
+		}
+		else if(objectType == "Pickable") {
+			object->setType(TPickable);
 		}
 		objectStr.erase(0, objectType.length() + 1);
+		//if (objectType == "true") {
+		//	object->setInteractable(true);
+		//}
+		//else if (objectType == "false") {
+		//	object->setInteractable(false);
+		//}
+		//objectStr.erase(0, objectType.length() + 1);
+		//Find required key
+		string objectRequiredKey = objectStr.substr(0, objectStr.find("\n"));
+		if (objectRequiredKey == "None") {
+			object->setRequiredKey("");
+		}
+		else {
+			object->setRequiredKey(objectRequiredKey);
+		}
+		objectStr.erase(0, objectRequiredKey.length() + 1);
 		//Find object image name
 		string objectImage = objectStr.substr(0, objectStr.find("\n"));
 		object->setimageName(objectImage);

@@ -26,15 +26,14 @@ private:
 	Matrix4 invProjectionMatrix;
 	class Room *room;
 	ImageTexture *light;
+	ImageTexture *deadScene;
 	int roomHeight;
 	int roomWidth;
-	Vec3 roomSize;
 	Matrix4 projMa;
 	Vec3 worldSizeScreenCoords;
-	SDL_Texture* texture;
-	
-	
-	bool ImageTextureSetup(ImageTexture *target_);
+	bool monsterExist;
+
+	bool ImageTextureSetup(ImageTexture *target_, bool animate);
 
 public:
 	Scene0(SDL_Window* sdlWindow, Room* roomName_);
@@ -44,7 +43,7 @@ public:
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
-	
+	Room* getRoom() { return room; }
 
 	
 };

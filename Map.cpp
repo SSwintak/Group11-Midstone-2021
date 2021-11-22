@@ -72,11 +72,23 @@ void Map::loadRooms() {
 		roomStr.erase(0, 1);
 		//Find connected room
 		while (roomStr.at(0) != '\n') {
-			string connectedRoomName = roomStr.substr(0, roomStr.find(","));
-			roomStr.erase(0, connectedRoomName.length() + 1);
+			string connectedRoom = roomStr.substr(0, roomStr.find("/"));
+			roomStr.erase(0, connectedRoom.length() + 1);
+			string connectedRoomName = connectedRoom.substr(0, connectedRoom.find("("));
+			connectedRoom.erase(0, connectedRoomName.length() + 1);
+			//Find Door position
+			string DoorPosx = connectedRoom.substr(0, connectedRoom.find(","));
+			connectedRoom.erase(0, DoorPosx.length() + 1);
+			string DoorPosy = connectedRoom.substr(0, connectedRoom.find(","));
+			connectedRoom.erase(0, DoorPosx.length() + 1);
+			string DoorPosz = connectedRoom.substr(0, connectedRoom.find(")"));
+			connectedRoom.erase(0, DoorPosx.length() + 1);
+			//connectedRoom->setPos(Vec3(stof(posx), stof(posy), stof(posz)));
 			//Add it to the connected room list
-			if (!connectedRoomName.empty())
-				room->addConnectedRooms(connectedRoomName);
+			Door* connectedDoor = new Door(connectedRoomName);
+			connectedDoor->setPos(Vec3(stof(DoorPosx), stof(DoorPosy), stof(DoorPosz)));
+			if (connectedRoom.empty())
+				room->addConnectedRooms(connectedDoor);
 		}
 		//Add the room to the list
 		roomList.push_back(room);
@@ -87,6 +99,7 @@ void Map::loadRooms() {
 
 void Map::On_Destroy(){
 	for (Room* obj : roomList) {
+		//obj->On_Destroy();
 		delete obj;
 	}
 }

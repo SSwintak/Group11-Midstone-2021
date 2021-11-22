@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include "SDL_image.h"
+#include "Door.h"
 
 using namespace std;
 
@@ -15,13 +16,14 @@ private:
 	int w;
 	int h;
 	vector<GameObject*> itemList;
-	vector<string> connectedRooms;
+	vector<Door*> connectedRooms;
 	//need to add rooms available for venting if the function is desired
 
 
 public:
 	Room(string name);
 	~Room();
+	void On_Destroy();
 	void setName(string name_) { name = name_; }
 	string getName() { return name; }
 	void setWidth(int w_) { w = w_; }
@@ -31,8 +33,9 @@ public:
 	void addItem(GameObject* item_);
 	vector<GameObject*> getItemList() { return itemList; }
 	GameObject* searchItem(string itemName_);
-	void addConnectedRooms(string connectedRooms_);
-	vector<string> getConnectedRooms() { return connectedRooms; }
+	void removeItem(string itemName_);
+	void addConnectedRooms(Door* connectedRooms_);
+	vector<Door*> getConnectedRooms() { return connectedRooms; }
 
 
 };
