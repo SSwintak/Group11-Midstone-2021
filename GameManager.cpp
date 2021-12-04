@@ -99,12 +99,13 @@ void GameManager::Run() {
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
 
+		//Player switch room
 		if (player->getRoom() != currentScene->getRoom()->getName()) {
 			cout << "Room switching" << endl;
 			SceneSwitch(player->getRoom());
 		}
 
-		/// Keeep the event loop running at a proper rate
+		/// Keep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
 	}
 }

@@ -51,13 +51,6 @@ void ItemPool::loadItems() {
 			object->setType(TPickable);
 		}
 		objectStr.erase(0, objectType.length() + 1);
-		//if (objectType == "true") {
-		//	object->setInteractable(true);
-		//}
-		//else if (objectType == "false") {
-		//	object->setInteractable(false);
-		//}
-		//objectStr.erase(0, objectType.length() + 1);
 		//Find required key
 		string objectRequiredKey = objectStr.substr(0, objectStr.find("\n"));
 		if (objectRequiredKey == "None") {

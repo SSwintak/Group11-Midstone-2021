@@ -69,7 +69,6 @@ bool Scene0::OnCreate() {
 		}
 	}
 
-
 	//Set images for all the item
 	for (GameObject *item : room->getItemList()) {
 		if (!ImageTextureSetup(item, false)) {
@@ -158,7 +157,7 @@ void Scene0::Update(const float deltaTime) {
 			}
 		}
 	}
-
+	//Monster checks
 	if (monsterExist) {
 		if (Physics::InteractionDetect(*player, *monster)) {
 			monster->setState(THunt);
@@ -348,7 +347,7 @@ void Scene0::Render() {
 		square.h = h * 3;
 		SDL_SetTextureBlendMode(light->getTexture(), SDL_BLENDMODE_MOD);
 		SDL_SetTextureAlphaMod(light->getTexture(), 251);
-		//SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
 	//Player dead
 	else if (!player->getAlive()) {
@@ -371,7 +370,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 {
 	if (player->getAlive()) {
 		player->PlayerController(sdlEvent);
-
+		//Interaction with items
 		for (GameObject* item : room->getItemList()) {
 			if (Physics::InteractionDetect(*player, *item)) {
 				if (player->interactObject(sdlEvent, item) && item->getType() == TPickable) {
