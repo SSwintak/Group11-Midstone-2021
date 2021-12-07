@@ -36,6 +36,15 @@ void Room::addConnectedRooms(Door *connectedRooms_){
 	connectedRooms.push_back(connectedRooms_);
 }
 
+Door* Room::searchConnectedRooms(string roomName_){
+	for (Door* door : connectedRooms) {
+		if (roomName_ == door->getName()) {
+			return door;
+		}
+	}
+	return nullptr;
+}
+
 void Room::removeItem(string itemName_){
 	for (int i = 0; i < itemList.size(); i++) {
 		if (itemList[i]->getName() == itemName_) {

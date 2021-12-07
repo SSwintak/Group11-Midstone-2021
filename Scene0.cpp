@@ -138,26 +138,7 @@ void Scene0::Update(const float deltaTime) {
 			}
 		}
 	}
-	//Door collision
-	//for (Door* door : room->getConnectedRooms()) {
-	//	if (Physics::CollisionDetect(*player, *door)) {
-	//		//Switch room
-	//		player->setRoom(door->getConnectedRoom());
-	//		//If monster is chasing the player
-	//		if (monsterExist && monster->getState() == THunt) {
-	//			//If the player's destinatination is not a safe room, keep hunting
-	//			bool isSafe = monster->isSafeRoom(player->getRoom());
-	//			if (!isSafe) {
-	//				cout << "Not Safe" << endl;
-	//				monster->setRoom(player->getRoom());
-	//			}
-	//			else if (isSafe){
-	//				monster->setState(TNormal);
-	//				monster->setVel(Vec3(0.0f, 0.0f, 0.0f));
-	//			}
-	//		}
-	//	}
-	//}
+
 	//Monster checks
 	if (monsterExist) {
 		if (Physics::InteractionDetect(*player, *monster)) {
@@ -212,8 +193,6 @@ void Scene0::Update(const float deltaTime) {
 	}
 
 
-
-
 	/*Stupid camera that I will come fix later (Right, Bot boundaries)*/
 	//Move camera along with the player
 	projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
@@ -261,7 +240,7 @@ void Scene0::Update(const float deltaTime) {
 		//cout << "Reach bounds on bot" << endl;
 	}
 
-	projectionMatrix.print();
+	//projectionMatrix.print();
 
 
 }
@@ -286,7 +265,26 @@ void Scene0::Render() {
 		square.w = roomWidth;
 		square.h = roomHeight;
 		SDL_RenderCopyEx(renderer, room->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-
+		// Objects render
+		for (GameObject* item : room->getItemList()) {
+			SDL_QueryTexture(item->getTexture(), nullptr, nullptr, &w, &h);
+			screenCoords = projectionMatrix * (item->getPos());
+			square.x = static_cast<int> (screenCoords.x - w / 2);
+			square.y = static_cast<int> (screenCoords.y - h / 2);
+			square.w = w;
+			square.h = h;
+			SDL_RenderCopyEx(renderer, item->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+		}
+		//Door Render
+		for (Door* door : room->getConnectedRooms()) {
+			SDL_QueryTexture(door->getTexture(), nullptr, nullptr, &w, &h);
+			screenCoords = projectionMatrix * (door->getPos());
+			square.x = static_cast<int> (screenCoords.x - w / 2);
+			square.y = static_cast<int> (screenCoords.y - h / 2);
+			square.w = w;
+			square.h = h;
+			SDL_RenderCopyEx(renderer, door->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+		}
 		//Player render
 		if (player->getIsMoving() == true)
 		{
@@ -374,29 +372,6 @@ void Scene0::Render() {
 			}
 			
 		}
-
-		//Door Render
-		for (Door* door : room->getConnectedRooms()) {
-			SDL_QueryTexture(door->getTexture(), nullptr, nullptr, &w, &h);
-			screenCoords = projectionMatrix * (door->getPos());
-			square.x = static_cast<int> (screenCoords.x - w / 2);
-			square.y = static_cast<int> (screenCoords.y - h / 2);
-			square.w = w;
-			square.h = h;
-			SDL_RenderCopyEx(renderer, door->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-		}
-
-		// Objects render
-		for (GameObject* item : room->getItemList()) {
-			SDL_QueryTexture(item->getTexture(), nullptr, nullptr, &w, &h);
-			screenCoords = projectionMatrix * (item->getPos());
-			square.x = static_cast<int> (screenCoords.x - w / 2);
-			square.y = static_cast<int> (screenCoords.y - h / 2);
-			square.w = w;
-			square.h = h;
-			SDL_RenderCopyEx(renderer, item->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-		}
-
 		//Light Render
 		SDL_QueryTexture(light->getTexture(), nullptr, nullptr, &w, &h);
 		screenCoords = projectionMatrix * player->getPos();
@@ -441,9 +416,10 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 		//Door Interaction
 		for (Door* door : room->getConnectedRooms()) {
 			if (Physics::InteractionDetect(*player, *door)) {
-				//Switch room
+				//If interacting with the door
 				if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
-					player->setRoom(door->getConnectedRoom());
+					//Switch room
+					player->switchRoom(door->getConnectedRoom());
 					//If monster is chasing the player
 					if (monsterExist && monster->getState() == THunt) {
 						//If the player's destinatination is not a safe room, keep hunting

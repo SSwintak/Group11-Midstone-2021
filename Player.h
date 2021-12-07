@@ -13,6 +13,7 @@ class Player : public Body {
 
 private:
 	vector<string> inventory;
+	string prevRoom;
 	bool hint1;
 	bool hint2;
 	bool hint3;
@@ -39,6 +40,9 @@ public:
 	void hint3Get() { hint3 = true; };
 	void setRoom(string roomName_) { currRoom = roomName_; }
 	string getRoom() { return currRoom; }
+	void setPrevRoom(string roomName_) { prevRoom = roomName_; }
+	string getPrevRoom() { return prevRoom; }
+	void switchRoom(string roomName_);
 	void setAlive(bool alive_) { alive = alive_; }
 	bool getAlive() { return alive; }
 	

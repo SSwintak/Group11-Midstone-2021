@@ -18,8 +18,6 @@ Monster::Monster(){
 }
 
 Monster::~Monster() {
-	currRoom = "Room1";
-
 }
 
 

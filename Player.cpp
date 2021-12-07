@@ -6,6 +6,7 @@ Player::Player(Vec3 pos_, Vec3 vel_, float mass_) :
 	hint2 = false;
 	hint3 = false;
 	alive = true;
+	prevRoom = "Custodian";
 	setimageName("PlayerWalk_Sheet.png");
 	setRoom("Custodian");
 }
@@ -145,6 +146,11 @@ bool Player::searchInventory(string item_)
 
 void Player::addInventory(string item_) {
 	inventory.push_back(item_);
+}
+
+void Player::switchRoom(string roomName_){
+	prevRoom = currRoom;
+	currRoom = roomName_;
 }
 
 

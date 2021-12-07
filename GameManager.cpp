@@ -113,7 +113,10 @@ void GameManager::Run() {
 void GameManager::SceneSwitch(string roomName_){
 	currentScene->OnDestroy();
 	delete currentScene;
-	currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom(roomName_));
+	Room *room = map.searchRoom(roomName_);
+	Vec3 newPlayerLoc = room->searchConnectedRooms(player->getPrevRoom())->getPos();
+	player->setPos(newPlayerLoc);
+	currentScene = new Scene0(windowPtr->GetSDL_Window(), room);
 	currentScene->OnCreate();
 	//monster->Update();
 

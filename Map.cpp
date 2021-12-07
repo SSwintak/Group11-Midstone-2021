@@ -80,9 +80,9 @@ void Map::loadRooms() {
 			string DoorPosx = connectedRoom.substr(0, connectedRoom.find(","));
 			connectedRoom.erase(0, DoorPosx.length() + 1);
 			string DoorPosy = connectedRoom.substr(0, connectedRoom.find(","));
-			connectedRoom.erase(0, DoorPosx.length() + 1);
+			connectedRoom.erase(0, DoorPosy.length() + 1);
 			string DoorPosz = connectedRoom.substr(0, connectedRoom.find(")"));
-			connectedRoom.erase(0, DoorPosx.length() + 1);
+			connectedRoom.erase(0, DoorPosz.length() + 1);
 			//connectedRoom->setPos(Vec3(stof(posx), stof(posy), stof(posz)));
 			//Add it to the connected room list
 			Door* connectedDoor = new Door(connectedRoomName);
