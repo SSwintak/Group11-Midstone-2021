@@ -21,7 +21,6 @@ Classroom2
 HorrorSchoolLockers_2_720p.png
 Fuse,FlashLight,
 Hallway(-30.0,0.0,0.0)/
-
 |
 StaffRoom
 1280 720

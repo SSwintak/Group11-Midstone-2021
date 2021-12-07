@@ -1,30 +1,28 @@
 #include "Player.h"
 
-Player::Player(Vec3 pos_, Vec3 vel_, float mass_):
-Body("Player", pos_, vel_, mass_){
+Player::Player(Vec3 pos_, Vec3 vel_, float mass_) :
+	Body("Player", pos_, vel_, mass_) {
 	hint1 = false;
 	hint2 = false;
 	hint3 = false;
 	alive = true;
 	setimageName("PlayerWalk_Sheet.png");
+	setRoom("Custodian");
 }
 
-Player::~Player()
-{
+Player::~Player(){
 	hint1 = false;
 	hint2 = false;
 	hint3 = false;
 
 }
 
-void Player::HandleEvents(const SDL_Event& sdlEvent)
-{
+void Player::HandleEvents(const SDL_Event& sdlEvent){
 	
 	
 }
 
-void Player::PlayerController(const SDL_Event& sdlEvent)
-{
+void Player::PlayerController(const SDL_Event& sdlEvent){
 
 
 	//---Right Movement---//
