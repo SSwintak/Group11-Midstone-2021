@@ -45,7 +45,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Room1"));
+	currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Custodian"));
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -85,7 +85,7 @@ void GameManager::Run() {
 					break;
 
 				case SDL_SCANCODE_F1:
-					SceneSwitch("Room1");
+					SceneSwitch("Custodian");
 					break;
 
 				default:

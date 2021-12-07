@@ -9,12 +9,12 @@
 //string Monster::currRoom;
 
 Monster::Monster(){
-	currRoom = "Room2";
+	currRoom = "Classroom3";
 	monsterState = TNormal;
 	setimageName("HorrorSchool_Monster_2.png");
 	detectionRange = 3.0f;
 	setPos(Vec3(10.0f, 0.0f, 0.0f));
-	addSafeRoom("Room1");
+	addSafeRoom("Custodian");
 }
 
 Monster::~Monster() {

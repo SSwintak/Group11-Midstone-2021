@@ -7,6 +7,7 @@ Body("Player", pos_, vel_, mass_){
 	hint3 = false;
 	alive = true;
 	setimageName("PlayerWalk_Sheet.png");
+	setRoom("Custodian");
 }
 
 Player::~Player()
