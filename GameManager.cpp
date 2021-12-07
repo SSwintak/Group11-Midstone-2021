@@ -45,7 +45,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Room1"));
+	currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Custodian"));
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -85,7 +85,7 @@ void GameManager::Run() {
 					break;
 
 				case SDL_SCANCODE_F1:
-					SceneSwitch("Room1");
+					SceneSwitch("Custodian");
 					break;
 
 				default:
@@ -99,12 +99,13 @@ void GameManager::Run() {
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
 
+		//Player switch room
 		if (player->getRoom() != currentScene->getRoom()->getName()) {
 			cout << "Room switching" << endl;
 			SceneSwitch(player->getRoom());
 		}
 
-		/// Keeep the event loop running at a proper rate
+		/// Keep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
 	}
 }

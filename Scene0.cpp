@@ -70,7 +70,6 @@ bool Scene0::OnCreate() {
 		}
 	}
 
-
 	//Set images for all the item
 	for (GameObject *item : room->getItemList()) {
 		if (!ImageTextureSetup(item, false)) {
@@ -100,7 +99,7 @@ bool Scene0::ImageTextureSetup(ImageTexture *target_, bool animate) {
 	if (targetTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
 	if (targetImage == nullptr)
 	{
-		std::cerr << "Can't open the image" << std::endl;
+		std::cerr << "Can't open the image" << target_->getimageName() << std::endl;
 		return false;
 	}
 	else
@@ -140,26 +139,26 @@ void Scene0::Update(const float deltaTime) {
 		}
 	}
 	//Door collision
-	for (Door* door : room->getConnectedRooms()) {
-		if (Physics::CollisionDetect(*player, *door)) {
-			//Switch room
-			player->setRoom(door->getConnectedRoom());
-			//If monster is chasing the player
-			if (monsterExist && monster->getState() == THunt) {
-				//If the player's destinatination is not a safe room, keep hunting
-				bool isSafe = monster->isSafeRoom(player->getRoom());
-				if (!isSafe) {
-					cout << "Not Safe" << endl;
-					monster->setRoom(player->getRoom());
-				}
-				else if (isSafe){
-					monster->setState(TNormal);
-					monster->setVel(Vec3(0.0f, 0.0f, 0.0f));
-				}
-			}
-		}
-	}
-
+	//for (Door* door : room->getConnectedRooms()) {
+	//	if (Physics::CollisionDetect(*player, *door)) {
+	//		//Switch room
+	//		player->setRoom(door->getConnectedRoom());
+	//		//If monster is chasing the player
+	//		if (monsterExist && monster->getState() == THunt) {
+	//			//If the player's destinatination is not a safe room, keep hunting
+	//			bool isSafe = monster->isSafeRoom(player->getRoom());
+	//			if (!isSafe) {
+	//				cout << "Not Safe" << endl;
+	//				monster->setRoom(player->getRoom());
+	//			}
+	//			else if (isSafe){
+	//				monster->setState(TNormal);
+	//				monster->setVel(Vec3(0.0f, 0.0f, 0.0f));
+	//			}
+	//		}
+	//	}
+	//}
+	//Monster checks
 	if (monsterExist) {
 		if (Physics::InteractionDetect(*player, *monster)) {
 			monster->setState(THunt);
@@ -430,7 +429,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 {
 	if (player->getAlive()) {
 		player->PlayerController(sdlEvent);
-
+		//Interaction with items
 		for (GameObject* item : room->getItemList()) {
 			if (Physics::InteractionDetect(*player, *item)) {
 				if (player->interactObject(sdlEvent, item) && item->getType() == TPickable) {
@@ -438,6 +437,32 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 				}
 			}
 		}
+
+		//Door Interaction
+		for (Door* door : room->getConnectedRooms()) {
+			if (Physics::InteractionDetect(*player, *door)) {
+				//Switch room
+				if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
+					player->setRoom(door->getConnectedRoom());
+					//If monster is chasing the player
+					if (monsterExist && monster->getState() == THunt) {
+						//If the player's destinatination is not a safe room, keep hunting
+						bool isSafe = monster->isSafeRoom(player->getRoom());
+						if (!isSafe) {
+							cout << "Not Safe" << endl;
+							monster->setRoom(player->getRoom());
+						}
+						else if (isSafe) {
+							monster->setState(TNormal);
+							monster->setVel(Vec3(0.0f, 0.0f, 0.0f));
+						}
+					}
+				}
+
+
+			}
+		}
+
 	}
 
 }

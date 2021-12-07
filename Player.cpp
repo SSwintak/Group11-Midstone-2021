@@ -7,8 +7,6 @@ Body("Player", pos_, vel_, mass_){
 	hint3 = false;
 	alive = true;
 	setimageName("PlayerWalk_Sheet.png");
-
-	
 }
 
 Player::~Player()
@@ -105,7 +103,6 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 					return false;
 				}
 			}
-
 		}
 		else if (itemType == TPickable) {
 			//add this to the player's inventory
