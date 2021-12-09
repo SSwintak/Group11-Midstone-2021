@@ -6,7 +6,17 @@ Door::Door(string name_){
 	connectedRoom = name_;
 	detectionRange = 1.0f;
 	locked = false;
+	requiredKey = "";
+	description = "";
 }
 
 Door::~Door(){
+}
+
+void Door::setUp(){
+
+}
+
+void Door::displayDescription(){
+	cout << description << endl;
 }

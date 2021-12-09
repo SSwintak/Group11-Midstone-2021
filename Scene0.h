@@ -34,6 +34,7 @@ private:
 	bool monsterExist;
 	float timeCount;
 	bool camera;
+	Vec3 projectionLoc;
 
 	bool ImageTextureSetup(ImageTexture *target_, bool animate);
 

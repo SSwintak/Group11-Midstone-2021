@@ -13,7 +13,7 @@ Handles all the dialogues, cutscenes in the game
 class Event{
 
 public:
-	static void DoorSetup(string roomName_);
+
 
 };
 

@@ -11,6 +11,7 @@ enum MonsterState {
 	TWander,
 	THunt,
 	TRoomSwitch,
+	TInactive,
 
 };
 

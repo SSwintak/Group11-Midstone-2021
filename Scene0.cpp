@@ -24,13 +24,13 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	roomWidth = room->getWidth();
 	timeCount = 0;
 	camera = true;
-	if (monster->getRoom() == room->getName()) {
+	if (monster->getRoom() == room->getName() && monster->getState() != TInactive) {
 		monsterExist = true;
+		//cout << monster->getState();
 	}
 	else {
 		monsterExist = false;
 	}
-
 }
 
 Scene0::~Scene0(){
@@ -66,7 +66,7 @@ bool Scene0::OnCreate() {
 		return false;
 	}
 	//Set Monster Images
-	if (monsterExist) {
+	//if (monsterExist) {
 		//if (!ImageTextureSetup(monster, false)) {
 		//	return false;
 		//}
@@ -91,7 +91,7 @@ bool Scene0::OnCreate() {
 			monster->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
 			SDL_FreeSurface(targetImage);
 		}
-	}
+	//}
 
 	//Set images for all the item
 	for (GameObject *item : room->getItemList()) {
@@ -109,6 +109,11 @@ bool Scene0::OnCreate() {
 	//if (!ImageTextureSetup(deadScene, false)) {
 	//	return false;
 	//}
+	if (player->getPrevRoom() != "Custodian" && room->getName() == "Hallway") {
+		projectionMatrix = player->getCamera();
+	}
+
+
 	return true;
 }
 
@@ -152,6 +157,10 @@ void Scene0::OnDestroy() {
 }
 
 void Scene0::Update(const float deltaTime) {
+	if (monster->getRoom() == room->getName() && monster->getState() != TInactive) {
+		monsterExist = true;
+		cout << monster->getState();
+	}
 
 	timeCount += deltaTime;
 	if (timeCount >= 3.0f && (monster->getState() == TRoomSwitch)) {
@@ -170,7 +179,7 @@ void Scene0::Update(const float deltaTime) {
 	//Monster checks
 	if (monsterExist && (monster->getState() != TRoomSwitch)) {
 		if (Physics::InteractionDetect(*player, *monster)) {
-			cout << monster->getState();
+			//cout << monster->getState();
 			cout << "Switch to Hunt" << endl;
 			if (monster->getState() != THunt) monster->setState(THunt);
 		}
@@ -228,8 +237,7 @@ void Scene0::Update(const float deltaTime) {
 		projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
 
 		//Get camera location
-		Vec3 projectionLoc = projectionMatrix.getColumn(3);
-
+		projectionLoc = projectionMatrix.getColumn(3);
 		//Set camera bounds
 		if (projectionLoc.x > roomWidth / 2) {
 
@@ -446,9 +454,28 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 			if (Physics::InteractionDetect(*player, *door)) {
 				//If interacting with the door
 				if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
-					//Switch room
-					
-					player->switchRoom(door->getConnectedRoom());
+					//Switch room if the door is not locked
+					//else check the required key
+					if (door->getLocked()) {
+						string requiredKey = door->getRequiredKey();
+
+						if (player->searchInventory(requiredKey)) {
+							player->switchRoom(door->getConnectedRoom());
+							if (room->getName() == "Hallway") {
+								player->setCamera(projectionMatrix);
+							}
+						}
+						else {
+							door->displayDescription();
+						}
+					}
+					else {
+						player->switchRoom(door->getConnectedRoom());
+						if (room->getName() == "Hallway") {
+							player->setCamera(projectionMatrix);
+						}
+					}
+
 					//If monster is chasing the player
 					if (monsterExist && monster->getState() == THunt) {
 						//If the player's destinatination is not a safe room, keep hunting
@@ -461,17 +488,12 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 							monster->switchRoom(player->getRoom());
 						}
 						else if (isSafe) {
-							monster->setState(TNormal);
-							monster->setVel(Vec3(0.0f, 0.0f, 0.0f));
-							monster->reset();
+							player->setProgress(GStaffRoom);
 						}
 					}
 				}
-
-
 			}
 		}
-
 	}
 }
 
