@@ -447,6 +447,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 				//If interacting with the door
 				if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
 					//Switch room
+					
 					player->switchRoom(door->getConnectedRoom());
 					//If monster is chasing the player
 					if (monsterExist && monster->getState() == THunt) {
@@ -462,6 +463,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						else if (isSafe) {
 							monster->setState(TNormal);
 							monster->setVel(Vec3(0.0f, 0.0f, 0.0f));
+							monster->reset();
 						}
 					}
 				}
@@ -471,7 +473,6 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 		}
 
 	}
-
 }
 
 

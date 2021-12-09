@@ -37,6 +37,7 @@ public:
 	void setPrevRoom(string roomName_) { prevRoom = roomName_; }
 	string getPrevRoom() { return prevRoom; }
 	void switchRoom(string roomName_);
+	void reset();
 };
 
 #endif

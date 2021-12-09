@@ -11,7 +11,7 @@ Monster::Monster(){
 	setimageName("HorrorSchool_Monster_2_wandering_2.png");
 	detectionRange = 3.0f;
 	setPos(Vec3(10.0f, 0.0f, 0.0f));
-	addSafeRoom("Custodian");
+	addSafeRoom("Classroom1");
 }
 
 Monster::~Monster() {
@@ -86,5 +86,13 @@ bool Monster::isSafeRoom(string room_){
 void Monster::switchRoom(string roomName_) {
 	prevRoom = currRoom;
 	currRoom = roomName_;
+}
+
+void Monster::reset(){
+	currRoom = "Classroom3";
+	monsterState = TNormal;
+	setIsMoving(false);
+	setVel(Vec3(0.0f, 0.0f, 0.0f));
+	setPos(Vec3(10.0f, 0.0f, 0.0f));
 }
 

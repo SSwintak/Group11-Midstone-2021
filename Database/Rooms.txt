@@ -8,11 +8,11 @@ Hallway
 1280 720
 HorrorSchoolLockers_2_720p.png
 ,
-Custodian(-25.0,-3.0,0.0)/Classroom1(-10.0,-3.0,0.0)/Classroom2(0.0,-3.0,0.0)/Classroom3(15.0,-3.0,0.0)/
+Custodian(-25.0,-3.0,0.0)/Classroom1(-10.0,-3.0,0.0)/Classroom2(5.0,-3.0,0.0)/Classroom3(20.0,-3.0,0.0)/
 |
 Classroom1
 1280 720
-HorrorSchoolClassRoom_1_1080p.png
+HorrorSchoolClassRoom_1_720p.png
 ,
 Hallway(-25.0,8.0,0.0)/
 |

@@ -150,8 +150,14 @@ void Player::addInventory(string item_) {
 }
 
 void Player::switchRoom(string roomName_){
-	prevRoom = currRoom;
-	currRoom = roomName_;
+	if (currRoom != roomName_) {
+		prevRoom = currRoom;
+		currRoom = roomName_;
+		cout << "Prev: " << prevRoom << endl;
+		cout << "Curr: " << currRoom << endl;
+	}
+
+
 }
 
 
