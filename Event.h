@@ -7,6 +7,10 @@ Handles all the dialogues, cutscenes in the game
 
 
 class Event{
+
+public:
+
+
 };
 
 #endif

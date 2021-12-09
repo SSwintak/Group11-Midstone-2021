@@ -10,6 +10,8 @@ enum MonsterState {
 	TNormal = 0,
 	TWander,
 	THunt,
+	TRoomSwitch,
+	TInactive,
 
 };
 
@@ -32,9 +34,8 @@ public:
 	void addSafeRoom(string safeRoom_);
 	bool isSafeRoom(string room_);
 	vector<string> getSafeRooms() { return safeRooms; }
-	
+
 
 };
 
 #endif
-

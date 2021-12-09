@@ -15,20 +15,18 @@ GameManager::GameManager() {
 	isRunning = true;
 	gameStart = false;
 	currentScene = nullptr;
-	
-	
+
+
 
 	itemPool.loadItems();
 	map.loadRooms();
 	monster = new Monster();
 	player = new Player(Vec3(-10.0f, 0.0f, 0.0f),
 						Vec3(0.0f, 0.0f, 0.0f), 1.0f);
-
-
 }
 
 
-/// In this OnCreate() method, function, subroutine, whatever the word, 
+/// In this OnCreate() method, function, subroutine, whatever the word,
 bool GameManager::OnCreate() {
 	const int SCREEN_WIDTH = 1024;
 	const int SCREEN_HEIGHT = 576;
@@ -59,13 +57,13 @@ bool GameManager::OnCreate() {
 		OnDestroy();
 		return false;
 	}
-	
+
 	if (player == nullptr) {
 		OnDestroy();
 		return false;
 	}
 
-	
+
 
 	return true;
 }
@@ -88,13 +86,13 @@ void GameManager::Run() {
 				{
 				case SDL_SCANCODE_ESCAPE:
 					isRunning = false;
-									
-					
-					break;					
-									
 
-				case SDL_SCANCODE_SPACE:		
-					
+
+					break;
+
+
+				case SDL_SCANCODE_SPACE:
+
 					if (!gameStart)
 					{
 						gameStart = true;
@@ -104,15 +102,19 @@ void GameManager::Run() {
 						player->setRoom("Custodian");
 						currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Custodian"));
 						currentScene->OnCreate();
-						
+
 					}
-					
-					
-					
+
+
+
 					break;
 
-				
-					
+
+
+					break;
+
+				case SDL_SCANCODE_Q:
+					cout << player->getProgress() << endl;
 					break;
 
 				default:
@@ -120,13 +122,13 @@ void GameManager::Run() {
 				}
 
 
-				
 
-				
+
+
 			}
-			
+
 			currentScene->HandleEvents(sdlEvent);
-			
+
 		}
 
 		timer->UpdateFrameTicks();
@@ -142,13 +144,27 @@ void GameManager::Run() {
 			}
 		}
 
-		
-		
-		
-		
-
-		
-		
+		//Monster Chase Part
+		cout << "Player Pos: ";
+		player->getPos().print();
+		if (player->getProgress() == GFirstEncounter &&
+			player->searchInventory("Classroom3Key") &&
+			player->getRoom() == "Hallway" &&
+			player->getPos().x <= 5.0f) {
+			//Spawn monster
+			cout << "Second chase" << endl;
+			monster->setRoom("Hallway");
+			monster->setPos(Vec3(20.0f, -3.0f, 0.0f));
+			monster->setState(THunt);
+			player->setProgress(GSecondChase);
+		}
+		//If first encounter, disable monster
+		else if (player->getProgress() == GFirstEncounter) {
+			monster->setState(TInactive);
+		}
+		else if (player->getProgress() == GStaffRoom) {
+			monster->setState(TInactive);
+		}
 
 		/// Keep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
@@ -178,10 +194,9 @@ void GameManager::OnDestroy(){
 	map.On_Destroy();
 	delete monster;
 	if (player) delete player;
-	
 
-	
-	
+
+
+
 
 }
-

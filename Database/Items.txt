@@ -4,7 +4,15 @@ None
 BKey_Icon_1.png
 5.0,1.0,0.0
 0.0,0.0,0.0
-Backdoor key
+This could be handy.
+|
+Classroom3Key
+Pickable
+None
+BKey_Icon_1.png
+10.0,5.0,0.0
+0.0,0.0,0.0
+3 Keys and a tag that says 09991.
 |
 FlashLight
 Pickable
