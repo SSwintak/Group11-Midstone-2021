@@ -5,6 +5,7 @@ Door::Door(string name_){
 	setimageName("DoorTest.png");
 	connectedRoom = name_;
 	detectionRange = 1.5f;
+	locked = false;
 }
 
 Door::~Door(){

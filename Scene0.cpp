@@ -22,6 +22,8 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	cout << room->getName() << endl;
 	roomHeight = room->getHeight();
 	roomWidth = room->getWidth();
+	timeCount = 0;
+	camera = true;
 	if (monster->getRoom() == room->getName()) {
 		monsterExist = true;
 	}
@@ -65,8 +67,29 @@ bool Scene0::OnCreate() {
 	}
 	//Set Monster Images
 	if (monsterExist) {
-		if (!ImageTextureSetup(monster, false)) {
+		//if (!ImageTextureSetup(monster, false)) {
+		//	return false;
+		//}
+		string image = "image/";
+		image.append(monster->getimageName());
+		SDL_Surface* targetImage = IMG_Load(image.c_str());//loading the image file
+		SDL_Texture* targetTexture = SDL_CreateTextureFromSurface(renderer, targetImage);//loading and rendering the images' texture
+		if (targetTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
+		if (targetImage == nullptr)
+		{
+			std::cerr << "Can't open the image" << monster->getimageName() << std::endl;
 			return false;
+		}
+		else
+		{
+			Vec3 upperLeft(0.0f, 0.0f, 0.0f);
+			Vec3 ulWorld = invProjectionMatrix * upperLeft;
+			Vec3 lowerRight = Vec3(146.0f, 294.0f, 0.0f);
+			Vec3 lrWorld = invProjectionMatrix * lowerRight;
+			Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
+			monster->setTexture(targetTexture);
+			monster->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
+			SDL_FreeSurface(targetImage);
 		}
 	}
 
@@ -82,10 +105,10 @@ bool Scene0::OnCreate() {
 		return false;
 	}
 	//Set dead scene
-	deadScene = new ImageTexture("HorrorSchool_DeathScreen_1.png");
-	if (!ImageTextureSetup(deadScene, false)) {
-		return false;
-	}
+	//deadScene = new ImageTexture("HorrorSchool_DeathScreen_1.png");
+	//if (!ImageTextureSetup(deadScene, false)) {
+	//	return false;
+	//}
 	return true;
 }
 
@@ -130,6 +153,11 @@ void Scene0::OnDestroy() {
 
 void Scene0::Update(const float deltaTime) {
 
+	timeCount += deltaTime;
+	if (timeCount >= 3.0f && (monster->getState() == TRoomSwitch)) {
+		monster->setState(THunt);
+	}
+
 	//Player Object collision
 	for (GameObject* item : room->getItemList()) {
 		if (item->getType() == TStaticObject) {
@@ -140,16 +168,18 @@ void Scene0::Update(const float deltaTime) {
 	}
 
 	//Monster checks
-	if (monsterExist) {
+	if (monsterExist && (monster->getState() != TRoomSwitch)) {
 		if (Physics::InteractionDetect(*player, *monster)) {
-			monster->setState(THunt);
+			cout << monster->getState();
+			cout << "Switch to Hunt" << endl;
+			if (monster->getState() != THunt) monster->setState(THunt);
 		}
 		if (Physics::CollisionDetect(*player, *monster)) {
 			//player dead
 			monster->setVel(Vec3(0.0f, 0.0f, 0.0f));
 			player->setAlive(false);
+			camera = false;
 		}
-
 	}
 
 	if (player->getAlive()) {
@@ -159,7 +189,6 @@ void Scene0::Update(const float deltaTime) {
 
 
 	//Player boundaries
-
 	Vec3 playerWorld = player->getPos();
 
 	playerWorld.x += abs(player->getImageSizeWorldCoords().x) / 2;
@@ -195,53 +224,53 @@ void Scene0::Update(const float deltaTime) {
 
 	/*Stupid camera that I will come fix later (Right, Bot boundaries)*/
 	//Move camera along with the player
-	projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
+	if (camera) {
+		projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
 
-	//Get camera location
-	Vec3 projectionLoc = projectionMatrix.getColumn(3);
+		//Get camera location
+		Vec3 projectionLoc = projectionMatrix.getColumn(3);
 
-	//Set camera bounds
-	if (projectionLoc.x > roomWidth / 2) {
+		//Set camera bounds
+		if (projectionLoc.x > roomWidth / 2) {
 
-		projectionLoc.x = roomWidth / 2;
-		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
-								   projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-								   projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-								      projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
+			projectionLoc.x = roomWidth / 2;
+			projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
+				projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+				projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+				projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
 
-		//cout << "Reach bounds on left" << endl;
+			//cout << "Reach bounds on left" << endl;
 
-	} 
-	if (projectionLoc.y > roomHeight / 2) {
-									   
-		projectionLoc.y = roomHeight / 2;
-		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
-								   projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-								   projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-								   projectionMatrix[12],   projectionLoc.y,  projectionMatrix[14], projectionMatrix[15]);
-				
-		//cout << "Reach bounds on Top" << endl;
+		}
+		if (projectionLoc.y > roomHeight / 2) {
+
+			projectionLoc.y = roomHeight / 2;
+			projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
+				projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+				projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+				projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
+
+			//cout << "Reach bounds on Top" << endl;
+		}
+		if (projectionLoc.x < roomWidth / 3.34) {
+			projectionLoc.x = roomWidth / 3.34;
+			projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
+				projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+				projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+				projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
+			//cout << "Reach bounds on right" << endl;
+		}
+		if (projectionLoc.y < roomHeight / 3.345) {
+			projectionLoc.y = roomHeight / 3.345;
+			projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
+				projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
+				projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
+				projectionMatrix[12], projectionLoc.y, projectionMatrix[14], projectionMatrix[15]);
+
+			//cout << "Reach bounds on bot" << endl;
+		}
 	}
-	if (projectionLoc.x < roomWidth / 3.34) {
-		projectionLoc.x = roomWidth / 3.34;
-		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
-								   projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-								   projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-								      projectionLoc.x, projectionMatrix[13], projectionMatrix[14], projectionMatrix[15]);
-		//cout << "Reach bounds on right" << endl;
-	}
-	if (projectionLoc.y < roomHeight / 3.345) {
-		projectionLoc.y = roomHeight / 3.345;
-		projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
-								   projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
-								   projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
-								   projectionMatrix[12],   projectionLoc.y,  projectionMatrix[14], projectionMatrix[15]);
-
-		//cout << "Reach bounds on bot" << endl;
-	}
-
 	//projectionMatrix.print();
-
 
 }
 
@@ -328,7 +357,7 @@ void Scene0::Render() {
 		}
 
 		//Monster Render
-		if (monsterExist) {
+		if (monsterExist && (monster->getState() != TRoomSwitch)) {
 			
 			if (monster->getIsMoving() == true)
 			{
@@ -384,18 +413,17 @@ void Scene0::Render() {
 		//SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
 	//Player dead
-	else if (!player->getAlive()) {
-		int windowW, windowH;
-		SDL_GetWindowSize(window, &windowW, &windowH);
-		SDL_QueryTexture(deadScene->getTexture(), nullptr, nullptr, &w, &h);
-		screenCoords = projectionMatrix * Vec3(0.0f, 0.0f, 0.0f);
-		square.x = static_cast<int> (screenCoords.x - w / 2);
-		square.y = static_cast<int> (screenCoords.y - h / 2);
-		square.w = windowW;
-		square.h = windowH;
-		SDL_RenderCopyEx(renderer, deadScene->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-	}
-
+	//else if (!player->getAlive()) {
+	//	int windowW, windowH;
+	//	SDL_GetWindowSize(window, &windowW, &windowH);
+	//	SDL_QueryTexture(deadScene->getTexture(), nullptr, nullptr, &w, &h);
+	//	screenCoords = projectionMatrix * Vec3(0.0f, 0.0f, 0.0f);
+	//	square.x = static_cast<int> (screenCoords.x - w / 2);
+	//	square.y = static_cast<int> (screenCoords.y - h / 2);
+	//	square.w = windowW;
+	//	square.h = windowH;
+	//	SDL_RenderCopyEx(renderer, deadScene->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+	//}
 
 	SDL_RenderPresent(renderer);
 }
@@ -426,7 +454,10 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						bool isSafe = monster->isSafeRoom(player->getRoom());
 						if (!isSafe) {
 							cout << "Not Safe" << endl;
-							monster->setRoom(player->getRoom());
+							cout << "Switch RoomSwitch" << endl;
+							monster->setState(TRoomSwitch);
+							timeCount = 0;
+							monster->switchRoom(player->getRoom());
 						}
 						else if (isSafe) {
 							monster->setState(TNormal);

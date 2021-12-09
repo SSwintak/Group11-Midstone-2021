@@ -10,6 +10,7 @@ enum MonsterState {
 	TNormal = 0,
 	TWander,
 	THunt,
+	TRoomSwitch,
 
 };
 
@@ -19,6 +20,7 @@ class Monster : public Body{
 private:
 	MonsterState monsterState;
 	vector<string> safeRooms;
+	string prevRoom;
 
 
 public:
@@ -32,7 +34,9 @@ public:
 	void addSafeRoom(string safeRoom_);
 	bool isSafeRoom(string room_);
 	vector<string> getSafeRooms() { return safeRooms; }
-
+	void setPrevRoom(string roomName_) { prevRoom = roomName_; }
+	string getPrevRoom() { return prevRoom; }
+	void switchRoom(string roomName_);
 };
 
 #endif

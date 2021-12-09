@@ -84,6 +84,9 @@
     <ClCompile Include="Door.cpp">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
+    <ClCompile Include="ImageScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h">
@@ -148,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="Door.h">
       <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageScene.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@ Player::Player(Vec3 pos_, Vec3 vel_, float mass_) :
 	hint2 = false;
 	hint3 = false;
 	alive = true;
+	win = false;
 	prevRoom = "Custodian";
 	setimageName("PlayerWalk_Sheet.png");
 	setRoom("Custodian");

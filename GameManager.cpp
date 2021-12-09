@@ -2,6 +2,8 @@
 #include "Window.h"
 #include "Timer.h"
 #include "Scene0.h"
+#include "ImageScene.h"
+#include "Event.h"
 #include <iostream>
 #include "ItemPool.h"
 #include "Map.h"
@@ -19,7 +21,6 @@ GameManager::GameManager() {
 	monster = new Monster();
 	player = new Player(Vec3(-10.0f, 0.0f, 0.0f),
 						Vec3(0.0f, 0.0f, 0.0f), 1.0f);
-
 
 }
 
@@ -100,10 +101,19 @@ void GameManager::Run() {
 		currentScene->Render();
 
 		//Player switch room
-		if (player->getRoom() != currentScene->getRoom()->getName()) {
-			cout << "Room switching" << endl;
-			SceneSwitch(player->getRoom());
+		if (player->getWin()) {
+			SceneSwitch("dead");
 		}
+		else if (player->getAlive()) {
+			if (player->getRoom() != currentScene->getRoom()->getName()) {
+				cout << "Room switching" << endl;
+				SceneSwitch(player->getRoom());
+			}
+		}
+		else if (!player->getAlive()) {
+			SceneSwitch("dead");
+		}
+
 
 		/// Keep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
@@ -111,15 +121,25 @@ void GameManager::Run() {
 }
 
 void GameManager::SceneSwitch(string roomName_){
+	//Destroy current scene
 	currentScene->OnDestroy();
 	delete currentScene;
-	Room *room = map.searchRoom(roomName_);
-	Vec3 newPlayerLoc = room->searchConnectedRooms(player->getPrevRoom())->getPos();
-	player->setPos(newPlayerLoc);
-	currentScene = new Scene0(windowPtr->GetSDL_Window(), room);
-	currentScene->OnCreate();
-	//monster->Update();
 
+	if (roomName_ == "dead") {
+		currentScene = new ImageScene(windowPtr->GetSDL_Window());
+		currentScene->OnCreate();
+	}
+	else {
+		Room *room = map.searchRoom(roomName_);
+		Vec3 newPlayerLoc = room->searchConnectedRooms(player->getPrevRoom())->getPos();
+		player->setPos(newPlayerLoc);
+		if (monster->getState() == TRoomSwitch) {
+			monster->setPos(newPlayerLoc);
+		}
+
+		currentScene = new Scene0(windowPtr->GetSDL_Window(), room);
+		currentScene->OnCreate();
+	}
 }
 
 

@@ -4,9 +4,6 @@
 #include "Data.h"
 #include "Player.h"
 
-//bool Monster::normalState;
-//bool Monster::huntState;
-//string Monster::currRoom;
 
 Monster::Monster(){
 	currRoom = "Classroom3";
@@ -54,13 +51,17 @@ void Monster::Update(float deltaTime){
 		}
 		//delete curr_Room;
 	}
-	if (monsterState == THunt) {
+	else if (monsterState == THunt) {
 		setIsMoving(true);
 		// do something
 		//vel.x = 2.0f;
 		Vec3 playerDirection = VMath::normalize(player->getPos() - getPos());
 		vel = playerDirection * 4.0f;
 	}
+	else if (monsterState == TRoomSwitch) {
+		vel = Vec3(0.0f, 0.0f, 0.0f);
+	}
+
 }
 
 void Monster::On_Destroy(){
@@ -81,3 +82,9 @@ bool Monster::isSafeRoom(string room_){
 
 	return false;
 }
+
+void Monster::switchRoom(string roomName_) {
+	prevRoom = currRoom;
+	currRoom = roomName_;
+}
+

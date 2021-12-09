@@ -10,7 +10,6 @@
 
 class Player : public Body {
 
-
 private:
 	vector<string> inventory;
 	string prevRoom;
@@ -18,12 +17,9 @@ private:
 	bool hint2;
 	bool hint3;
 	bool alive;
-
-	
+	bool win;
 	
 public:
-
-	
 
 	Player(Vec3 pos_, Vec3 vel_, float mass_);
 	~Player();
@@ -45,9 +41,8 @@ public:
 	void switchRoom(string roomName_);
 	void setAlive(bool alive_) { alive = alive_; }
 	bool getAlive() { return alive; }
-	
-	
-
+	void setWin(bool win_) { win = win_; }
+	bool getWin() { return win; }
 
 };
 
