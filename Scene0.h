@@ -44,7 +44,6 @@ public:
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
 	Room* getRoom() { return room; }
-
 	
 };
 

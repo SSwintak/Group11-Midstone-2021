@@ -1,5 +1,6 @@
 #include "Window.h"
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <iostream> /// Umer likes this over printf() - too bad
 
 
@@ -11,7 +12,7 @@ Window::Window(int width_, int height_){
 }
 
 bool Window::OnCreate(){
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		std::cout << "SDL_Error: " << SDL_GetError() << std::endl;
 		return false;
 	}
@@ -43,6 +44,7 @@ void Window::OnDestroy(){
 	
 	///Exit the SDL subsystems
 	SDL_Quit();
+	Mix_Quit();
 
 }
 

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Sounds.h"
 
 Player::Player(Vec3 pos_, Vec3 vel_, float mass_) :
 	Body("Player", pos_, vel_, mass_) {
@@ -69,6 +70,7 @@ void Player::PlayerController(const SDL_Event& sdlEvent){
 	{
 		vel.y = -walksp;
 		setIsMoving(true);
+	
 	}
 	else if (sdlEvent.type == SDL_KEYUP && sdlEvent.key.keysym.scancode == SDL_SCANCODE_S)
 	{

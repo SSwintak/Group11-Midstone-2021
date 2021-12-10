@@ -45,6 +45,8 @@ public:
 	void switchRoom(string roomName_);
 	void setAlive(bool alive_) { alive = alive_; }
 	bool getAlive() { return alive; }
+
+	//Audio
 	
 	
 

@@ -1,4 +1,6 @@
 #include "GameManager.h"
+#include <SDL_mixer.h>
+#include "SoundDefs.h"
 #include "Window.h"
 #include "Timer.h"
 #include "Scene0.h"
@@ -19,7 +21,6 @@ GameManager::GameManager() {
 	monster = new Monster();
 	player = new Player(Vec3(-10.0f, 0.0f, 0.0f),
 						Vec3(0.0f, 0.0f, 0.0f), 1.0f);
-
 
 }
 
@@ -61,6 +62,11 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
+	//Load Audio Mixer
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) == -1) {
+		cout << "Couldn't initialize SDL Mixer" << endl;
+	}
+	Mix_AllocateChannels(MAX_SND_CHANNELS);
 	return true;
 }
 

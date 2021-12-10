@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+
 #include "Player.h"
 #include "GameObject.h"
 #include "Physics.h"
@@ -9,8 +10,8 @@
 #include "Monster.h"
 #include "Data.h"
 #include "ImageTexture.h"
+#include "Sounds.h"
 #include <typeinfo>
-
 
 //#define WORLD_W 1280
 //#define roomHeight 720
@@ -28,7 +29,6 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	else {
 		monsterExist = false;
 	}
-
 }
 
 Scene0::~Scene0(){
@@ -46,9 +46,22 @@ bool Scene0::OnCreate() {
 	projectionMatrix = (ndc * ortho);
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
 	projMa = projectionMatrix;
+
+	//Test Sound
+	Mix_Chunk* TestMusic = NULL;
+	TestMusic = Mix_LoadWAV("audio/shotty.ogg");
+	if (TestMusic == NULL)
+	{
+		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+	}
+	if (Mix_PlayingMusic() == 0)
+	{
+		//Play the music
+		Mix_PlayChannel(-1, TestMusic, 0);
+	}
+
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
-
 	//Set room images
 	if (!ImageTextureSetup(room, false)) {
 		return false;
@@ -149,7 +162,6 @@ void Scene0::Update(const float deltaTime) {
 			monster->setVel(Vec3(0.0f, 0.0f, 0.0f));
 			player->setAlive(false);
 		}
-
 	}
 
 	if (player->getAlive()) {
