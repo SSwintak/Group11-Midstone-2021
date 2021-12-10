@@ -160,7 +160,7 @@ void GameManager::Run() {
 					player->setEnd(true);
 				}
 				else if (player->getRoom() != currentScene->getRoom()->getName()) {
-					cout << "Room switching" << endl;
+					//cout << "Room switching" << endl;
 					SceneSwitch(player->getRoom());
 				}
 			}

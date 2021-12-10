@@ -160,11 +160,13 @@ void Scene0::OnDestroy() {
 }
 
 void Scene0::Update(const float deltaTime) {
-	if (monster->getRoom() == room->getName() && monster->getState() != TInactive) {
+	if (monster->getRoom() == room->getName() 
+		&& monster->getState() != TInactive
+		&& monster->getState() != TRoomSwitch) {
 		monsterExist = true;
 	}
 
-	timeCount += deltaTime;
+
 	if (timeCount >= 3.0f && (monster->getState() == TRoomSwitch)) {
 		monster->setState(THunt);
 	}
@@ -179,7 +181,9 @@ void Scene0::Update(const float deltaTime) {
 	}
 
 	//Monster checks
-	if (monsterExist && (monster->getState() != TRoomSwitch)) {
+	if (monsterExist 
+		&& (monster->getState() != TRoomSwitch)
+		&& (monster->getState() != TInactive)) {
 		if (Physics::InteractionDetect(*player, *monster)) {
 			//cout << monster->getState();
 			//cout << "Switch to Hunt" << endl;
@@ -198,6 +202,7 @@ void Scene0::Update(const float deltaTime) {
 		player->Update(deltaTime);
 	}
 
+	timeCount += deltaTime;
 
 	//Player boundaries
 	Vec3 playerWorld = player->getPos();
@@ -379,7 +384,9 @@ void Scene0::Render() {
 		}
 
 		//Monster Render
-		if (monsterExist && (monster->getState() != TRoomSwitch)) {
+		if (monsterExist 
+			&& (monster->getState() != TRoomSwitch)
+			&& (monster->getState() != TInactive)) {
 			
 			if (monster->getIsMoving() == true)
 			{
@@ -432,20 +439,8 @@ void Scene0::Render() {
 		square.h = h * 3;
 		SDL_SetTextureBlendMode(light->getTexture(), SDL_BLENDMODE_MOD);
 		SDL_SetTextureAlphaMod(light->getTexture(), 251);
-		//SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
-	//Player dead
-	//else if (!player->getAlive()) {
-	//	int windowW, windowH;
-	//	SDL_GetWindowSize(window, &windowW, &windowH);
-	//	SDL_QueryTexture(deadScene->getTexture(), nullptr, nullptr, &w, &h);
-	//	screenCoords = projectionMatrix * Vec3(0.0f, 0.0f, 0.0f);
-	//	square.x = static_cast<int> (screenCoords.x - w / 2);
-	//	square.y = static_cast<int> (screenCoords.y - h / 2);
-	//	square.w = windowW;
-	//	square.h = windowH;
-	//	SDL_RenderCopyEx(renderer, deadScene->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-	//}
 
 	SDL_RenderPresent(renderer);
 }
@@ -502,8 +497,8 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						bool isSafe = monster->isSafeRoom(player->getRoom());
 						if (!isSafe) {
 							cout << "Not Safe" << endl;
-							cout << "Switch RoomSwitch" << endl;
 							monster->setState(TRoomSwitch);
+							cout << "Monster room switch" << endl;
 							timeCount = 0;
 							monster->switchRoom(player->getRoom());
 						}

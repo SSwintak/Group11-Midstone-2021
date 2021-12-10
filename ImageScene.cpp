@@ -36,7 +36,7 @@ bool ImageScene::OnCreate() {
 
 	//Set dead scene
 	if (!player->getAlive()) {
-		imageDisplayed = new ImageTexture("HorrorSchool_DeathScreen_1_576.png");
+		imageDisplayed = new ImageTexture("HorrorSchool_DeathScreen_1_576p.png");
 	}
 	//Set end scene
 	else {
