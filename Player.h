@@ -7,9 +7,16 @@
 #include "GameObject.h"
 #include <vector>
 
+enum GameProgress {
+	GTheEntry = 0,
+	GTheSchool,
+	GFirstEncounter,
+	GSecondChase,
+	GStaffRoom,
+};
+
 
 class Player : public Body {
-
 
 private:
 	vector<string> inventory;
@@ -18,12 +25,11 @@ private:
 	bool hint2;
 	bool hint3;
 	bool alive;
-
-	
+	bool win;
+	GameProgress playerProgress;
+	Matrix4 camera;
 	
 public:
-
-	
 
 	Player(Vec3 pos_, Vec3 vel_, float mass_);
 	~Player();
@@ -45,11 +51,12 @@ public:
 	void switchRoom(string roomName_);
 	void setAlive(bool alive_) { alive = alive_; }
 	bool getAlive() { return alive; }
-	
-	
-	
-
-
+	void setWin(bool win_) { win = win_; }
+	bool getWin() { return win; }
+	void setProgress(GameProgress progress_) { playerProgress = progress_;	}
+	GameProgress getProgress() { return playerProgress; }
+	void setCamera(Matrix4 camera_) { camera = camera_; }
+	Matrix4 getCamera() { return camera; }
 };
 
 #endif

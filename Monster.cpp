@@ -4,17 +4,14 @@
 #include "Data.h"
 #include "Player.h"
 
-//bool Monster::normalState;
-//bool Monster::huntState;
-//string Monster::currRoom;
 
 Monster::Monster(){
 	currRoom = "Classroom3";
 	monsterState = TNormal;
 	setimageName("HorrorSchool_Monster_2_wandering_2.png");
-	detectionRange = 2.0f;
-	setPos(Vec3(5.0f, 10.0f, 0.0f));
-	addSafeRoom("Custodian");
+	detectionRange = 3.0f;
+	setPos(Vec3(10.0f, 0.0f, 0.0f));
+	addSafeRoom("Classroom1");
 }
 
 Monster::~Monster() {
@@ -54,7 +51,7 @@ void Monster::Update(float deltaTime){
 		}
 		//delete curr_Room;
 	}
-	if (monsterState == THunt) {
+	else if (monsterState == THunt) {
 		setIsMoving(true);
 		// do something
 		//vel.x = 2.0f;
@@ -63,7 +60,10 @@ void Monster::Update(float deltaTime){
 		if (vel.x <= 0.0f) { setFlip(SDL_FLIP_HORIZONTAL); }
 		else if (vel.x >= 0.0f) { setFlip(SDL_FLIP_NONE); }
 	}
-	
+	else if (monsterState == TRoomSwitch) {
+		vel = Vec3(0.0f, 0.0f, 0.0f);
+	}
+
 }
 
 void Monster::On_Destroy(){
@@ -84,3 +84,17 @@ bool Monster::isSafeRoom(string room_){
 
 	return false;
 }
+
+void Monster::switchRoom(string roomName_) {
+	prevRoom = currRoom;
+	currRoom = roomName_;
+}
+
+void Monster::reset(){
+	currRoom = "Classroom3";
+	monsterState = TNormal;
+	setIsMoving(false);
+	setVel(Vec3(0.0f, 0.0f, 0.0f));
+	setPos(Vec3(10.0f, 0.0f, 0.0f));
+}
+
