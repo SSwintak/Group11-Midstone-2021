@@ -16,7 +16,6 @@
 ImageScene::ImageScene(SDL_Window* sdlWindow_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	cout << "ImageScene" << endl;
 }
 
 ImageScene::~ImageScene(){
@@ -37,14 +36,21 @@ bool ImageScene::OnCreate() {
 
 	//Set dead scene
 	if (!player->getAlive()) {
-		deadScene = new ImageTexture("HorrorSchool_DeathScreen_1.png");
-		if (!ImageTextureSetup(deadScene)) {
-			return false;
-		}
-		return true;
+		imageDisplayed = new ImageTexture("HorrorSchool_DeathScreen_1_576.png");
 	}
+	//Set end scene
+	else {
+		if (player->searchInventory("PoliceDoc")) {
+			imageDisplayed = new ImageTexture("End2.png");
+		} else{
+			imageDisplayed = new ImageTexture("End1.png");
+		}
 
-
+	}
+	if (!ImageTextureSetup(imageDisplayed)) {
+		return false;
+	}
+	return true;
 }
 
 
@@ -92,19 +98,15 @@ void ImageScene::Render() {
 	Vec3 screenCoords;
 	int w, h;
 	static double rot = 0.0f;
-	//Player dead
-	if (!player->getAlive()) {
-		int windowW, windowH;
-		SDL_GetWindowSize(window, &windowW, &windowH);
-		SDL_QueryTexture(deadScene->getTexture(), nullptr, nullptr, &w, &h);
-		screenCoords = projectionMatrix * Vec3(4.0f, -2.0f, 0.0f);
-		square.x = static_cast<int> (screenCoords.x - w / 2);
-		square.y = static_cast<int> (screenCoords.y - h / 2);
-		square.w = windowW;
-		square.h = windowH;
-		SDL_RenderCopyEx(renderer, deadScene->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-	}
-
+	//Dislay image
+	SDL_GetWindowSize(window, &w, &h);
+	SDL_QueryTexture(imageDisplayed->getTexture(), nullptr, nullptr, &w, &h);
+	screenCoords = projectionMatrix * Vec3(0.0f, 0.0f, 0.0f);
+	square.x = static_cast<int> (screenCoords.x - w / 2);
+	square.y = static_cast<int> (screenCoords.y - h / 2);
+	square.w = w;
+	square.h = h;
+	SDL_RenderCopyEx(renderer, imageDisplayed->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
 	SDL_RenderPresent(renderer);
 }

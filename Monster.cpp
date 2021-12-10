@@ -89,10 +89,6 @@ void Monster::switchRoom(string roomName_) {
 }
 
 void Monster::reset(){
-	currRoom = "Classroom3";
-	monsterState = TNormal;
-	setIsMoving(false);
-	setVel(Vec3(0.0f, 0.0f, 0.0f));
-	setPos(Vec3(10.0f, 0.0f, 0.0f));
+
 }
 

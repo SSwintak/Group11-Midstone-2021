@@ -24,7 +24,7 @@ private:
 	Matrix4 projectionMatrix;
 	SDL_Renderer *renderer;
 	Matrix4 invProjectionMatrix;
-	ImageTexture *deadScene;
+	ImageTexture *imageDisplayed;
 	Vec3 worldSizeScreenCoords;
 
 	bool ImageTextureSetup(ImageTexture *target_);

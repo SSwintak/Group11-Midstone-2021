@@ -6,10 +6,10 @@ Player::Player(Vec3 pos_, Vec3 vel_, float mass_) :
 	hint2 = false;
 	hint3 = false;
 	alive = true;
-	win = false;
-	prevRoom = "Custodian";
+	end = false;
+	prevRoom = "Entry";
 	setimageName("PlayerWalk_Sheet.png");
-	setRoom("Custodian");
+	setRoom("Entry");
 	playerProgress = GTheEntry;
 }
 
@@ -96,7 +96,13 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 			else {
 				//Check inventory for required key
 				if (searchInventory(item_->getRequiredKey())) {
-					item_->displayDescription();
+					if (item_->getName() == "FuseBox") {
+						addInventory("ExitKey");
+						cout << "ExitKey added" << endl;
+					}
+					else {
+						item_->displayDescription();
+					}
 					return true;
 				}
 				else {
@@ -147,12 +153,15 @@ void Player::Update(float deltaTime) {
 			playerProgress = GFirstEncounter;
 		}
 	}
-	else if (playerProgress == GTheSchool) {
+	if (playerProgress == GTheSchool) {
 		hint2 = true;
 	}
-
-
-
+	else if (playerProgress == GStaffRoom) {
+		if (currRoom == "BreakRoom" && !hint3) {
+			hint3 = true;
+			cout << "Acquire hint3" << endl;
+		}
+	}
 }
 
 bool Player::searchInventory(string item_)
@@ -167,6 +176,19 @@ bool Player::searchInventory(string item_)
 
 void Player::addInventory(string item_) {
 	inventory.push_back(item_);
+	if (item_ == "StickyNote") {
+		playerProgress = GSecondFloor;
+	}
+
+}
+
+int Player::getHintNum(){
+	int count = 0;
+	if (hint1) count++;
+	if (hint2) count++;
+	if (hint3) count++;
+
+	return count;
 }
 
 void Player::switchRoom(string roomName_){
@@ -174,7 +196,6 @@ void Player::switchRoom(string roomName_){
 		prevRoom = currRoom;
 		currRoom = roomName_;
 	}
-
 }
 
 
