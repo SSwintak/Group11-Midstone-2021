@@ -6,11 +6,9 @@ Player::Player(Vec3 pos_, Vec3 vel_, float mass_) :
 	hint2 = false;
 	hint3 = false;
 	alive = true;
-	win = false;
 	prevRoom = "Custodian";
 	setimageName("PlayerWalk_Sheet.png");
 	setRoom("Custodian");
-	playerProgress = GTheEntry;
 }
 
 Player::~Player(){
@@ -109,7 +107,6 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 			//add this to the player's inventory
 			//remove this item from room
 			addInventory(item_->getName());
-			item_->displayDescription();
 			cout << item_->getName() << " is added to the inventory" << endl;
 			return true;
 		}
@@ -135,24 +132,6 @@ void Player::Update(float deltaTime) {
 		pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
 		collide = false;
 	}
-	//Set events for hints
-	if (playerProgress == GTheEntry) {
-		if (currRoom == "Hallway") {
-			playerProgress = GTheSchool;
-		}
-	}
-	else if (playerProgress == GTheSchool) {
-		if (currRoom == "Hallway" && prevRoom == "Classroom3") {
-			hint1 = true;
-			playerProgress = GFirstEncounter;
-		}
-	}
-	else if (playerProgress == GTheSchool) {
-		hint2 = true;
-	}
-
-
-
 }
 
 bool Player::searchInventory(string item_)
@@ -170,11 +149,8 @@ void Player::addInventory(string item_) {
 }
 
 void Player::switchRoom(string roomName_){
-	if (currRoom != roomName_) {
-		prevRoom = currRoom;
-		currRoom = roomName_;
-	}
-
+	prevRoom = currRoom;
+	currRoom = roomName_;
 }
 
 

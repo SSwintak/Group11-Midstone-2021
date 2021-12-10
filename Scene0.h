@@ -32,11 +32,9 @@ private:
 	Matrix4 projMa;
 	Vec3 worldSizeScreenCoords;
 	bool monsterExist;
-	float timeCount;
-	bool camera;
-	Vec3 projectionLoc;
-
-	bool ImageTextureSetup(ImageTexture *target_, bool animate);
+	
+	bool ImageTextureSetup(ImageTexture *target_, bool animate); 
+	
 
 public:
 	Scene0(SDL_Window* sdlWindow, Room* roomName_);

@@ -91,36 +91,9 @@ void Map::loadRooms() {
 				room->addConnectedRooms(connectedDoor);
 		}
 		//Add the room to the list
-		DoorSetup(room);
 		roomList.push_back(room);
 		content.erase(0, content.find("|") + 1);
 		content.erase(0, content.find("\n") + 1);
-	}
-}
-
-void Map::DoorSetup(Room *room_) {
-	string roomName_ = room_->getName();
-	if (roomName_ == "Custodian") {
-		for (Door* door : room_->getConnectedRooms()) {
-			if (door->getName() == "Hallway") {
-				door->setLocked(true);
-				door->setRequiredKey("BKey");
-				door->setDescription("The door's locked but the lock is loose. There has to be a way for me to break this open");
-			}
-		}
-	}
-	else if (roomName_ == "Hallway") {
-		for (Door* door : room_->getConnectedRooms()) {
-			if (door->getName() == "Custodian") {
-				door->setLocked(true);
-				door->setDescription("It's blocked.");
-			}
-			if (door->getName() == "StaffRoom") {
-				door->setLocked(true);
-				door->setRequiredKey("Classroom3Key");
-				door->setDescription("I might find some clues in this room but it's locked");
-			}
-		}
 	}
 }
 

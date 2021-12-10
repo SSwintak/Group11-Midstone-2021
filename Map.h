@@ -33,7 +33,6 @@ public:
 	Room* searchRoom(string roomName_);
 	void loadRooms();
 	void On_Destroy();
-	void DoorSetup(Room *room_);
 
 };
 

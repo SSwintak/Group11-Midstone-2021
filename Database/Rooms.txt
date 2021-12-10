@@ -1,14 +1,14 @@
 Custodian
 1280 720
-HorrorSchoolClassRoom_1_720p.png
-Fuse,BKey,
+HorrorSchoolLockers_2_720p.png
+Fuse,FlashLight,
 Hallway(-30.0,0.0,0.0)/
 |
 Hallway
 1280 720
 HorrorSchoolLockers_2_720p.png
 ,
-Custodian(-25.0,-3.0,0.0)/Classroom1(-10.0,-3.0,0.0)/Classroom2(5.0,-3.0,0.0)/Classroom3(20.0,-3.0,0.0)/
+Custodian(-25.0,-3.0,0.0)/Classroom1(-10.0,-3.0,0.0)/Classroom2(0.0,-3.0,0.0)/Classroom3(15.0,-3.0,0.0)/
 |
 Classroom1
 1280 720
@@ -24,8 +24,8 @@ Hallway(-25.0,8.0,0.0)/
 |
 Classroom3
 1280 720
-HorrorSchoolClassRoom_1_720p.png
-Classroom3Key,
+HorrorSchoolClassRoom_1_1080p.png
+,
 Hallway(-25.0,8.0,0.0)/
 |
 StaffRoom
