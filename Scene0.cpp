@@ -55,11 +55,12 @@ bool Scene0::OnCreate() {
 	Mix_AllocateChannels(MAX_SND_CHANNELS);
 
 	Mix_Chunk* TestMusic = NULL;
-	TestMusic = Mix_LoadWAV("audio/Loadingloop.wav");
+	TestMusic = Mix_LoadWAV("audio/Dark Ambience Loop.mp3");
 	if (TestMusic == NULL)
 	{
 		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
 	}
+	Mix_Volume(-1, MIX_MAX_VOLUME / 8);
 	if (Mix_PlayingMusic() == 0)
 	{
 		//Play the music
