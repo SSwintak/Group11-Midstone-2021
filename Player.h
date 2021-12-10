@@ -47,6 +47,7 @@ public:
 	bool getAlive() { return alive; }
 	
 	
+	
 
 
 };

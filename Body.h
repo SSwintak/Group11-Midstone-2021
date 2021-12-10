@@ -27,6 +27,7 @@ protected:
 	Vec3 accel;
 	float mass;
 	float detectionRange;
+	
 
 	bool collide;
 	string currRoom;
@@ -59,7 +60,7 @@ public:
 	void setIsMoving(bool isMoving_) { isMoving = isMoving_; }
 	SDL_RendererFlip getFlip() { return flip; }
 	void setFlip(SDL_RendererFlip flip_) { flip = flip_; }
-
+	
 	enum TypeID
 	{
 		TGameObject = 0,

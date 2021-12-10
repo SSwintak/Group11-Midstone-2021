@@ -2,6 +2,7 @@
 #define SCENE_H
 #include <SDL.h>
 
+
 class Scene {
 private:
 	class Room *room;

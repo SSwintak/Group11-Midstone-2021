@@ -29,6 +29,7 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 		monsterExist = false;
 	}
 
+
 }
 
 Scene0::~Scene0(){
@@ -86,10 +87,13 @@ bool Scene0::OnCreate() {
 	if (!ImageTextureSetup(deadScene, false)) {
 		return false;
 	}
+
+
 	return true;
 }
 
 
+	
 
 bool Scene0::ImageTextureSetup(ImageTexture *target_, bool animate) {
 	string image = "image/";
@@ -109,7 +113,8 @@ bool Scene0::ImageTextureSetup(ImageTexture *target_, bool animate) {
 		Vec3 ulWorld = invProjectionMatrix * upperLeft;
 		Vec3 lowerRight(static_cast<float>(targetImage->w), static_cast<float>(targetImage->h), 0.0f);
 		if (animate) {
-			lowerRight = Vec3(82.0f, 273.0f, 0.0f);
+					
+			lowerRight = Vec3(82.0f, 273.0f, 0.0f);		
 			//cout << "is gameobject" << endl;
 		}
 		Vec3 lrWorld = invProjectionMatrix * lowerRight;
@@ -120,6 +125,36 @@ bool Scene0::ImageTextureSetup(ImageTexture *target_, bool animate) {
 
 		SDL_FreeSurface(targetImage);
 	}
+
+	if (monsterExist)
+	{
+		string image = "image/";
+		image.append(monster->getimageName());
+		SDL_Surface* targetImage = IMG_Load(image.c_str());//loading the image file
+		SDL_Texture* targetTexture = SDL_CreateTextureFromSurface(renderer, targetImage);//loading and rendering the images' texture
+		if (targetTexture == nullptr) printf("%s\n", SDL_GetError());// classic null checks
+		if (targetImage == nullptr)
+		{
+			std::cerr << "Can't open the image" << monster->getimageName() << std::endl;
+			return false;
+		}
+		else
+		{
+
+			Vec3 upperLeft(0.0f, 0.0f, 0.0f);
+			Vec3 ulWorld = invProjectionMatrix * upperLeft;
+			Vec3 lowerRight = Vec3(100.0f, 200.0f, 0.0f);
+		
+			Vec3 lrWorld = invProjectionMatrix * lowerRight;
+			Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
+
+			monster->setTexture(targetTexture);
+			monster->setImageSizeWorldCoords(worldCoordsFromScreenCoords);
+
+			SDL_FreeSurface(targetImage);
+		}
+	}
+
 
 	return true;
 }
@@ -288,7 +323,7 @@ void Scene0::Render() {
 		//Player render
 		if (player->getIsMoving() == true)
 		{
-
+			
 			int totalFrames = 7;
 			int delayPerFrame = 100;
 			float spriteOffset = 10;//only use if there is an offset in the sprite sheet
@@ -351,7 +386,7 @@ void Scene0::Render() {
 				int frame2 = (static_cast<int>(SDL_GetTicks() / delayPerFrame2) % totalFrames2);
 				square.x = frame2 * (square.w + spriteOffset2);//spriteOffset, added because there is an offset in the player sprite sheet
 
-				SDL_RenderCopyEx(renderer, monster->getTexture(), &square, &dstRect, rot, nullptr, SDL_FLIP_NONE);
+				SDL_RenderCopyEx(renderer, monster->getTexture(), &square, &dstRect, rot, nullptr, monster->getFlip());
 
 			}
 			else
@@ -368,7 +403,7 @@ void Scene0::Render() {
 				dstRect.w = 146;
 				dstRect.h = 294;
 
-				SDL_RenderCopyEx(renderer, monster->getTexture(), &square, &dstRect, rot, nullptr, SDL_FLIP_NONE);
+				SDL_RenderCopyEx(renderer, monster->getTexture(), &square, &dstRect, rot, nullptr, monster->getFlip());
 			}
 			
 		}

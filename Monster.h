@@ -32,6 +32,7 @@ public:
 	void addSafeRoom(string safeRoom_);
 	bool isSafeRoom(string room_);
 	vector<string> getSafeRooms() { return safeRooms; }
+	
 
 };
 

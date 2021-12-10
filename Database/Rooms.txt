@@ -12,25 +12,25 @@ Custodian(-25.0,-3.0,0.0)/Classroom1(-10.0,-3.0,0.0)/Classroom2(0.0,-3.0,0.0)/Cl
 |
 Classroom1
 1280 720
-HorrorSchoolClassRoom_1_720p.png
+HorrorSchoolClassRoom_1_1080p.png
 ,
 Hallway(-25.0,8.0,0.0)/
 |
 Classroom2
 1280 720
-HorrorSchoolClassRoom_1_720p.png
+HorrorSchoolClassRoom_1_1080p.png
 ,
 Hallway(-25.0,8.0,0.0)/
 |
 Classroom3
 1280 720
-HorrorSchoolClassRoom_1_720p.png
+HorrorSchoolClassRoom_1_1080p.png
 ,
 Hallway(-25.0,8.0,0.0)/
 |
 StaffRoom
 1280 720
-HorrorSchoolClassRoom_1_720p.png
+HorrorSchoolClassRoom_1_1080p.png
 Fuse,FlashLight,
 Hallway(20.0,0.0,0.0)/
 |

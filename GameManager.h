@@ -3,10 +3,13 @@
 #include <SDL.h>
 #include "Scene.h"
 #include "Player.h"
+#include "Menu.h"
 
 
 class GameManager {
 	friend class Scene0;
+	friend class Scene1;
+	friend class Menu;
 	
 	
 
@@ -23,8 +26,10 @@ private:
 	class Window *windowPtr;
 	class Timer *timer;
 	bool isRunning;
+	bool gameStart;
 	Scene *currentScene;
-
+	
+	
 public:
 	GameManager();
 	~GameManager();

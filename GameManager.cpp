@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Timer.h"
 #include "Scene0.h"
+#include "Scene1.h"
 #include <iostream>
 #include "ItemPool.h"
 #include "Map.h"
@@ -12,7 +13,10 @@ GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
 	isRunning = true;
+	gameStart = false;
 	currentScene = nullptr;
+	
+	
 
 	itemPool.loadItems();
 	map.loadRooms();
@@ -45,7 +49,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Custodian"));
+	currentScene = new Scene1(windowPtr->GetSDL_Window());
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -60,6 +64,8 @@ bool GameManager::OnCreate() {
 		OnDestroy();
 		return false;
 	}
+
+	
 
 	return true;
 }
@@ -82,28 +88,67 @@ void GameManager::Run() {
 				{
 				case SDL_SCANCODE_ESCAPE:
 					isRunning = false;
+									
+					
+					break;					
+									
+
+				case SDL_SCANCODE_SPACE:		
+					
+					if (!gameStart)
+					{
+						gameStart = true;
+						//SceneSwitch("Custodian");
+						currentScene->OnDestroy();
+						if (currentScene) delete currentScene;
+						player->setRoom("Custodian");
+						currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("Custodian"));
+						currentScene->OnCreate();
+						
+					}
+					
+					
+					
 					break;
 
-				case SDL_SCANCODE_F1:
-					SceneSwitch("Custodian");
+				
+					
 					break;
 
 				default:
 					break;
 				}
+
+
+				
+
+				
 			}
+			
 			currentScene->HandleEvents(sdlEvent);
+			
 		}
 
 		timer->UpdateFrameTicks();
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
 
-		//Player switch room
-		if (player->getRoom() != currentScene->getRoom()->getName()) {
-			cout << "Room switching" << endl;
-			SceneSwitch(player->getRoom());
+		if (gameStart)
+		{
+			//Player switch room
+			if (player->getRoom() != currentScene->getRoom()->getName()) {
+				cout << "Room switching" << endl;
+				SceneSwitch(player->getRoom());
+			}
 		}
+
+		
+		
+		
+		
+
+		
+		
 
 		/// Keep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
@@ -112,7 +157,7 @@ void GameManager::Run() {
 
 void GameManager::SceneSwitch(string roomName_){
 	currentScene->OnDestroy();
-	delete currentScene;
+	if (currentScene) delete currentScene;
 	Room *room = map.searchRoom(roomName_);
 	Vec3 newPlayerLoc = room->searchConnectedRooms(player->getPrevRoom())->getPos();
 	player->setPos(newPlayerLoc);
@@ -133,6 +178,10 @@ void GameManager::OnDestroy(){
 	map.On_Destroy();
 	delete monster;
 	if (player) delete player;
+	
+
+	
+	
 
 }
 

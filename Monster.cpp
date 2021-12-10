@@ -12,8 +12,8 @@ Monster::Monster(){
 	currRoom = "Classroom3";
 	monsterState = TNormal;
 	setimageName("HorrorSchool_Monster_2_wandering_2.png");
-	detectionRange = 3.0f;
-	setPos(Vec3(10.0f, 0.0f, 0.0f));
+	detectionRange = 2.0f;
+	setPos(Vec3(5.0f, 10.0f, 0.0f));
 	addSafeRoom("Custodian");
 }
 
@@ -60,7 +60,10 @@ void Monster::Update(float deltaTime){
 		//vel.x = 2.0f;
 		Vec3 playerDirection = VMath::normalize(player->getPos() - getPos());
 		vel = playerDirection * 4.0f;
+		if (vel.x <= 0.0f) { setFlip(SDL_FLIP_HORIZONTAL); }
+		else if (vel.x >= 0.0f) { setFlip(SDL_FLIP_NONE); }
 	}
+	
 }
 
 void Monster::On_Destroy(){

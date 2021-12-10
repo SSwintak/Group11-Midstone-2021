@@ -1,5 +1,5 @@
-#ifndef SCENE0_H
-#define SCENE0_H
+#ifndef SCENE1_H
+#define SCENE1_H
 
 
 #include "Scene.h"
@@ -16,7 +16,7 @@ using namespace std;
 union SDL_Event;
 class ImageTexture;
 
-class Scene0 : public Scene{
+class Scene1 : public Scene{
 	friend class TextureManager;
 
 private:
@@ -24,28 +24,32 @@ private:
 	Matrix4 projectionMatrix;
 	SDL_Renderer *renderer;
 	Matrix4 invProjectionMatrix;
-	class Room *room;
-	ImageTexture *light;
-	ImageTexture *deadScene;
-	int roomHeight;
-	int roomWidth;
 	Matrix4 projMa;
 	Vec3 worldSizeScreenCoords;
-	bool monsterExist;
 	
-	bool ImageTextureSetup(ImageTexture *target_, bool animate); 
+	ImageTexture* mainMenu;
+	ImageTexture* playButton;
+	ImageTexture* quitButton;
+
+	Menu* menu;
+	
+
+	bool ImageTextureSetup(ImageTexture *target_); 
 	
 
 public:
-	Scene0(SDL_Window* sdlWindow, Room* roomName_);
-	~Scene0();
+	Scene1(SDL_Window* sdlWindow);
+	~Scene1();
 	bool OnCreate();
 	void OnDestroy();
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
-	Room* getRoom() { return room; }
-
+	
+	Room* getRoom()
+	{
+		return nullptr;
+	}
 	
 };
 
