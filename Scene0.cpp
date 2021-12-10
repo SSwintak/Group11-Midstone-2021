@@ -48,8 +48,14 @@ bool Scene0::OnCreate() {
 	projMa = projectionMatrix;
 
 	//Test Sound
+		//Load Audio Mixer
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) == -1) {
+		cout << "Couldn't initialize SDL Mixer" << endl;
+	}
+	Mix_AllocateChannels(MAX_SND_CHANNELS);
+
 	Mix_Chunk* TestMusic = NULL;
-	TestMusic = Mix_LoadWAV("audio/shotty.ogg");
+	TestMusic = Mix_LoadWAV("audio/Loadingloop.wav");
 	if (TestMusic == NULL)
 	{
 		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());

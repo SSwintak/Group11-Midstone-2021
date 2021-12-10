@@ -62,11 +62,11 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	//Load Audio Mixer
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) == -1) {
-		cout << "Couldn't initialize SDL Mixer" << endl;
-	}
-	Mix_AllocateChannels(MAX_SND_CHANNELS);
+	////Load Audio Mixer
+	//if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) == -1) {
+	//	cout << "Couldn't initialize SDL Mixer" << endl;
+	//}
+	//Mix_AllocateChannels(MAX_SND_CHANNELS);
 	return true;
 }
 
