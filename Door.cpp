@@ -2,7 +2,7 @@
 
 Door::Door(string name_){
 	name = name_;
-	setimageName("DoorTest.png");
+	setimageName("Door_1_720p.png");
 	connectedRoom = name_;
 	detectionRange = 0.6f;
 	locked = false;

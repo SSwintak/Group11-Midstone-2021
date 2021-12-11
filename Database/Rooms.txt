@@ -1,6 +1,6 @@
 Custodian
 1280 720
-HorrorSchoolClassRoom_1_720p.png
+Custodian_720p.png
 BKey,
 Hallway(-30.0,0.0,0.0)/
 |
