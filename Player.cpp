@@ -97,8 +97,7 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 				//Check inventory for required key
 				if (searchInventory(item_->getRequiredKey())) {
 					if (item_->getName() == "FuseBox") {
-						addInventory("ExitKey");
-						cout << "ExitKey added" << endl;
+						hint5 = true;
 					}
 					else {
 						item_->displayDescription();
@@ -117,6 +116,17 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 			addInventory(item_->getName());
 			item_->displayDescription();
 			cout << item_->getName() << " is added to the inventory" << endl;
+			//acquire sticky note = acquire hint4
+			if (item_->getName() == "LoseShoe") {
+				hint2 = true;
+			}
+			if (item_->getName() == "PoliceDoc") {
+				hint3 = true;
+			}
+			if (item_->getName() == "StickyNote") {
+				hint4 = true;
+				playerProgress = GSecondFloor;
+			}
 			return true;
 		}
 		//Static object cannot be interacted with
@@ -147,21 +157,6 @@ void Player::Update(float deltaTime) {
 			playerProgress = GTheSchool;
 		}
 	}
-	else if (playerProgress == GTheSchool) {
-		if (currRoom == "Hallway" && prevRoom == "Classroom3") {
-			hint1 = true;
-			playerProgress = GFirstEncounter;
-		}
-	}
-	if (playerProgress == GTheSchool) {
-		hint2 = true;
-	}
-	else if (playerProgress == GStaffRoom) {
-		if (currRoom == "BreakRoom" && !hint3) {
-			hint3 = true;
-			cout << "Acquire hint3" << endl;
-		}
-	}
 }
 
 bool Player::searchInventory(string item_)
@@ -176,10 +171,6 @@ bool Player::searchInventory(string item_)
 
 void Player::addInventory(string item_) {
 	inventory.push_back(item_);
-	if (item_ == "StickyNote") {
-		playerProgress = GSecondFloor;
-	}
-
 }
 
 int Player::getHintNum(){

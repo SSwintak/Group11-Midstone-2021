@@ -45,6 +45,8 @@ Door* Room::searchConnectedRooms(string roomName_){
 	return nullptr;
 }
 
+
+
 void Room::removeItem(string itemName_){
 	for (int i = 0; i < itemList.size(); i++) {
 		if (itemList[i]->getName() == itemName_) {

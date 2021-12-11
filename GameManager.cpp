@@ -86,60 +86,11 @@ void GameManager::Run() {
 				{
 				case SDL_SCANCODE_ESCAPE:
 					isRunning = false;
-
-
 					break;
 
 				case SDL_SCANCODE_F1:
 					SceneSwitch("Custodian");
 					break;
-
-				case SDL_SCANCODE_F2:
-					currentScene->OnDestroy();
-					delete currentScene;
-					player->setPrevRoom("Hallway");
-					player->setRoom("StaffRoom");
-					player->hint1Get();
-					player->hint2Get();
-					player->hint3Get();
-					player->setProgress(GStaffRoom);
-					player->addInventory("ExitKey");
-					player->setPos(Vec3(-15.0f, -3.0f, 0.0f));
-					player->setEnd(false);
-					currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("StaffRoom"));
-					currentScene->OnCreate();
-					break;
-
-				case SDL_SCANCODE_F3:
-					currentScene->OnDestroy();
-					delete currentScene;
-					player->setPrevRoom("Hallway");
-					player->setRoom("StaffRoom");
-					player->hint1Get();
-					player->hint2Get();
-					player->hint3Get();
-					player->setProgress(GStaffRoom);
-					player->addInventory("ExitKey");
-					player->addInventory("PoliceDoc");
-					player->setPos(Vec3(-15.0f, -3.0f, 0.0f));
-					player->setEnd(false);
-					currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("StaffRoom"));
-					currentScene->OnCreate();
-					break;
-
-				case SDL_SCANCODE_F4:
-					currentScene->OnDestroy();
-					delete currentScene;
-					player->setPrevRoom("Hallway");
-					player->setRoom("SecondFloor");
-					player->hint1Get();
-					player->hint2Get();
-					player->hint3Get();
-					player->setProgress(GSecondFloor);
-					//player->addInventory("Fuse");
-					player->setPos(Vec3(-25.0f, -3.0f, 0.0f));
-					currentScene = new Scene0(windowPtr->GetSDL_Window(), map.searchRoom("SecondFloor"));
-					currentScene->OnCreate();
 
 				case SDL_SCANCODE_SPACE:
 
@@ -154,13 +105,6 @@ void GameManager::Run() {
 						currentScene->OnCreate();
 
 					}
-
-
-
-					break;
-
-
-
 					break;
 
 				case SDL_SCANCODE_Q:
@@ -172,14 +116,9 @@ void GameManager::Run() {
 					break;
 				}
 
-
-
-
-
 			}
 
 			currentScene->HandleEvents(sdlEvent);
-
 		}
 
 		timer->UpdateFrameTicks();
@@ -194,6 +133,7 @@ void GameManager::Run() {
 						SceneSwitch("End");
 						player->setEnd(true);
 					}
+					//Player switch room
 					else if (player->getRoom() != currentScene->getRoom()->getName()) {
 						//cout << "Room switching" << endl;
 						SceneSwitch(player->getRoom());
@@ -205,10 +145,17 @@ void GameManager::Run() {
 				}
 			}
 
-
+			//First encounter progress
+			if (player->getProgress() == GTheSchool) {
+				if (player->getRoom() == "Hallway" && 
+					player->getPrevRoom() == "Classroom3" &&
+					monster->getState() == TRoomSwitch) {
+					player->hint1Get();
+					player->setProgress(GFirstEncounter);
+				}
+			}
 			//Monster Second Chase Part
 			if (player->getProgress() == GFirstEncounter &&
-				player->searchInventory("Classroom3Key") &&
 				player->getRoom() == "Hallway" &&
 				player->getPos().x <= 5.0f) {
 				//Spawn monster
@@ -218,7 +165,7 @@ void GameManager::Run() {
 				monster->setState(THunt);
 				player->setProgress(GSecondChase);
 			}
-			//If first encounter, disable monster
+			//Disable monster when reaches ceratin progress
 			else if (player->getProgress() == GFirstEncounter) {
 				monster->setState(TInactive);
 			}
@@ -226,7 +173,7 @@ void GameManager::Run() {
 				monster->setState(TInactive);
 			}
 			else if (player->getPrevRoom() == "Custodian" &&
-				player->searchInventory("ExitKey") &&
+				player->getHintNum() >= 5 &&
 				player->getProgress() == GSecondFloor &&
 				player->getPos().x <= 15.0f) {
 				cout << "Last chase" << endl;
@@ -236,15 +183,32 @@ void GameManager::Run() {
 				player->setProgress(GEscape);
 			}
 
+
+			//Unlock doors in Hallway when player is at StaffRoom progress
+			if (player->getProgress() == GStaffRoom) {
+				Room* room = map.searchRoom("Hallway");
+				room->searchConnectedRooms("Classroom2")->setLocked(false);
+				room->searchConnectedRooms("Classroom3")->setLocked(false);
+			}
+			if (player->getProgress() == GFirstEncounter) {
+				Room* room = map.searchRoom("Hallway");
+				room->searchConnectedRooms("Classroom3")->setLocked(true);
+			}
+
 			//Hint related events
+			if (player->getHintNum() >= 2) {
+				Room* room = map.searchRoom("StaffRoom");
+				room->searchConnectedRooms("BreakRoom")->setLocked(false);
+			}
 			if (player->getHintNum() >= 3) {
 				Room* room = map.searchRoom("StaffRoom");
-				for (Door* door : room->getConnectedRooms()) {
-					if (door->getName() == "MeetingRoom") {
-						door->setLocked(false);
-					}
-				}
+				room->searchConnectedRooms("MeetingRoom")->setLocked(false);
 			}
+			if (player->getHintNum() >= 4) {
+				Room* room = map.searchRoom("Hallway");
+				room->searchConnectedRooms("SecondFloor")->setLocked(false);
+			}
+
 		}
 	
 		/// Keep the event loop running at a proper rate

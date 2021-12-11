@@ -62,3 +62,11 @@ PoliceDoc_Icon_1.png
 0.0,0.0,0.0
 PoliceDocument
 |
+LoseShoe
+Pickable
+None
+PoliceDoc_Icon_1.png
+0.0,-5.0,0.0
+0.0,0.0,0.0
+PoliceDocument
+|

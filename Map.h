@@ -35,6 +35,7 @@ public:
 	void On_Destroy();
 	void DoorSetup(Room *room_);
 
+
 };
 
 #endif

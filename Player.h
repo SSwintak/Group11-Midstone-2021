@@ -27,6 +27,8 @@ private:
 	bool hint1;
 	bool hint2;
 	bool hint3;
+	bool hint4;
+	bool hint5;
 	bool alive;
 	bool end;
 	GameProgress playerProgress;
@@ -50,6 +52,8 @@ public:
 	void hint1Get() { hint1 = true; };
 	void hint2Get() { hint2 = true; };
 	void hint3Get() { hint3 = true; };
+	void hint4Get() { hint4 = true; };
+	void hint5Get() { hint5 = true; };
 	int getHintNum();
 	void setRoom(string roomName_) { currRoom = roomName_; }
 	string getRoom() { return currRoom; }

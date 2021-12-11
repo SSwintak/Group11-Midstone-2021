@@ -14,7 +14,7 @@ SecondFloor
 2560 720
 HorrorSchoolLockers_2_Long.png
 ,
-Hallway(-25.0,-3.0,0.0)/Classroom4(-10.0,-3.0,0.0)/Classroom5(5.0,-3.0,0.0)/Washroom(15.0,-3.0,0.0)/Custodian(23.0,-3.0,0.0)/
+Hallway(-25.0,-3.0,0.0)/Classroom4(-10.0,-3.0,0.0)/Classroom5(5.0,-3.0,0.0)/Washroom(15.0,-3.0,0.0)/BreakerRoom(23.0,-3.0,0.0)/
 |
 Classroom1
 1280 720
@@ -37,13 +37,13 @@ Hallway(-25.0,8.0,0.0)/
 StaffRoom
 1280 720
 HorrorSchoolClassRoom_1_1080p.png
-,
-Hallway(-25.0,-7.0,0.0)/BreakRoom(-10.0,7.0,0.0)/MeetingRoom(10.0,-7.0,0.0)/Exit(20.0,7.0,0.0)/
+LoseShoe,
+Hallway(-25.0,-7.0,0.0)/BreakRoom(-10.0,7.0,0.0)/MeetingRoom(20.0,-7.0,0.0)/Exit(15.0,7.0,0.0)/
 |
 BreakRoom
 1280 720
 HorrorSchoolClassRoom_1_1080p.png
-Lighter,
+Lighter,PoliceDoc,
 StaffRoom(0.0,7.0,0.0)/
 |
 PrincipalOffice
@@ -76,7 +76,7 @@ HorrorSchoolClassRoom_1_1080p.png
 Fuse,
 SecondFloor(10.0,0.0,0.0)/
 |
-Custodian
+BreakerRoom
 1280 720
 HorrorSchoolClassRoom_1_1080p.png
 FuseBox,

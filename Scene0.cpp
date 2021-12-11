@@ -19,7 +19,9 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+	cout << "--------------------------------------" << endl;
 	cout << room->getName() << endl;
+	cout << "--------------------------------------" << endl;
 	roomHeight = room->getHeight();
 	roomWidth = room->getWidth();
 	timeCount = 0;
@@ -477,10 +479,10 @@ void Scene0::Render() {
 		//Light Render
 		SDL_QueryTexture(light->getTexture(), nullptr, nullptr, &w, &h);
 		screenCoords = projectionMatrix * player->getPos();
-		square.x = static_cast<int> (screenCoords.x - w / 2 * 3);
-		square.y = static_cast<int> (screenCoords.y - h / 2 * 3);
-		square.w = w * 3;
-		square.h = h * 3;
+		square.x = static_cast<int> (screenCoords.x - w / 2 * 4);
+		square.y = static_cast<int> (screenCoords.y - h / 2 * 4);
+		square.w = w * 4;
+		square.h = h * 4;
 		SDL_SetTextureBlendMode(light->getTexture(), SDL_BLENDMODE_MOD);
 		SDL_SetTextureAlphaMod(light->getTexture(), 251);
 		SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);

@@ -99,53 +99,57 @@ void Map::loadRooms() {
 }
 
 void Map::DoorSetup(Room *room_) {
+
 	string roomName_ = room_->getName();
-	if (roomName_ == "Entry") {
-		for (Door* door : room_->getConnectedRooms()) {
-			if (door->getName() == "Hallway") {
-				door->setLocked(true);
-				door->setRequiredKey("BKey");
-				door->setDescription("The door's locked but the lock is loose. There has to be a way for me to break this open");
-			}
-		}
+	Door* door;
+
+	if (roomName_ == "Custodian") {
+		door = room_->searchConnectedRooms("Hallway");
+		door->setLocked(true);
+		door->setRequiredKey("BKey");
+		door->setDescription("The door's locked but the lock is loose. There has to be a way for me to break this open");
 	}
 	else if (roomName_ == "Hallway") {
-		for (Door* door : room_->getConnectedRooms()) {
-			if (door->getName() == "Entry") {
-				door->setLocked(true);
-				door->setDescription("It's blocked.");
-			}
-			if (door->getName() == "StaffRoom") {
-				door->setLocked(true);
-				door->setRequiredKey("Classroom3Key");
-				door->setDescription("I might find some clues in this room but it's locked");
-			}
-			if (door->getName() == "StaffRoom") {
-				door->setLocked(true);
-				door->setRequiredKey("Classroom3Key");
-				door->setDescription("I might find some clues in this room but it's locked");
-			}
-			if (door->getName() == "SecondFloor") {
-				door->setLocked(true);
-				door->setimageName("DoubleDoor.png");
-				door->setDescription("I should try the staff room first.");
-				door->setRequiredKey("Lighter");
-				door->setDescription("It's Locked.");
-			}
-		}
+		
+		door = room_->searchConnectedRooms("Custodian");
+		door->setLocked(true);
+		door->setDescription("It's blocked.");
+
+		door = room_->searchConnectedRooms("StaffRoom");
+		door->setLocked(true);
+		door->setRequiredKey("Classroom3Key");
+		door->setDescription("I might find some clues in this room but it's locked");
+
+		door = room_->searchConnectedRooms("Classroom2");
+		door->setLocked(true);
+		door->setDescription("I might find some clues in this room but it's locked");
+
+		door = room_->searchConnectedRooms("Classroom3");
+		door->setDescription("Come back later.");
+
+
+		door = room_->searchConnectedRooms("SecondFloor");
+		door->setLocked(true);
+		door->setimageName("DoubleDoor.png");
+		door->setDescription("I should try the staff room first.");
+		door->setDescription("It's Locked.");
+
 	}
 	else if (roomName_ == "StaffRoom") {
-		for (Door* door : room_->getConnectedRooms()) {
-			if (door->getName() == "Exit") {
-				door->setLocked(true);
-				door->setRequiredKey("ExitKey");
-				door->setDescription("It seems to be an exit.");
-			}
-			else if (door->getName() == "MeetingRoom") {
-				door->setLocked(true);
-				door->setDescription("I should keep investigating.");
-			}
-		}
+		door = room_->searchConnectedRooms("Exit");
+		door->setLocked(true);
+		door->setRequiredKey("ExitKey");
+		door->setDescription("It seems to be an exit.");
+
+		door = room_->searchConnectedRooms("MeetingRoom");
+		door->setLocked(true);
+		door->setDescription("I should keep investigating.");
+
+		door = room_->searchConnectedRooms("BreakRoom");
+		door->setLocked(true);
+		door->setDescription("I should keep investigating.");
+
+
 	}
 
 }
