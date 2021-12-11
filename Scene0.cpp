@@ -110,7 +110,10 @@ bool Scene0::OnCreate() {
 	//	return false;
 	//}
 	if (player->getPrevRoom() != "Custodian" && room->getName() == "Hallway") {
-		projectionMatrix = player->getCamera();
+		projectionMatrix = player->getCameraHallway();
+	}
+	else if (player->getPrevRoom() != "Hallway" && room->getName() == "SecondFloor") {
+		projectionMatrix = player->getCameraSecondFloor();
 	}
 
 
@@ -189,9 +192,15 @@ void Scene0::OnDestroy() {
 }
 
 void Scene0::Update(const float deltaTime) {
-	if (monster->getRoom() == room->getName() && monster->getState() != TInactive) {
+	if (monster->getRoom() == room->getName() 
+		&& monster->getState() != TInactive
+		&& monster->getState() != TRoomSwitch) {
 		monsterExist = true;
-		cout << monster->getState();
+	}
+
+
+	if (timeCount >= 3.0f && (monster->getState() == TRoomSwitch)) {
+		monster->setState(THunt);
 	}
 
 	//Player Object collision
@@ -204,10 +213,12 @@ void Scene0::Update(const float deltaTime) {
 	}
 
 	//Monster checks
-	if (monsterExist) {
+	if (monsterExist 
+		&& (monster->getState() != TRoomSwitch)
+		&& (monster->getState() != TInactive)) {
 		if (Physics::InteractionDetect(*player, *monster)) {
 			//cout << monster->getState();
-			cout << "Switch to Hunt" << endl;
+			//cout << "Switch to Hunt" << endl;
 			if (monster->getState() != THunt) monster->setState(THunt);
 		}
 		if (Physics::CollisionDetect(*player, *monster)) {
@@ -223,6 +234,7 @@ void Scene0::Update(const float deltaTime) {
 		player->Update(deltaTime);
 	}
 
+	timeCount += deltaTime;
 
 	//Player boundaries
 
@@ -262,7 +274,14 @@ void Scene0::Update(const float deltaTime) {
 	/*Stupid camera that I will come fix later (Right, Bot boundaries)*/
 	//Move camera along with the player
 	if (camera) {
-		projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * 0.5f) * projectionMatrix;
+		float cameraSpeed = 0.5f;
+
+		if (roomWidth > 1280) {
+			cameraSpeed = 1.0f;
+		}
+
+
+		projectionMatrix = MMath::translate(Vec3(-player->getVel().x, player->getVel().y, 0.0f) * cameraSpeed) * projectionMatrix;
 
 		//Get camera location
 		projectionLoc = projectionMatrix.getColumn(3);
@@ -288,8 +307,13 @@ void Scene0::Update(const float deltaTime) {
 
 			//cout << "Reach bounds on Top" << endl;
 		}
-		if (projectionLoc.x < roomWidth / 3.34) {
-			projectionLoc.x = roomWidth / 3.34;
+		float rightEdge = roomWidth / 3.345;
+		if (roomWidth >= 2560) {
+			rightEdge = 0.0f;
+		}
+
+		if (projectionLoc.x < rightEdge) {
+			projectionLoc.x = rightEdge;
 			projectionMatrix = Matrix4(projectionMatrix[0], projectionMatrix[1], projectionMatrix[2], projectionMatrix[3],
 				projectionMatrix[4], projectionMatrix[5], projectionMatrix[6], projectionMatrix[7],
 				projectionMatrix[8], projectionMatrix[9], projectionMatrix[10], projectionMatrix[11],
@@ -404,8 +428,10 @@ void Scene0::Render() {
 		}
 
 		//Monster Render
-		if (monsterExist) {
-
+		if (monsterExist 
+			&& (monster->getState() != TRoomSwitch)
+			&& (monster->getState() != TInactive)) {
+			
 			if (monster->getIsMoving() == true)
 			{
 
@@ -457,21 +483,8 @@ void Scene0::Render() {
 		square.h = h * 3;
 		SDL_SetTextureBlendMode(light->getTexture(), SDL_BLENDMODE_MOD);
 		SDL_SetTextureAlphaMod(light->getTexture(), 251);
-		//SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
-	//Player dead
-	else if (!player->getAlive()) {
-		int windowW, windowH;
-		SDL_GetWindowSize(window, &windowW, &windowH);
-		SDL_QueryTexture(deadScene->getTexture(), nullptr, nullptr, &w, &h);
-		screenCoords = projectionMatrix * Vec3(0.0f, 0.0f, 0.0f);
-		square.x = static_cast<int> (screenCoords.x - w / 2);
-		square.y = static_cast<int> (screenCoords.y - h / 2);
-		square.w = windowW;
-		square.h = windowH;
-		SDL_RenderCopyEx(renderer, deadScene->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-	}
-
 
 	SDL_RenderPresent(renderer);
 }
@@ -501,8 +514,11 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 
 						if (player->searchInventory(requiredKey)) {
 							player->switchRoom(door->getConnectedRoom());
-							if (room->getName() == "Hallway") {
-								player->setCamera(projectionMatrix);
+							if (room->getName() == "Hallway")  {
+								player->setCameraHallway(projectionMatrix);
+							}
+							else if (room->getName() == "SecondFloor") {
+								player->setCameraSecondFloor(projectionMatrix);
 							}
 						}
 						else {
@@ -512,7 +528,10 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 					else {
 						player->switchRoom(door->getConnectedRoom());
 						if (room->getName() == "Hallway") {
-							player->setCamera(projectionMatrix);
+							player->setCameraHallway(projectionMatrix);
+						}
+						else if (room->getName() == "SecondFloor") {
+							player->setCameraSecondFloor(projectionMatrix);
 						}
 					}
 
@@ -522,7 +541,10 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						bool isSafe = monster->isSafeRoom(player->getRoom());
 						if (!isSafe) {
 							cout << "Not Safe" << endl;
-							monster->setRoom(player->getRoom());
+							monster->setState(TRoomSwitch);
+							cout << "Monster room switch" << endl;
+							timeCount = 0;
+							monster->switchRoom(player->getRoom());
 						}
 						else if (isSafe) {
 							player->setProgress(GStaffRoom);

@@ -84,3 +84,13 @@ bool Monster::isSafeRoom(string room_){
 
 	return false;
 }
+
+void Monster::switchRoom(string roomName_) {
+	prevRoom = currRoom;
+	currRoom = roomName_;
+}
+
+void Monster::reset(){
+
+}
+

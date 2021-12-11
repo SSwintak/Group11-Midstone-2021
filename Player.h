@@ -13,6 +13,8 @@ enum GameProgress {
 	GFirstEncounter,
 	GSecondChase,
 	GStaffRoom,
+	GSecondFloor,
+	GEscape,
 };
 
 
@@ -26,10 +28,11 @@ private:
 	bool hint2;
 	bool hint3;
 	bool alive;
-	bool win;
+	bool end;
 	GameProgress playerProgress;
-	Matrix4 camera;
-
+	Matrix4 cameraHallway;
+	Matrix4 cameraSecondFloor;
+	
 public:
 
 
@@ -47,6 +50,7 @@ public:
 	void hint1Get() { hint1 = true; };
 	void hint2Get() { hint2 = true; };
 	void hint3Get() { hint3 = true; };
+	int getHintNum();
 	void setRoom(string roomName_) { currRoom = roomName_; }
 	string getRoom() { return currRoom; }
 	void setPrevRoom(string roomName_) { prevRoom = roomName_; }
@@ -54,12 +58,15 @@ public:
 	void switchRoom(string roomName_);
 	void setAlive(bool alive_) { alive = alive_; }
 	bool getAlive() { return alive; }
-	void setWin(bool win_) { win = win_; }
-	bool getWin() { return win; }
+	void setEnd(bool end_) { end = end_; }
+	bool getEnd() { return end; }
 	void setProgress(GameProgress progress_) { playerProgress = progress_;	}
 	GameProgress getProgress() { return playerProgress; }
-	void setCamera(Matrix4 camera_) { camera = camera_; }
-	Matrix4 getCamera() { return camera; }
+	void setCameraHallway(Matrix4 camera_) { cameraHallway = camera_; }
+	Matrix4 getCameraHallway() { return cameraHallway; }
+	void setCameraSecondFloor(Matrix4 camera_) { cameraSecondFloor = camera_; }
+	Matrix4 getCameraSecondFloor() { return cameraSecondFloor; }
+
 };
 
 #endif
