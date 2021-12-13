@@ -33,10 +33,12 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	else {
 		monsterExist = false;
 	}
+	itemName = nullptr;
 }
 
 Scene0::~Scene0(){
 	delete room;
+	delete itemName;
 }
 
 bool Scene0::OnCreate() {
@@ -118,6 +120,54 @@ bool Scene0::OnCreate() {
 		projectionMatrix = player->getCameraSecondFloor();
 	}
 
+	//Set HUD Image
+	playerHUD = new ImageTexture("HorrorSchool_UI_HUD_1.png");
+	if (!ImageTextureSetup(playerHUD, false)) {
+		return false;
+	}
+
+	//set UI Item Image(s)
+	items[0] = new ImageTexture("BKey_Icon_1.png");
+	if (!ImageTextureSetup(items[0], false)) {
+		return false;
+	}
+
+	items[1] = new ImageTexture("CrowBar_1.png");
+	if (!ImageTextureSetup(items[1], false)) {
+		return false;
+	}
+
+	items[2] = new ImageTexture("Keys&Tag_Icon_1.png");
+	if (!ImageTextureSetup(items[2], false)) {
+		return false;
+	}
+
+	items[3] = new ImageTexture("Lighter_Icon_1.png");
+	if (!ImageTextureSetup(items[3], false)) {
+		return false;
+	}
+
+	items[4] = new ImageTexture("Shoe_1.png");
+	if (!ImageTextureSetup(items[4], false)) {
+		return false;
+	}
+
+	items[5] = new ImageTexture("StickyNote_Icon_1.png");
+	if (!ImageTextureSetup(items[5], false)) {
+		return false;
+	}
+
+	items[6] = new ImageTexture("PoliceDoc_Icon_1.png");
+	if (!ImageTextureSetup(items[6], false)) {
+		return false;
+	}
+
+	items[7] = new ImageTexture("Fuse_Icon_1.png");
+	if (!ImageTextureSetup(items[7], false)) {
+		return false;
+	}
+
+	
 
 	return true;
 }
@@ -486,6 +536,119 @@ void Scene0::Render() {
 		SDL_SetTextureBlendMode(light->getTexture(), SDL_BLENDMODE_MOD);
 		SDL_SetTextureAlphaMod(light->getTexture(), 251);
 		SDL_RenderCopyEx(renderer, light->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+
+		//UI HUD Render
+		SDL_QueryTexture(playerHUD->getTexture(), nullptr, nullptr, &w, &h);
+		screenCoords = Vec3(510.0f, 50.0f, 0.0f);
+		square.x = static_cast<int> (screenCoords.x - w / 2);
+		square.y = static_cast<int> (screenCoords.y - h / 2);
+		square.w = w;
+		square.h = h;
+
+		SDL_RenderCopyEx(renderer, playerHUD->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+
+		//UI Items Render
+		if (player->getHasItem())
+		{
+			
+			//render items depending on the hint number
+			if (player->searchInventory("BKey"))
+			{
+				//BKey_Icon_1
+				SDL_QueryTexture(items[0]->getTexture(), nullptr, nullptr, &w, &h);
+				screenCoords = Vec3(250.0f, 50.0f, 0.0f);
+				square.x = static_cast<int> (screenCoords.x - w / 2);
+				square.y = static_cast<int> (screenCoords.y - h / 2);
+				square.w = w;
+				square.h = h;
+
+				SDL_RenderCopyEx(renderer, items[0]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+			}
+
+			if (player->searchInventory("Classroom3Key"))
+			{
+				//Keys&Tag_Icon_1
+				SDL_QueryTexture(items[2]->getTexture(), nullptr, nullptr, &w, &h);
+				screenCoords = Vec3(315.0f, 50.0f, 0.0f);
+				square.x = static_cast<int> (screenCoords.x - w / 2);
+				square.y = static_cast<int> (screenCoords.y - h / 2);
+				square.w = w;
+				square.h = h;
+
+				SDL_RenderCopyEx(renderer, items[2]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+			}
+			
+			if (player->searchInventory("Fuse"))
+			{
+				//Fuse_Icon_1
+				SDL_QueryTexture(items[7]->getTexture(), nullptr, nullptr, &w, &h);
+				screenCoords = Vec3(450.0f, 50.0f, 0.0f);
+				square.x = static_cast<int> (screenCoords.x - w / 2);
+				square.y = static_cast<int> (screenCoords.y - h / 2);
+				square.w = w;
+				square.h = h;
+
+				SDL_RenderCopyEx(renderer, items[7]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+			}
+
+			if (player->searchInventory("StickyNote"))
+			{
+				//StickyNote_Icon_1
+				SDL_QueryTexture(items[5]->getTexture(), nullptr, nullptr, &w, &h);
+				screenCoords = Vec3(515.0f, 50.0f, 0.0f);
+				square.x = static_cast<int> (screenCoords.x - w / 2);
+				square.y = static_cast<int> (screenCoords.y - h / 2);
+				square.w = w;
+				square.h = h;
+
+				SDL_RenderCopyEx(renderer, items[5]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+			}
+
+			if (player->searchInventory("Lighter"))
+			{
+				//Lighter_Icon_1
+				SDL_QueryTexture(items[3]->getTexture(), nullptr, nullptr, &w, &h);
+				screenCoords = Vec3(550.0f, 50.0f, 0.0f);
+				square.x = static_cast<int> (screenCoords.x - w / 2);
+				square.y = static_cast<int> (screenCoords.y - h / 2);
+				square.w = w;
+				square.h = h;
+
+				SDL_RenderCopyEx(renderer, items[3]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+			}
+
+			if (player->searchInventory("PoliceDoc"))
+			{
+				//PoliceDoc_Icon_1
+				SDL_QueryTexture(items[6]->getTexture(), nullptr, nullptr, &w, &h);
+				screenCoords = Vec3(615.0f, 50.0f, 0.0f);
+				square.x = static_cast<int> (screenCoords.x - w / 2);
+				square.y = static_cast<int> (screenCoords.y - h / 2);
+				square.w = w;
+				square.h = h;
+
+				SDL_RenderCopyEx(renderer, items[6]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+			}
+
+			if (player->searchInventory("LoseShoe"))
+			{
+				//Shoe_1
+				SDL_QueryTexture(items[4]->getTexture(), nullptr, nullptr, &w, &h);
+				screenCoords = Vec3(650.0f, 50.0f, 0.0f);
+				square.x = static_cast<int> (screenCoords.x - w / 2);
+				square.y = static_cast<int> (screenCoords.y - h / 2);
+				square.w = w;
+				square.h = h;
+
+				SDL_RenderCopyEx(renderer, items[4]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+			}
+
+
+		}
+
+
+
+
 	}
 
 	SDL_RenderPresent(renderer);

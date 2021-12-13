@@ -31,6 +31,7 @@ private:
 	bool hint5;
 	bool alive;
 	bool end;
+	bool hasItem;
 	GameProgress playerProgress;
 	Matrix4 cameraHallway;
 	Matrix4 cameraSecondFloor;
@@ -70,6 +71,7 @@ public:
 	Matrix4 getCameraHallway() { return cameraHallway; }
 	void setCameraSecondFloor(Matrix4 camera_) { cameraSecondFloor = camera_; }
 	Matrix4 getCameraSecondFloor() { return cameraSecondFloor; }
+	bool getHasItem() { return hasItem; }
 
 };
 

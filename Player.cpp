@@ -7,6 +7,7 @@ Player::Player(Vec3 pos_, Vec3 vel_, float mass_) :
 	hint3 = false;
 	alive = true;
 	end = false;
+	hasItem = false;
 	prevRoom = "Custodian";
 	setimageName("PlayerWalk_Sheet.png");
 	setRoom("Custodian");
@@ -98,6 +99,7 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 				if (searchInventory(item_->getRequiredKey())) {
 					if (item_->getName() == "FuseBox") {
 						hint5 = true;
+						
 					}
 					else {
 						item_->displayDescription();
@@ -116,15 +118,19 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 			addInventory(item_->getName());
 			item_->displayDescription();
 			cout << item_->getName() << " is added to the inventory" << endl;
+			hasItem = true;
 			//acquire sticky note = acquire hint4
 			if (item_->getName() == "LoseShoe") {
 				hint2 = true;
+				
 			}
 			if (item_->getName() == "PoliceDoc") {
 				hint3 = true;
+				
 			}
 			if (item_->getName() == "StickyNote") {
 				hint4 = true;
+				
 				playerProgress = GSecondFloor;
 			}
 			return true;

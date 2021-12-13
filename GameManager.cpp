@@ -221,8 +221,11 @@ void GameManager::SceneSwitch(string roomName_){
 	delete currentScene;
 
 	if (roomName_ == "dead" || roomName_ == "End") {
+		
+		
 		currentScene = new Scene1(windowPtr->GetSDL_Window());
 		currentScene->OnCreate();
+		
 	}
 	else {
 		Room *room = map.searchRoom(roomName_);

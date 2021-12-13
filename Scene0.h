@@ -25,8 +25,11 @@ private:
 	SDL_Renderer *renderer;
 	Matrix4 invProjectionMatrix;
 	class Room *room;
+	class GameObject* itemName;
 	ImageTexture *light;
 	ImageTexture *deadScene;
+	ImageTexture *playerHUD;
+	ImageTexture *items[8];// 0 = BKey
 	int roomHeight;
 	int roomWidth;
 	Matrix4 projMa;
