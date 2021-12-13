@@ -21,8 +21,8 @@ class Scene0 : public Scene{
 
 private:
 	SDL_Window *window;
+	SDL_Renderer* renderer;
 	Matrix4 projectionMatrix;
-	SDL_Renderer *renderer;
 	Matrix4 invProjectionMatrix;
 	class Room *room;
 	ImageTexture *light;

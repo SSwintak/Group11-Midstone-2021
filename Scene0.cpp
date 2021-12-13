@@ -1,6 +1,7 @@
 #include "Scene0.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <iostream>
 
 #include "Player.h"
@@ -11,6 +12,7 @@
 #include "Data.h"
 #include "ImageTexture.h"
 #include "Sounds.h"
+#include "Text.h"
 #include <typeinfo>
 
 //#define WORLD_W 1280
@@ -47,25 +49,15 @@ bool Scene0::OnCreate() {
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
 	projMa = projectionMatrix;
 
-	//Test Sound
-		//Load Audio Mixer
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) == -1) {
-		cout << "Couldn't initialize SDL Mixer" << endl;
-	}
-	Mix_AllocateChannels(MAX_SND_CHANNELS);
+	//Sounds
+	initSounds();
 
-	Mix_Chunk* TestMusic = NULL;
-	TestMusic = Mix_LoadWAV("audio/Dark Ambience Loop.mp3");
-	if (TestMusic == NULL)
-	{
-		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
-	}
-	Mix_Volume(-1, MIX_MAX_VOLUME / 8);
-	if (Mix_PlayingMusic() == 0)
-	{
-		//Play the music
-		Mix_PlayChannel(-1, TestMusic, 0);
-	}
+	const char* filename = "audio/Dark Ambience Loop.mp3";
+	loadMusic(filename);
+	playMusic(1);
+	Mix_VolumeMusic(25);
+	//Set Text
+	initFonts();
 
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
@@ -108,7 +100,6 @@ bool Scene0::OnCreate() {
 	}
 	return true;
 }
-
 
 
 bool Scene0::ImageTextureSetup(ImageTexture *target_, bool animate) {
@@ -414,6 +405,9 @@ void Scene0::Render() {
 		square.h = windowH;
 		SDL_RenderCopyEx(renderer, deadScene->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 	}
+
+	//Render Text
+	drawText(renderer, "This is a test.", 5, 5, 0, 0, 0, 0);
 
 
 	SDL_RenderPresent(renderer);

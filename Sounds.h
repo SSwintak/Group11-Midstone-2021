@@ -8,18 +8,11 @@
 #include <SDL_mixer.h>
 #include "SoundDefs.h"
 
-class Sounds {
-public:
-	//The music that will be played
-	Mix_Music* TestMusic = NULL;
+static Mix_Chunk* sounds[SND_MAX];
+static Mix_Music* music;
 
-	//The sound effects that will be used
-	Mix_Chunk* PlayerWalk = NULL;
-
-	bool success = true;
-	Sounds();
-	~Sounds();
-	bool LoadMedia();
-	void ClearSounds();
-
-};
+extern void initSounds(void);
+static void loadSounds(void);
+extern void loadMusic(const char* filename);
+extern void playMusic(int loop);
+extern void playSound(int id, int channel);

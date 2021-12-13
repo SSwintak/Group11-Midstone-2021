@@ -3,42 +3,53 @@
 #include <iostream>
 using namespace std;
 
-Sounds::Sounds()
+void initSounds(void)
 {
-    LoadMedia();
+	memset(sounds, 0, sizeof(Mix_Chunk*) * SND_MAX);
+	//Start setting the pointers as Mix_Chunks
+
+	music = NULL;
+
+	loadSounds();
 }
 
-Sounds::~Sounds()
+static void loadSounds(void)
 {
-    ClearSounds();
+	sounds[SND_PLAYER_WALK] = Mix_LoadWAV("audio/Walking.mp3");
+	sounds[SND_PLAYER_OPEN] = Mix_LoadWAV("audio/DoorOpen06.mp3");
+	sounds[SND_PLAYER_PICKUP] = Mix_LoadWAV("audio/ItemPickUp01.mp3");
+	sounds[SND_MONSTER_GROWL] = Mix_LoadWAV("");
 }
 
-bool Sounds::LoadMedia()
+void loadMusic(const char* filename)
 {
-    //Load music
-    TestMusic = Mix_LoadMUS("audio/Loadingloop.wav");
-    if (TestMusic == NULL)
-    {
-        printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
-        success = false;
-    }
+	if (music != NULL)
+	{
+		//Clear Previous Music
+		Mix_HaltMusic();
+		Mix_FreeMusic(music);
+		music = NULL;
+	}
 
-    //Load sound effects
-    PlayerWalk = Mix_LoadWAV("audio/Wood_Walk01.mp3");
-    if (PlayerWalk == NULL)
-    {
-        printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
-        success = false;
-    }
-
-	return success;
+	music = Mix_LoadMUS(filename);
 }
 
-void Sounds::ClearSounds()
+void playMusic(int loop)
 {
-    //Free Sound and Music
-    Mix_FreeMusic(TestMusic);
-    TestMusic = NULL;
-    Mix_FreeChunk(PlayerWalk);
-    PlayerWalk = NULL;
+	Mix_PlayMusic(music, (loop) ? -1 : 0);
+
+		if (music == NULL)
+	{
+		printf("Failed to play music! SDL_mixer Error: %s\n", Mix_GetError());
+	}
+}
+
+void playSound(int id, int channel)
+{
+	Mix_PlayChannel(channel, sounds[id], 0);
+
+	if (sounds[id] == NULL)
+	{
+		printf("Failed to play sound! SDL_mixer Error: %s\n", Mix_GetError());
+	}
 }
