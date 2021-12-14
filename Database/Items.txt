@@ -1,7 +1,7 @@
-BKey
+CrowBar
 Pickable
 None
-BKey_Icon_1.png
+CrowBar_1.png
 5.0,1.0,0.0
 0.0,0.0,0.0
 This could be handy.
@@ -58,14 +58,14 @@ PoliceDoc
 Pickable
 None
 PoliceDoc_Icon_1.png
-5.0,2.0,0.0
+7.0,-3.0,0.0
 0.0,0.0,0.0
 PoliceDocument
 |
-LoseShoe
+Shoe
 Pickable
 None
-PoliceDoc_Icon_1.png
+Shoe_1.png
 0.0,-5.0,0.0
 0.0,0.0,0.0
 PoliceDocument

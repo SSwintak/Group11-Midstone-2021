@@ -1,7 +1,7 @@
 Custodian
 1280 720
 Custodian_720p.png
-BKey,
+CrowBar,
 Hallway(-30.0,0.0,0.0)/
 |
 Hallway
@@ -37,7 +37,7 @@ Hallway(-25.0,8.0,0.0)/
 StaffRoom
 1280 720
 HorrorSchoolClassRoom_1_1080p.png
-LoseShoe,
+Shoe,
 Hallway(-25.0,-7.0,0.0)/BreakRoom(-10.0,7.0,0.0)/MeetingRoom(20.0,-7.0,0.0)/Exit(15.0,7.0,0.0)/
 |
 BreakRoom

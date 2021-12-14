@@ -120,7 +120,7 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 			cout << item_->getName() << " is added to the inventory" << endl;
 			hasItem = true;
 			//acquire sticky note = acquire hint4
-			if (item_->getName() == "LoseShoe") {
+			if (item_->getName() == "Shoe") {
 				hint2 = true;
 				
 			}

@@ -29,7 +29,7 @@ private:
 	ImageTexture *light;
 	ImageTexture *deadScene;
 	ImageTexture *playerHUD;
-	ImageTexture *items[8];// 0 = BKey
+	//ImageTexture *items[8];// 0 = BKey
 	int roomHeight;
 	int roomWidth;
 	Matrix4 projMa;

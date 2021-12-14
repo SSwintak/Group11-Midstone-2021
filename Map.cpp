@@ -106,7 +106,7 @@ void Map::DoorSetup(Room *room_) {
 	if (roomName_ == "Custodian") {
 		door = room_->searchConnectedRooms("Hallway");
 		door->setLocked(true);
-		door->setRequiredKey("BKey");
+		door->setRequiredKey("CrowBar");
 		door->setDescription("The door's locked but the lock is loose. There has to be a way for me to break this open");
 	}
 	else if (roomName_ == "Hallway") {
@@ -130,7 +130,7 @@ void Map::DoorSetup(Room *room_) {
 
 		door = room_->searchConnectedRooms("SecondFloor");
 		door->setLocked(true);
-		door->setimageName("DoubleDoor.png");
+		door->setimageName("DoubleDoor_1_720p.png");
 		door->setDescription("I should try the staff room first.");
 		door->setDescription("It's Locked.");
 
