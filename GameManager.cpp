@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "Scene0.h"
 #include "Scene1.h"
+#include "ImageScene.h"
 #include <iostream>
 #include "ItemPool.h"
 #include "Map.h"
@@ -15,8 +16,6 @@ GameManager::GameManager() {
 	isRunning = true;
 	gameStart = false;
 	currentScene = nullptr;
-
-
 
 	itemPool.loadItems();
 	map.loadRooms();
@@ -89,7 +88,8 @@ void GameManager::Run() {
 					break;
 
 				case SDL_SCANCODE_F1:
-					SceneSwitch("Custodian");
+					//SceneSwitch("End");
+					//player->setEnd(true);
 					break;
 
 				case SDL_SCANCODE_SPACE:
@@ -108,8 +108,44 @@ void GameManager::Run() {
 					break;
 
 				case SDL_SCANCODE_Q:
-					cout << player->getProgress() << endl;
-					cout << "Hint Num: " << player->getHintNum() << endl;
+					//Reload player when dead
+					cout << "Player progress" << player->getProgress();
+					if (!player->getAlive()) {
+						switch (player->getProgress()) {
+						case GTheSchool:
+							cout << "Respawn player to school" << endl;
+							player->setAlive(true);
+							player->setEnd(false);
+							player->setProgress(GTheSchool);
+							player->setPrevRoom("Classroom3");
+							player->setRoom("Hallway");
+							monster->reset();
+							SceneSwitch(player->getRoom());
+							break;
+						case GSecondChase:
+							cout << "Respawn player to GFirstEncounter" << endl;
+							player->setAlive(true);
+							player->setEnd(false);
+							player->setProgress(GFirstEncounter);
+							player->setPrevRoom("Classroom3");
+							player->setRoom("Hallway");
+							monster->reset();
+							SceneSwitch(player->getRoom());
+							break;
+						//case GEscape:
+						//	cout << "Respawn player to GSecondFloor" << endl;
+						//	player->setAlive(true);
+						//	player->setEnd(false);
+						//	player->setProgress(GSecondFloor);
+						//	player->setPrevRoom("BreakerRoom");
+						//	player->setRoom("SecondFloor");
+						//	monster->reset();
+						//	SceneSwitch(player->getRoom());
+						//	break;
+					}
+
+					}
+					cout << "Respawn player" << endl;
 					break;
 
 				default:
@@ -172,7 +208,7 @@ void GameManager::Run() {
 			else if (player->getProgress() == GStaffRoom) {
 				monster->setState(TInactive);
 			}
-			else if (player->getPrevRoom() == "Custodian" &&
+			else if (player->getPrevRoom() == "BreakerRoom" &&
 				player->getHintNum() >= 5 &&
 				player->getProgress() == GSecondFloor &&
 				player->getPos().x <= 15.0f) {
@@ -198,15 +234,30 @@ void GameManager::Run() {
 			//Hint related events
 			if (player->getHintNum() >= 2) {
 				Room* room = map.searchRoom("StaffRoom");
-				room->searchConnectedRooms("BreakRoom")->setLocked(false);
+				if (room->searchConnectedRooms("BreakRoom")->getLocked()) {
+					room->searchConnectedRooms("BreakRoom")->setLocked(false);
+
+				}
 			}
 			if (player->getHintNum() >= 3) {
 				Room* room = map.searchRoom("StaffRoom");
-				room->searchConnectedRooms("MeetingRoom")->setLocked(false);
+				if (room->searchConnectedRooms("MeetingRoom")->getLocked()) {
+					room->searchConnectedRooms("MeetingRoom")->setLocked(false);
+				}
+
 			}
 			if (player->getHintNum() >= 4) {
 				Room* room = map.searchRoom("Hallway");
-				room->searchConnectedRooms("SecondFloor")->setLocked(false);
+				if (room->searchConnectedRooms("SecondFloor")->getLocked()) {
+					room->searchConnectedRooms("SecondFloor")->setLocked(false);
+				}
+			}
+			if (player->getHintNum() >= 5) {
+				Room* room = map.searchRoom("StaffRoom");
+				if (room->searchConnectedRooms("Exit")->getLocked()) {
+					room->searchConnectedRooms("Exit")->setLocked(false);
+					cout << "Exit unlock" << endl;
+				}
 			}
 
 		}
@@ -223,7 +274,7 @@ void GameManager::SceneSwitch(string roomName_){
 	if (roomName_ == "dead" || roomName_ == "End") {
 		
 		
-		currentScene = new Scene1(windowPtr->GetSDL_Window());
+		currentScene = new ImageScene(windowPtr->GetSDL_Window());
 		currentScene->OnCreate();
 		
 	}
@@ -233,6 +284,9 @@ void GameManager::SceneSwitch(string roomName_){
 		player->setPos(newPlayerLoc);
 		if (monster->getState() == TRoomSwitch) {
 			monster->setPos(newPlayerLoc);
+			cout << "setting monster position";
+			newPlayerLoc.print();
+			cout << endl;
 		}
 
 		currentScene = new Scene0(windowPtr->GetSDL_Window(), room);

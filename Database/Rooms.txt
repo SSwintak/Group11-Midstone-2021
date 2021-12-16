@@ -12,7 +12,7 @@ Custodian(-25.0,-3.0,0.0)/Classroom1(-15.0,-3.0,0.0)/SecondFloor(-5.0,-3.0,0.0)/
 |
 SecondFloor
 2560 720
-HorrorSchoolLockers_2_Long.png
+HorrorSchoolLockers_3_720p.png
 ,
 Hallway(-25.0,-3.0,0.0)/Classroom4(-10.0,-3.0,0.0)/Classroom5(5.0,-3.0,0.0)/Washroom(15.0,-3.0,0.0)/BreakerRoom(23.0,-3.0,0.0)/
 |
@@ -36,7 +36,7 @@ Hallway(-25.0,8.0,0.0)/
 |
 StaffRoom
 1280 720
-HorrorSchoolClassRoom_1_1080p.png
+StaffRoom_1_720p.png
 Shoe,
 Hallway(-25.0,-7.0,0.0)/BreakRoom(-10.0,7.0,0.0)/MeetingRoom(20.0,-7.0,0.0)/Exit(15.0,7.0,0.0)/
 |
@@ -54,7 +54,7 @@ StaffRoom(20.0,0.0,0.0)/
 |
 MeetingRoom
 1280 720
-HorrorSchoolClassRoom_1_1080p.png
+StaffRoom_1_720p.png
 StickyNote,
 StaffRoom(0.0,7.0,0.0)/
 |
@@ -72,13 +72,13 @@ SecondFloor(-20.0,8.0,0.0)/
 |
 Washroom
 1280 720
-HorrorSchoolClassRoom_1_1080p.png
+BathRoom_1_720p.png
 Fuse,
 SecondFloor(10.0,0.0,0.0)/
 |
 BreakerRoom
 1280 720
-HorrorSchoolClassRoom_1_1080p.png
+Custodian_720p.png
 FuseBox,
 SecondFloor(15.0,0.0,0.0)/
 |

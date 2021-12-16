@@ -63,7 +63,9 @@ void Monster::Update(float deltaTime){
 		if (vel.x <= 0.0f) { setFlip(SDL_FLIP_HORIZONTAL); }
 		else if (vel.x >= 0.0f) { setFlip(SDL_FLIP_NONE); }
 	}
-	
+	else {
+		vel = Vec3(0.0f, 0.0f, 0.0f);
+	}
 }
 
 void Monster::On_Destroy(){
@@ -91,6 +93,7 @@ void Monster::switchRoom(string roomName_) {
 }
 
 void Monster::reset(){
-
+	monsterState = TNormal;
+	setPos(Vec3(5.0f, 10.0f, 0.0f));
 }
 

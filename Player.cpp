@@ -4,9 +4,16 @@
 
 Player::Player(Vec3 pos_, Vec3 vel_, float mass_) :
 	Body("Player", pos_, vel_, mass_) {
+	//hint1 = true;
+	//hint2 = true;
+	//hint3 = true;
+	//hint4 = true;
+	//hint5 = true;
 	hint1 = false;
 	hint2 = false;
 	hint3 = false;
+	hint4 = false;
+	hint5 = false;
 	alive = true;
 	end = false;
 	hasItem = false;
@@ -124,7 +131,8 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 				//Check inventory for required key
 				if (searchInventory(item_->getRequiredKey())) {
 					if (item_->getName() == "FuseBox") {
-						hint5 = true;					
+						hint5 = true;
+						cout << "hint5 added " << endl;
 					}
 					else {
 						item_->displayDescription();
@@ -147,14 +155,17 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 			//acquire sticky note = acquire hint4
 			if (item_->getName() == "Shoe") {
 				hint2 = true;
-				
+				cout << "hint2 added" << endl;
+
 			}
 			if (item_->getName() == "PoliceDoc") {
 				hint3 = true;
-				
+				cout << "hint3 added" << endl;
+
 			}
 			if (item_->getName() == "StickyNote") {
 				hint4 = true;
+				cout << "hint4 added" << endl;
 				
 				playerProgress = GSecondFloor;
 			}
@@ -209,6 +220,8 @@ int Player::getHintNum(){
 	if (hint1) count++;
 	if (hint2) count++;
 	if (hint3) count++;
+	if (hint4) count++;
+	if (hint5) count++;
 
 	return count;
 }
@@ -218,4 +231,21 @@ void Player::switchRoom(string roomName_){
 		prevRoom = currRoom;
 		currRoom = roomName_;
 	}
+}
+
+void Player::reset(){
+	hint1 = false;
+	hint2 = false;
+	hint3 = false;
+	hint4 = false;
+	hint5 = false;
+	alive = true;
+	end = false;
+	hasItem = false;
+	prevRoom = "Custodian";
+	setimageName("PlayerWalk_Sheet.png");
+	setRoom("Custodian");
+	playerProgress = GTheEntry;
+	inventory = vector<string>();
+
 }

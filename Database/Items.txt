@@ -33,7 +33,7 @@ The Fuse
 FuseBox
 Interactable
 Fuse
-Fuse_Icon_1.png
+FuseBox_1.png
 -5.0,-10.0,0.0
 0.0,0.0,0.0
 A fuse box without fuse
@@ -68,5 +68,5 @@ None
 Shoe_1.png
 0.0,-5.0,0.0
 0.0,0.0,0.0
-PoliceDocument
+Shoe
 |

@@ -12,14 +12,11 @@
 #include <typeinfo>
 
 
-//#define WORLD_W 1280
-//#define roomHeight 720
-
 Scene1::Scene1(SDL_Window* sdlWindow_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	menu = new Menu();
-	
+
 
 }
 

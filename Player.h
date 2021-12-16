@@ -72,6 +72,7 @@ public:
 	void setCameraSecondFloor(Matrix4 camera_) { cameraSecondFloor = camera_; }
 	Matrix4 getCameraSecondFloor() { return cameraSecondFloor; }
 	bool getHasItem() { return hasItem; }
+	void reset();
 
 };
 

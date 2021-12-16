@@ -301,6 +301,7 @@ void Scene0::Update(const float deltaTime) {
 		if (Physics::CollisionDetect(*player, *monster)) {
 			//player dead
 			monster->setVel(Vec3(0.0f, 0.0f, 0.0f));
+			monster->setState(TInactive);
 			player->setAlive(false);
 		}
 
@@ -354,7 +355,7 @@ void Scene0::Update(const float deltaTime) {
 		float cameraSpeed = 0.5f;
 
 		if (roomWidth > 1280) {
-			cameraSpeed = 1.0f;
+			cameraSpeed = 0.5f;
 		}
 
 
@@ -593,9 +594,8 @@ void Scene0::Render() {
 
 		//Draw text on screen
 		if (message != " ") {
-			if (drawText(renderer, message.c_str(), 300, 500, 0, 0, 0, 0)) {
-				cout << "timeDelay is " << timeDelay << endl;
-				if (timeDelay >= 3.0f) {
+			if (drawText(renderer, message.c_str(), 100, 500, 0, 0, 0, 0)) {
+				if (timeDelay >= 2.0f) {
 					message = " ";
 				}
 			}
@@ -613,11 +613,27 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 		//Interaction with items
 		for (GameObject* item : room->getItemList()) {
 			if (Physics::InteractionDetect(*player, *item)) {
-				if (player->interactObject(sdlEvent, item) && item->getType() == TPickable) {
-					message = item->getName() + " added to inventory";
+				bool interactSuccess = player->interactObject(sdlEvent, item);
+				if (interactSuccess && item->getType() == TPickable) {
+					message = item->getDescription();
 					timeDelay = 0.0f;
 					room->removeItem(item->getName());
 				}
+				else if (interactSuccess && item->getType() == TInteractable) {
+					if (interactSuccess) {
+						if (item->getName() == "FuseBox") {
+							message = "You activate the fuse box";
+							timeDelay = 0.0f;
+						}
+					}
+					else {
+						if (item->getName() == "FuseBox") {
+							message = "Key Required: " + item->getRequiredKey();
+							timeDelay = 0.0f;
+						}
+					}
+				}
+			
 			}
 		}
 
