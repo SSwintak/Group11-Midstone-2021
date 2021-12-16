@@ -93,8 +93,13 @@
     <ClCompile Include="Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+
     <ClCompile Include="ImageScene.cpp">
       <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+
+	<ClCompile Include="Sounds.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

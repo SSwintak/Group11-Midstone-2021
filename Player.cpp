@@ -46,7 +46,7 @@ void Player::PlayerController(const SDL_Event& sdlEvent){
 		setFlip(SDL_FLIP_NONE);
 
 		if (Mix_Playing(CH_PLAYER) == 0) {
-			//playSound(SND_PLAYER_WALK, CH_PLAYER);
+			playSound(SND_PLAYER_WALK, CH_PLAYER);
 		}
 	}
 	else if (sdlEvent.type == SDL_KEYUP && sdlEvent.key.keysym.scancode == SDL_SCANCODE_D)
@@ -65,7 +65,7 @@ void Player::PlayerController(const SDL_Event& sdlEvent){
 		setFlip(SDL_FLIP_HORIZONTAL);
 
 		if (Mix_Playing(CH_PLAYER) == 0) {
-			//playSound(SND_PLAYER_WALK, CH_PLAYER);
+			playSound(SND_PLAYER_WALK, CH_PLAYER);
 		}
 	}
 	else if (sdlEvent.type == SDL_KEYUP && sdlEvent.key.keysym.scancode == SDL_SCANCODE_A)
@@ -83,7 +83,7 @@ void Player::PlayerController(const SDL_Event& sdlEvent){
 		setIsMoving(true);
 
 		if (Mix_Playing(CH_PLAYER) == 0) {
-			//playSound(SND_PLAYER_WALK, CH_PLAYER);
+			playSound(SND_PLAYER_WALK, CH_PLAYER);
 		}
 	}
 	else if (sdlEvent.type == SDL_KEYUP && sdlEvent.key.keysym.scancode == SDL_SCANCODE_W)
@@ -101,7 +101,7 @@ void Player::PlayerController(const SDL_Event& sdlEvent){
 		setIsMoving(true);
 
 		if (Mix_Playing(CH_PLAYER) == 0) {
-			//playSound(SND_PLAYER_WALK, CH_PLAYER);
+			playSound(SND_PLAYER_WALK, CH_PLAYER);
 		}
 	}
 	else if (sdlEvent.type == SDL_KEYUP && sdlEvent.key.keysym.scancode == SDL_SCANCODE_S)

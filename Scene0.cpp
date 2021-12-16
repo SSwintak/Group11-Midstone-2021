@@ -12,6 +12,7 @@
 #include "ImageTexture.h"
 #include "Itempool.h"
 #include <typeinfo>
+#include "Sounds.h"
 
 
 //#define WORLD_W 1280
@@ -62,8 +63,11 @@ bool Scene0::OnCreate() {
 
 	initFonts();
 
+	initSounds();
+
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
+	
 
 	//Set room images
 	if (!ImageTextureSetup(room, false)) {
