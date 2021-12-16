@@ -1,10 +1,18 @@
-BKey
+CrowBar
 Pickable
 None
-BKey_Icon_1.png
+CrowBar_1.png
 5.0,1.0,0.0
 0.0,0.0,0.0
-Backdoor key
+This could be handy.
+|
+Classroom3Key
+Pickable
+None
+Keys&Tag_Icon_1.png
+10.0,5.0,0.0
+0.0,0.0,0.0
+3 Keys and a tag that says 09991.
 |
 FlashLight
 Pickable
@@ -15,18 +23,50 @@ FlashLight_Icon_1.png
 Flashlight
 |
 Fuse
-Static
+Pickable
 None
 Fuse_Icon_1.png
-0.0,3.0,0.0
+-5.0,3.0,0.0
 0.0,0.0,0.0
+The Fuse
+|
+FuseBox
+Interactable
 Fuse
+Fuse_Icon_1.png
+-5.0,-10.0,0.0
+0.0,0.0,0.0
+A fuse box without fuse
 |
 StickyNote
 Pickable
 None
 StickyNote_Icon_1.png
-5.0,1.0,0.0
+10.0,-10.0,0.0
 0.0,0.0,0.0
 StickyNote
+|
+Lighter
+Pickable
+None
+Lighter_Icon_1.png
+-10.0,-10.0,0.0
+0.0,0.0,0.0
+Lighter
+|
+PoliceDoc
+Pickable
+None
+PoliceDoc_Icon_1.png
+7.0,-3.0,0.0
+0.0,0.0,0.0
+PoliceDocument
+|
+Shoe
+Pickable
+None
+Shoe_1.png
+0.0,-5.0,0.0
+0.0,0.0,0.0
+PoliceDocument
 |

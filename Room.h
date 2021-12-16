@@ -37,7 +37,6 @@ public:
 	void addConnectedRooms(Door* connectedRooms_);
 	vector<Door*> getConnectedRooms() { return connectedRooms; }
 	Door* searchConnectedRooms(string roomName_);
-
 };
 
 #endif

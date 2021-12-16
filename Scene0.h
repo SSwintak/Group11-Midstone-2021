@@ -25,16 +25,21 @@ private:
 	SDL_Renderer *renderer;
 	Matrix4 invProjectionMatrix;
 	class Room *room;
+	class GameObject* itemName;
 	ImageTexture *light;
 	ImageTexture *deadScene;
+	ImageTexture *playerHUD;
+	//ImageTexture *items[8];// 0 = BKey
 	int roomHeight;
 	int roomWidth;
 	Matrix4 projMa;
 	Vec3 worldSizeScreenCoords;
 	bool monsterExist;
-	
-	bool ImageTextureSetup(ImageTexture *target_, bool animate); 
-	
+	float timeCount;
+	bool camera;
+	Vec3 projectionLoc;
+
+	bool ImageTextureSetup(ImageTexture *target_, bool animate);
 
 public:
 	Scene0(SDL_Window* sdlWindow, Room* roomName_);
@@ -46,8 +51,7 @@ public:
 	void HandleEvents(const SDL_Event& sdlEvent);
 	Room* getRoom() { return room; }
 
-	
+
 };
 
 #endif
-

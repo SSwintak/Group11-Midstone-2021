@@ -1,14 +1,20 @@
 Custodian
 1280 720
-HorrorSchoolLockers_2_720p.png
-Fuse,FlashLight,
+Custodian_720p.png
+CrowBar,
 Hallway(-30.0,0.0,0.0)/
 |
 Hallway
-1280 720
-HorrorSchoolLockers_2_720p.png
+2560 720
+HorrorSchoolLockers_2_Long.png
 ,
-Custodian(-25.0,-3.0,0.0)/Classroom1(-10.0,-3.0,0.0)/Classroom2(0.0,-3.0,0.0)/Classroom3(15.0,-3.0,0.0)/
+Custodian(-25.0,-3.0,0.0)/Classroom1(-15.0,-3.0,0.0)/SecondFloor(-5.0,-3.0,0.0)/Classroom2(5.0,-3.0,0.0)/Classroom3(13.0,-3.0,0.0)/StaffRoom(20.0,-3.0,0.0)/
+|
+SecondFloor
+2560 720
+HorrorSchoolLockers_2_Long.png
+,
+Hallway(-25.0,-3.0,0.0)/Classroom4(-10.0,-3.0,0.0)/Classroom5(5.0,-3.0,0.0)/Washroom(15.0,-3.0,0.0)/BreakerRoom(23.0,-3.0,0.0)/
 |
 Classroom1
 1280 720
@@ -24,13 +30,55 @@ Hallway(-25.0,8.0,0.0)/
 |
 Classroom3
 1280 720
-HorrorSchoolClassRoom_1_1080p.png
-,
+HorrorSchoolClassRoom_1_720p.png
+Classroom3Key,
 Hallway(-25.0,8.0,0.0)/
 |
 StaffRoom
 1280 720
 HorrorSchoolClassRoom_1_1080p.png
-Fuse,FlashLight,
-Hallway(20.0,0.0,0.0)/
+Shoe,
+Hallway(-25.0,-7.0,0.0)/BreakRoom(-10.0,7.0,0.0)/MeetingRoom(20.0,-7.0,0.0)/Exit(15.0,7.0,0.0)/
+|
+BreakRoom
+1280 720
+HorrorSchoolClassRoom_1_1080p.png
+Lighter,PoliceDoc,
+StaffRoom(0.0,7.0,0.0)/
+|
+PrincipalOffice
+1280 720
+HorrorSchoolClassRoom_1_1080p.png
+,
+StaffRoom(20.0,0.0,0.0)/
+|
+MeetingRoom
+1280 720
+HorrorSchoolClassRoom_1_1080p.png
+StickyNote,
+StaffRoom(0.0,7.0,0.0)/
+|
+Classroom4
+1280 720
+HorrorSchoolClassRoom_1_1080p.png
+,
+SecondFloor(-25.0,8.0,0.0)/
+|
+Classroom5
+1280 720
+HorrorSchoolClassRoom_1_1080p.png
+PoliceDoc,
+SecondFloor(-20.0,8.0,0.0)/
+|
+Washroom
+1280 720
+HorrorSchoolClassRoom_1_1080p.png
+Fuse,
+SecondFloor(10.0,0.0,0.0)/
+|
+BreakerRoom
+1280 720
+HorrorSchoolClassRoom_1_1080p.png
+FuseBox,
+SecondFloor(15.0,0.0,0.0)/
 |

@@ -6,9 +6,12 @@ Player::Player(Vec3 pos_, Vec3 vel_, float mass_) :
 	hint2 = false;
 	hint3 = false;
 	alive = true;
+	end = false;
+	hasItem = false;
 	prevRoom = "Custodian";
 	setimageName("PlayerWalk_Sheet.png");
 	setRoom("Custodian");
+	playerProgress = GTheEntry;
 }
 
 Player::~Player(){
@@ -19,8 +22,8 @@ Player::~Player(){
 }
 
 void Player::HandleEvents(const SDL_Event& sdlEvent){
-	
-	
+
+
 }
 
 void Player::PlayerController(const SDL_Event& sdlEvent){
@@ -94,7 +97,13 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 			else {
 				//Check inventory for required key
 				if (searchInventory(item_->getRequiredKey())) {
-					item_->displayDescription();
+					if (item_->getName() == "FuseBox") {
+						hint5 = true;
+						
+					}
+					else {
+						item_->displayDescription();
+					}
 					return true;
 				}
 				else {
@@ -107,7 +116,23 @@ bool Player::interactObject(const SDL_Event& sdlEvent, GameObject* item_) {
 			//add this to the player's inventory
 			//remove this item from room
 			addInventory(item_->getName());
+			item_->displayDescription();
 			cout << item_->getName() << " is added to the inventory" << endl;
+			hasItem = true;
+			//acquire sticky note = acquire hint4
+			if (item_->getName() == "Shoe") {
+				hint2 = true;
+				
+			}
+			if (item_->getName() == "PoliceDoc") {
+				hint3 = true;
+				
+			}
+			if (item_->getName() == "StickyNote") {
+				hint4 = true;
+				
+				playerProgress = GSecondFloor;
+			}
 			return true;
 		}
 		//Static object cannot be interacted with
@@ -132,6 +157,12 @@ void Player::Update(float deltaTime) {
 		pos += vel * deltaTime + 0.5f * accel * deltaTime * deltaTime;
 		collide = false;
 	}
+	//Set events for hints
+	if (playerProgress == GTheEntry) {
+		if (currRoom == "Hallway") {
+			playerProgress = GTheSchool;
+		}
+	}
 }
 
 bool Player::searchInventory(string item_)
@@ -148,14 +179,18 @@ void Player::addInventory(string item_) {
 	inventory.push_back(item_);
 }
 
-void Player::switchRoom(string roomName_){
-	prevRoom = currRoom;
-	currRoom = roomName_;
+int Player::getHintNum(){
+	int count = 0;
+	if (hint1) count++;
+	if (hint2) count++;
+	if (hint3) count++;
+
+	return count;
 }
 
-
-
-
-
-
-
+void Player::switchRoom(string roomName_){
+	if (currRoom != roomName_) {
+		prevRoom = currRoom;
+		currRoom = roomName_;
+	}
+}
