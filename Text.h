@@ -27,5 +27,5 @@ static SDL_Texture* helloWorld;
 static int textAngle;
 
 //Draw
-void drawText(SDL_Renderer* renderer, const char* message, int posx, int posy, int center, int r, int g, int b);
+bool drawText(SDL_Renderer* renderer, const char* message, int posx, int posy, int center, int r, int g, int b);
 

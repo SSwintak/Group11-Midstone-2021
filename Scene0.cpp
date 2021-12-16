@@ -1,6 +1,7 @@
 #include "Scene0.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include "Text.h"
 #include <iostream>
 #include "Player.h"
 #include "GameObject.h"
@@ -35,6 +36,9 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 		monsterExist = false;
 	}
 	itemName = nullptr;
+	message = " ";
+	message = "Entering " + room->getName();
+	timeDelay = 0.0f;
 }
 
 Scene0::~Scene0(){
@@ -53,6 +57,11 @@ bool Scene0::OnCreate() {
 	projectionMatrix = (ndc * ortho);
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
 	projMa = projectionMatrix;
+	//Set font
+	TTF_Init();
+
+	initFonts();
+
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
 
@@ -256,6 +265,10 @@ void Scene0::OnDestroy() {
 }
 
 void Scene0::Update(const float deltaTime) {
+
+	//Time count
+	timeDelay += deltaTime;
+
 	if (monster->getRoom() == room->getName() 
 		&& monster->getState() != TInactive
 		&& monster->getState() != TRoomSwitch) {
@@ -492,10 +505,10 @@ void Scene0::Render() {
 		}
 
 		//Monster Render
-		if (monsterExist 
+		if (monsterExist
 			&& (monster->getState() != TRoomSwitch)
 			&& (monster->getState() != TInactive)) {
-			
+
 			if (monster->getIsMoving() == true)
 			{
 
@@ -576,105 +589,17 @@ void Scene0::Render() {
 				//itemPool.searchItem("CrowBar")->getTexture();
 				SDL_RenderCopyEx(renderer, item->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 			}
-
-			//render items depending on the hint number
-			//if (player->searchInventory("CrowBar"))
-			//{
-			//	//CrowBar_Icon_1
-			//	SDL_QueryTexture(items[0]->getTexture(), nullptr, nullptr, &w, &h);
-			//	screenCoords = Vec3(250.0f, 50.0f, 0.0f);
-			//	square.x = static_cast<int> (screenCoords.x - w / 2);
-			//	square.y = static_cast<int> (screenCoords.y - h / 2);
-			//	square.w = w;
-			//	square.h = h;
-			//	//itemPool.searchItem("CrowBar")->getTexture();
-			//	SDL_RenderCopyEx(renderer, itemPool.searchItem("CrowBar")->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-			//}
-
-			//if (player->searchInventory("Classroom3Key"))
-			//{
-			//	//Keys&Tag_Icon_1
-			//	SDL_QueryTexture(items[2]->getTexture(), nullptr, nullptr, &w, &h);
-			//	screenCoords = Vec3(315.0f, 50.0f, 0.0f);
-			//	square.x = static_cast<int> (screenCoords.x - w / 2);
-			//	square.y = static_cast<int> (screenCoords.y - h / 2);
-			//	square.w = w;
-			//	square.h = h;
-
-			//	SDL_RenderCopyEx(renderer, items[2]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-			//}
-			//
-			//if (player->searchInventory("Fuse"))
-			//{
-			//	//Fuse_Icon_1
-			//	SDL_QueryTexture(items[7]->getTexture(), nullptr, nullptr, &w, &h);
-			//	screenCoords = Vec3(450.0f, 50.0f, 0.0f);
-			//	square.x = static_cast<int> (screenCoords.x - w / 2);
-			//	square.y = static_cast<int> (screenCoords.y - h / 2);
-			//	square.w = w;
-			//	square.h = h;
-
-			//	SDL_RenderCopyEx(renderer, items[7]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-			//}
-
-			//if (player->searchInventory("StickyNote"))
-			//{
-			//	//StickyNote_Icon_1
-			//	SDL_QueryTexture(items[5]->getTexture(), nullptr, nullptr, &w, &h);
-			//	screenCoords = Vec3(515.0f, 50.0f, 0.0f);
-			//	square.x = static_cast<int> (screenCoords.x - w / 2);
-			//	square.y = static_cast<int> (screenCoords.y - h / 2);
-			//	square.w = w;
-			//	square.h = h;
-
-			//	SDL_RenderCopyEx(renderer, items[5]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-			//}
-
-			//if (player->searchInventory("Lighter"))
-			//{
-			//	//Lighter_Icon_1
-			//	SDL_QueryTexture(items[3]->getTexture(), nullptr, nullptr, &w, &h);
-			//	screenCoords = Vec3(550.0f, 50.0f, 0.0f);
-			//	square.x = static_cast<int> (screenCoords.x - w / 2);
-			//	square.y = static_cast<int> (screenCoords.y - h / 2);
-			//	square.w = w;
-			//	square.h = h;
-
-			//	SDL_RenderCopyEx(renderer, items[3]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-			//}
-
-			//if (player->searchInventory("PoliceDoc"))
-			//{
-			//	//PoliceDoc_Icon_1
-			//	SDL_QueryTexture(items[6]->getTexture(), nullptr, nullptr, &w, &h);
-			//	screenCoords = Vec3(615.0f, 50.0f, 0.0f);
-			//	square.x = static_cast<int> (screenCoords.x - w / 2);
-			//	square.y = static_cast<int> (screenCoords.y - h / 2);
-			//	square.w = w;
-			//	square.h = h;
-
-			//	SDL_RenderCopyEx(renderer, items[6]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-			//}
-
-			//if (player->searchInventory("LoseShoe"))
-			//{
-			//	//Shoe_1
-			//	SDL_QueryTexture(items[4]->getTexture(), nullptr, nullptr, &w, &h);
-			//	screenCoords = Vec3(650.0f, 50.0f, 0.0f);
-			//	square.x = static_cast<int> (screenCoords.x - w / 2);
-			//	square.y = static_cast<int> (screenCoords.y - h / 2);
-			//	square.w = w;
-			//	square.h = h;
-
-			//	SDL_RenderCopyEx(renderer, items[4]->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
-			//}
-
-
 		}
 
-
-
-
+		//Draw text on screen
+		if (message != " ") {
+			if (drawText(renderer, message.c_str(), 300, 500, 0, 0, 0, 0)) {
+				cout << "timeDelay is " << timeDelay << endl;
+				if (timeDelay >= 3.0f) {
+					message = " ";
+				}
+			}
+		}
 	}
 
 	SDL_RenderPresent(renderer);
@@ -682,12 +607,15 @@ void Scene0::Render() {
 
 void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 {
+	
 	if (player->getAlive()) {
 		player->PlayerController(sdlEvent);
 		//Interaction with items
 		for (GameObject* item : room->getItemList()) {
 			if (Physics::InteractionDetect(*player, *item)) {
 				if (player->interactObject(sdlEvent, item) && item->getType() == TPickable) {
+					message = item->getName() + " added to inventory";
+					timeDelay = 0.0f;
 					room->removeItem(item->getName());
 				}
 			}
@@ -713,6 +641,8 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 							}
 						}
 						else {
+							message = door->getDescription();
+							timeDelay = 0.0f;
 							door->displayDescription();
 						}
 					}

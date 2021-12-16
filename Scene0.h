@@ -36,8 +36,10 @@ private:
 	Vec3 worldSizeScreenCoords;
 	bool monsterExist;
 	float timeCount;
+	float timeDelay;
 	bool camera;
 	Vec3 projectionLoc;
+	string message;
 
 	bool ImageTextureSetup(ImageTexture *target_, bool animate);
 

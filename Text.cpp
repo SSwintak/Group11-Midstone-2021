@@ -9,6 +9,7 @@ void initFonts(void)
 	if (font == NULL) {
 		std::cout << "initFont Error: " << SDL_GetError() << std::endl;
 	}
+
 }
 
 
@@ -64,13 +65,24 @@ void blit(SDL_Renderer* renderer, SDL_Texture *texture, int x, int y, int center
 }
 
 //Text Drawing
-void drawText(SDL_Renderer* renderer, const char* message, int posx, int posy, int center, int r, int g, int b)
+bool drawText(SDL_Renderer* renderer, const char* message, int posx, int posy, int center, int r, int g, int b)
 {
+	//cout << "helloWorld" << helloWorld;
 	helloWorld = getTextTexture(renderer, message);
 
-	if (r > 0 || g > 0 || b > 0) {
-		SDL_SetTextureColorMod(helloWorld, r, g, b);
+	//if (helloWorld == nullptr)
+	//	printf("%s\n", SDL_GetError());// classic null checks
+
+
+	if (helloWorld != nullptr) {
+
+		if (r > 0 || g > 0 || b > 0) {
+			SDL_SetTextureColorMod(helloWorld, r, g, b);
+		}
+
+		blit(renderer, helloWorld, posx, posy, center);
+		return true;
 	}
 
-	blit(renderer, helloWorld, posx, posy, center);
+	return false;
 }

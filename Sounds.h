@@ -1,3 +1,6 @@
+#ifndef SOUNDS_H
+#define SOUNDS_H
+
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
@@ -16,3 +19,5 @@ static void loadSounds(void);
 extern void loadMusic(const char* filename);
 extern void playMusic(int loop);
 extern void playSound(int id, int channel);
+
+#endif

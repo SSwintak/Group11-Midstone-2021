@@ -118,11 +118,11 @@ void Map::DoorSetup(Room *room_) {
 		door = room_->searchConnectedRooms("StaffRoom");
 		door->setLocked(true);
 		door->setRequiredKey("Classroom3Key");
-		door->setDescription("I might find some clues in this room but it's locked");
+		door->setDescription("I might find some clues in this room but it's locked.");
 
 		door = room_->searchConnectedRooms("Classroom2");
 		door->setLocked(true);
-		door->setDescription("I might find some clues in this room but it's locked");
+		door->setDescription("I might find some clues in this room but it's locked.");
 
 		door = room_->searchConnectedRooms("Classroom3");
 		door->setDescription("Come back later.");
@@ -132,7 +132,7 @@ void Map::DoorSetup(Room *room_) {
 		door->setLocked(true);
 		door->setimageName("DoubleDoor_1_720p.png");
 		door->setDescription("I should try the staff room first.");
-		door->setDescription("It's Locked.");
+		door->setDescription("It's locked.");
 
 	}
 	else if (roomName_ == "StaffRoom") {
