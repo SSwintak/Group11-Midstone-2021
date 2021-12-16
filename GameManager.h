@@ -31,6 +31,7 @@ private:
 	
 	
 public:
+	Scene* getCurrentScene() { return currentScene; };
 	GameManager();
 	~GameManager();
 	bool OnCreate();
