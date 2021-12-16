@@ -16,9 +16,9 @@ void initSounds(void)
 static void loadSounds(void)
 {
 	sounds[SND_PLAYER_WALK] = Mix_LoadWAV("audio/Walking.mp3");
-	sounds[SND_PLAYER_OPEN] = Mix_LoadWAV("audio/DoorOpen06.mp3");
+	sounds[SND_PLAYER_OPEN] = Mix_LoadWAV("audio/unlockDoor.mp3");
 	sounds[SND_PLAYER_PICKUP] = Mix_LoadWAV("audio/ItemPickUp01.mp3");
-	sounds[SND_MONSTER_GROWL] = Mix_LoadWAV("");
+	sounds[SND_PLAYER_LOCKED] = Mix_LoadWAV("audio/lockedDoor.mp3");
 }
 
 void loadMusic(const char* filename)
@@ -29,6 +29,7 @@ void loadMusic(const char* filename)
 		Mix_HaltMusic();
 		Mix_FreeMusic(music);
 		music = NULL;
+
 	}
 
 	music = Mix_LoadMUS(filename);

@@ -8,6 +8,8 @@
 #include "Map.h"
 #include "Monster.h"
 #include "Data.h"
+#include "Sounds.h"
+#include <SDL_mixer.h>
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -146,10 +148,12 @@ void GameManager::Run() {
 			}
 
 			//First encounter progress
-			if (player->getProgress() == GTheSchool) {
+			if (player->getProgress() == GTheSchool) 
+			{
 				if (player->getRoom() == "Hallway" && 
 					player->getPrevRoom() == "Classroom3" &&
-					monster->getState() == TRoomSwitch) {
+					monster->getState() == TRoomSwitch) 
+				{
 					player->hint1Get();
 					player->setProgress(GFirstEncounter);
 				}
@@ -221,11 +225,8 @@ void GameManager::SceneSwitch(string roomName_){
 	delete currentScene;
 
 	if (roomName_ == "dead" || roomName_ == "End") {
-		
-		
 		currentScene = new Scene1(windowPtr->GetSDL_Window());
 		currentScene->OnCreate();
-		
 	}
 	else {
 		Room *room = map.searchRoom(roomName_);

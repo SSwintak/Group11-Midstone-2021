@@ -107,7 +107,7 @@ void Map::DoorSetup(Room *room_) {
 		door = room_->searchConnectedRooms("Hallway");
 		door->setLocked(true);
 		door->setRequiredKey("CrowBar");
-		door->setDescription("The door's locked but the lock is loose. There has to be a way for me to break this open");
+		door->setDescription("There has to be a way for me to break this open.");
 	}
 	else if (roomName_ == "Hallway") {
 		
