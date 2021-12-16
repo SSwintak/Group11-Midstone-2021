@@ -189,6 +189,8 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene0.h" />
     <ClInclude Include="Scene1.h" />
+    <ClInclude Include="SoundDefs.h" />
+    <ClInclude Include="Sounds.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector.h" />

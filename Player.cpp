@@ -44,17 +44,12 @@ void Player::PlayerController(const SDL_Event& sdlEvent){
 		vel.x = walksp;
 		setIsMoving(true);
 		setFlip(SDL_FLIP_NONE);
-
-		if (Mix_Playing(CH_PLAYER) == 0) {
-			playSound(SND_PLAYER_WALK, CH_PLAYER);
-		}
 	}
 	else if (sdlEvent.type == SDL_KEYUP && sdlEvent.key.keysym.scancode == SDL_SCANCODE_D)
 	{
 		vel.x = 0.0f;
 		setIsMoving(false);
 
-		Mix_HaltChannel(CH_PLAYER);
 	}
 
 	//---Left Movement---//
@@ -63,17 +58,11 @@ void Player::PlayerController(const SDL_Event& sdlEvent){
 		vel.x = -walksp;
 		setIsMoving(true);
 		setFlip(SDL_FLIP_HORIZONTAL);
-
-		if (Mix_Playing(CH_PLAYER) == 0) {
-			playSound(SND_PLAYER_WALK, CH_PLAYER);
-		}
 	}
 	else if (sdlEvent.type == SDL_KEYUP && sdlEvent.key.keysym.scancode == SDL_SCANCODE_A)
 	{
 		vel.x = 0.0f;
 		setIsMoving(false);
-
-		Mix_HaltChannel(CH_PLAYER);
 	}
 
 	//---Up Movement---//
@@ -82,16 +71,12 @@ void Player::PlayerController(const SDL_Event& sdlEvent){
 		vel.y = walksp;
 		setIsMoving(true);
 
-		if (Mix_Playing(CH_PLAYER) == 0) {
-			playSound(SND_PLAYER_WALK, CH_PLAYER);
-		}
 	}
 	else if (sdlEvent.type == SDL_KEYUP && sdlEvent.key.keysym.scancode == SDL_SCANCODE_W)
 	{
 		vel.y = 0.0f;
 		setIsMoving(false);
 
-		Mix_HaltChannel(CH_PLAYER);
 	}
 
 	//---Down Movement---//
@@ -99,17 +84,11 @@ void Player::PlayerController(const SDL_Event& sdlEvent){
 	{
 		vel.y = -walksp;
 		setIsMoving(true);
-
-		if (Mix_Playing(CH_PLAYER) == 0) {
-			playSound(SND_PLAYER_WALK, CH_PLAYER);
-		}
 	}
 	else if (sdlEvent.type == SDL_KEYUP && sdlEvent.key.keysym.scancode == SDL_SCANCODE_S)
 	{
 		vel.y = 0.0f;
 		setIsMoving(false);
-
-		Mix_HaltChannel(CH_PLAYER);
 	}
 
 
@@ -198,6 +177,17 @@ void Player::Update(float deltaTime) {
 		if (currRoom == "Hallway") {
 			playerProgress = GTheSchool;
 		}
+	}
+
+	//Sounds
+	if (vel.x > 0.0f || vel.y > 0.0f || vel.x < 0.0f || vel.y < 0.0f) {
+		if (Mix_Playing(CH_PLAYER) == 0) {
+			playSound(SND_PLAYER_WALK, CH_PLAYER);
+		}
+	}
+	else
+	{
+		Mix_HaltChannel(CH_PLAYER);
 	}
 }
 

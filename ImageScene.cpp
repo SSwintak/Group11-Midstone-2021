@@ -109,12 +109,12 @@ void ImageScene::Render() {
 	SDL_RenderCopyEx(renderer, imageDisplayed->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
 
 	//Draw text on screen
-	if (player->getEnd()) {
+	if (!player->getAlive()) {
+		drawText(renderer, "Press Q to respawn to previous progress", 200, 500, 0, 0, 0, 0);
+	}else if (player->getEnd()) {
 		drawText(renderer, "Press ESC to Quit Game", 350, 500, 0, 0, 0, 0);
 	}
-	else if (!player->getAlive()) {
-		drawText(renderer, "Press Q to respawn to previous progress", 350, 500, 0, 0, 0, 0);
-	}
+
 
 	SDL_RenderPresent(renderer);
 }

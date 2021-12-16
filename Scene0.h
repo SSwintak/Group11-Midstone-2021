@@ -35,6 +35,7 @@ private:
 	Matrix4 projMa;
 	Vec3 worldSizeScreenCoords;
 	bool monsterExist;
+	bool Hunting = false;
 	float timeCount;
 	float timeDelay;
 	bool camera;

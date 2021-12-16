@@ -9,6 +9,7 @@
 #include "Monster.h"
 #include "Data.h"
 #include "ImageTexture.h"
+#include "Sounds.h"
 #include <typeinfo>
 
 
@@ -53,7 +54,10 @@ bool Scene1::OnCreate() {
 	{
 		return false;
 	}
-
+	//Set Sounds Music
+	initSounds();
+	loadMusic("audio/CrEEP.mp3");
+	playMusic(1);
 	return true;
 }
 

@@ -9,6 +9,8 @@
 #include "Map.h"
 #include "Monster.h"
 #include "Data.h"
+#include "Sounds.h"
+#include <SDL_mixer.h>
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -132,16 +134,16 @@ void GameManager::Run() {
 							monster->reset();
 							SceneSwitch(player->getRoom());
 							break;
-						//case GEscape:
-						//	cout << "Respawn player to GSecondFloor" << endl;
-						//	player->setAlive(true);
-						//	player->setEnd(false);
-						//	player->setProgress(GSecondFloor);
-						//	player->setPrevRoom("BreakerRoom");
-						//	player->setRoom("SecondFloor");
-						//	monster->reset();
-						//	SceneSwitch(player->getRoom());
-						//	break;
+						case GEscape:
+							cout << "Respawn player to GSecondFloor" << endl;
+							player->setAlive(true);
+							player->setEnd(false);
+							player->setProgress(GSecondFloor);
+							player->setPrevRoom("SecondFloor");
+							player->setRoom("BreakerRoom");
+							monster->reset();
+							SceneSwitch(player->getRoom());
+							break;
 					}
 
 					}
@@ -182,10 +184,12 @@ void GameManager::Run() {
 			}
 
 			//First encounter progress
-			if (player->getProgress() == GTheSchool) {
+			if (player->getProgress() == GTheSchool) 
+			{
 				if (player->getRoom() == "Hallway" && 
 					player->getPrevRoom() == "Classroom3" &&
-					monster->getState() == TRoomSwitch) {
+					monster->getState() == TRoomSwitch) 
+				{
 					player->hint1Get();
 					player->setProgress(GFirstEncounter);
 				}
@@ -271,12 +275,9 @@ void GameManager::SceneSwitch(string roomName_){
 	currentScene->OnDestroy();
 	delete currentScene;
 
-	if (roomName_ == "dead" || roomName_ == "End") {
-		
-		
+	if (roomName_ == "dead" || roomName_ == "End") {		
 		currentScene = new ImageScene(windowPtr->GetSDL_Window());
 		currentScene->OnCreate();
-		
 	}
 	else {
 		Room *room = map.searchRoom(roomName_);

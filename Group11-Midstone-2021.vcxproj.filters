@@ -175,8 +175,16 @@
     <ClInclude Include="Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ImageScene.h">
       <Filter>Header Files\Scenes</Filter>
+=======
+    <ClInclude Include="SoundDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sounds.h">
+      <Filter>Header Files</Filter>
+>>>>>>> 5eef7e3b0a01358311d482840e67c5ffc5aaf6c3
     </ClInclude>
   </ItemGroup>
 </Project>

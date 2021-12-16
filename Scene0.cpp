@@ -11,8 +11,8 @@
 #include "Data.h"
 #include "ImageTexture.h"
 #include "Itempool.h"
-#include <typeinfo>
 #include "Sounds.h"
+#include <typeinfo>
 
 
 //#define WORLD_W 1280
@@ -59,15 +59,15 @@ bool Scene0::OnCreate() {
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
 	projMa = projectionMatrix;
 	//Set font
-	TTF_Init();
-
 	initFonts();
-
+	//Set Music/Sounds
 	initSounds();
-
+	loadMusic("audio/Searching.mp3");
+	playMusic(1);
+	Mix_VolumeMusic(25);
+	Mix_Volume(CH_ANY, 1000);
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
-	
 
 	//Set room images
 	if (!ImageTextureSetup(room, false)) {
@@ -272,6 +272,12 @@ void Scene0::Update(const float deltaTime) {
 
 	//Time count
 	timeDelay += deltaTime;
+	//Music
+	if (monster->getState() == THunt && Hunting == false) {
+		Hunting = true;
+		loadMusic("audio/Dark Ambience Loop.mp3");
+		playMusic(1);
+	}
 
 	if (monster->getRoom() == room->getName() 
 		&& monster->getState() != TInactive
@@ -598,7 +604,9 @@ void Scene0::Render() {
 
 		//Draw text on screen
 		if (message != " ") {
-			if (drawText(renderer, message.c_str(), 100, 500, 0, 0, 0, 0)) {
+
+			if (drawText(renderer, message.c_str(), 5, 525, 0, 0, 0, 0)) {
+				//cout << "timeDelay is " << timeDelay << endl;
 				if (timeDelay >= 2.0f) {
 					message = " ";
 				}
@@ -617,9 +625,15 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 		//Interaction with items
 		for (GameObject* item : room->getItemList()) {
 			if (Physics::InteractionDetect(*player, *item)) {
+
 				bool interactSuccess = player->interactObject(sdlEvent, item);
+
 				if (interactSuccess && item->getType() == TPickable) {
+
+					playSound(SND_PLAYER_PICKUP, CH_ENVIROMENT);
+
 					message = item->getDescription();
+
 					timeDelay = 0.0f;
 					room->removeItem(item->getName());
 				}
@@ -637,7 +651,6 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						}
 					}
 				}
-			
 			}
 		}
 
@@ -652,26 +665,33 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						string requiredKey = door->getRequiredKey();
 
 						if (player->searchInventory(requiredKey)) {
+							playSound(SND_PLAYER_OPEN, CH_ENVIROMENT);
 							player->switchRoom(door->getConnectedRoom());
 							if (room->getName() == "Hallway")  {
+								playSound(SND_PLAYER_OPEN, CH_ENVIROMENT);
 								player->setCameraHallway(projectionMatrix);
 							}
 							else if (room->getName() == "SecondFloor") {
+								playSound(SND_PLAYER_OPEN, CH_ENVIROMENT);
 								player->setCameraSecondFloor(projectionMatrix);
 							}
 						}
 						else {
+							playSound(SND_PLAYER_LOCKED, CH_ENVIROMENT);
 							message = door->getDescription();
 							timeDelay = 0.0f;
 							door->displayDescription();
 						}
 					}
 					else {
+						playSound(SND_PLAYER_OPEN, CH_ENVIROMENT);
 						player->switchRoom(door->getConnectedRoom());
 						if (room->getName() == "Hallway") {
+							playSound(SND_PLAYER_OPEN, CH_ENVIROMENT);
 							player->setCameraHallway(projectionMatrix);
 						}
 						else if (room->getName() == "SecondFloor") {
+							playSound(SND_PLAYER_OPEN, CH_ENVIROMENT);
 							player->setCameraSecondFloor(projectionMatrix);
 						}
 					}

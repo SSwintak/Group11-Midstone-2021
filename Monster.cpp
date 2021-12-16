@@ -3,6 +3,8 @@
 #include "Room.h"
 #include "Data.h"
 #include "Player.h"
+#include "Sounds.h"
+#include <SDL_mixer.h>
 
 //bool Monster::normalState;
 //bool Monster::huntState;
@@ -55,6 +57,7 @@ void Monster::Update(float deltaTime){
 		//delete curr_Room;
 	}
 	if (monsterState == THunt) {
+		
 		setIsMoving(true);
 		// do something
 		//vel.x = 2.0f;
