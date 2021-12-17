@@ -39,6 +39,7 @@ Scene0::Scene0(SDL_Window* sdlWindow_, Room *room_): room(room_){
 	itemName = nullptr;
 	message = " ";
 	message = "Entering " + room->getName();
+	descMsg = " ";
 	timeDelay = 0.0f;
 }
 
@@ -603,10 +604,18 @@ void Scene0::Render() {
 
 		//Draw text on screen
 		if (message != " ") {
-			if (drawText(renderer, message.c_str(), 5, 525, 0, 0, 0, 0)) {
+			if (drawText(renderer, message.c_str(), 5, 530, 0, 0, 0, 0)) {
 				//cout << "timeDelay is " << timeDelay << endl;
 				if (timeDelay >= 3.0f) {
 					message = " ";
+				}
+			}
+		}
+		if (descMsg != " ") {
+			if (drawText(renderer, descMsg.c_str(), 5, 500, 0, 255, 165, 0)) {
+				//cout << "timeDelay is " << timeDelay << endl;
+				if (timeDelay >= 3.0f) {
+					descMsg = " ";
 				}
 			}
 		}
@@ -628,6 +637,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 					playSound(SND_PLAYER_PICKUP, CH_ENVIROMENT);
 
 					message = item->getName() + " added to inventory";
+					descMsg = item->getDescription();
 					timeDelay = 0.0f;
 					room->removeItem(item->getName());
 				}

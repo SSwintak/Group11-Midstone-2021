@@ -41,6 +41,7 @@ private:
 	bool camera;
 	Vec3 projectionLoc;
 	string message;
+	string descMsg;
 
 	bool ImageTextureSetup(ImageTexture *target_, bool animate);
 
