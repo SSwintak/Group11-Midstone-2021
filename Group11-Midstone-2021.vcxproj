@@ -149,6 +149,7 @@
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ImageScene.cpp" />
     <ClCompile Include="ImageTexture.cpp" />
     <ClCompile Include="ItemPool.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="ImageScene.h" />
     <ClInclude Include="ImageTexture.h" />
     <ClInclude Include="ItemPool.h" />
     <ClInclude Include="Map.h" />

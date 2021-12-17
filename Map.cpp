@@ -149,9 +149,12 @@ void Map::DoorSetup(Room *room_) {
 		door->setLocked(true);
 		door->setDescription("I should keep investigating.");
 
-
 	}
-
+	else if (roomName_ == "SecondFloor") {
+		door = room_->searchConnectedRooms("Washroom");
+		door->setimageName("BathRoom_Door_1_720p.png");
+		door->setDescription("It is a washroom.");
+	}
 }
 
 void Map::On_Destroy(){

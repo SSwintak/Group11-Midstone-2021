@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+#include "Text.h"
 #include "Player.h"
 #include "GameObject.h"
 #include "Physics.h"
@@ -34,18 +35,17 @@ bool ImageScene::OnCreate() {
 	//Set images
 	IMG_Init(IMG_INIT_PNG);
 
+	//Set font
+	TTF_Init();
+	initFonts();
+
 	//Set dead scene
 	if (!player->getAlive()) {
 		imageDisplayed = new ImageTexture("HorrorSchool_DeathScreen_1_576p.png");
 	}
 	//Set end scene
 	else {
-		if (player->searchInventory("PoliceDoc")) {
-			imageDisplayed = new ImageTexture("End2.png");
-		} else{
-			imageDisplayed = new ImageTexture("End1.png");
-		}
-
+		imageDisplayed = new ImageTexture("End2.png");
 	}
 	if (!ImageTextureSetup(imageDisplayed)) {
 		return false;
@@ -107,6 +107,14 @@ void ImageScene::Render() {
 	square.w = w;
 	square.h = h;
 	SDL_RenderCopyEx(renderer, imageDisplayed->getTexture(), nullptr, &square, rot, nullptr, SDL_FLIP_NONE);
+
+	//Draw text on screen
+	if (!player->getAlive()) {
+		drawText(renderer, "Press Q to respawn to previous progress", 200, 500, 0, 0, 0, 0);
+	}else if (player->getEnd()) {
+		drawText(renderer, "Press ESC to Quit Game", 350, 500, 0, 0, 0, 0);
+	}
+
 
 	SDL_RenderPresent(renderer);
 }
